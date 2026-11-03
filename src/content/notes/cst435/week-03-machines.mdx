@@ -420,7 +420,7 @@ The hypercube costs twice as many links but has half the diameter and 4× the bi
 For p = 8: a crossbar needs 64 switch points, while an omega network needs 12 small switches (each one a 2×2 crossbar, so 48 switch points). The saving grows quickly as p increases.
 
 <QAList>
-  <QA q="Draw and explain Flynn's taxonomy with one example for each class." level="easy">
+  <QA q="Draw and explain Flynn's taxonomy with one example for each class." level="easy" why="Count streams: single or multiple instructions × single or multiple data. SISD classic, SIMD GPU, MISD rare, MIMD multi-core.">
     | | Single data | Multiple data |
     |---|---|---|
     | **Single instruction** | **SISD**: classic Von Neumann single-core | **SIMD**: GPU, vector processor |
@@ -428,52 +428,52 @@ For p = 8: a crossbar needs 64 switch points, while an omega network needs 12 sm
 
     It classifies machines by the number of concurrent instruction streams × data streams (Flynn, 1966).
   </QA>
-  <QA q="Contrast SIMD and MIMD in terms of control and synchronisation." level="medium">
+  <QA q="Contrast SIMD and MIMD in terms of control and synchronisation." level="medium" why="SIMD = one control unit, lock-step, synchronous. MIMD = each core has its own control unit and runs asynchronously.">
     **SIMD:** one control unit broadcasts **one instruction** to many ALUs, which run in **lock-step** (synchronous, single thread of control) on different data.
 
     **MIMD:** each core has **its own control unit and ALU** and runs its own instruction stream **asynchronously** (multiple threads of control).
   </QA>
-  <QA q="A SIMD machine has 8 ALUs and must process 50 data items. How many rounds are needed, and how many ALUs are idle in the last round?" level="medium">
+  <QA q="A SIMD machine has 8 ALUs and must process 50 data items. How many rounds are needed, and how many ALUs are idle in the last round?" level="medium" why="Rounds = ⌈50/8⌉ = 7. The last round has 50 − 48 = 2 items, so 6 ALUs sit idle.">
     Rounds = ⌈50/8⌉ = **7**. Six full rounds process 48 items; the 7th round has 2 items, so **6 ALUs are idle**.
   </QA>
-  <QA q="Why is SIMD inefficient for code with lots of if/else branches?" level="medium">
+  <QA q="Why is SIMD inefficient for code with lots of if/else branches?" level="medium" why="All ALUs must run the same instruction. With divergent branches, one group waits while the other runs.">
     All ALUs must execute the **same instruction** or stay idle. If some data elements take the `if` branch and others take the `else`, the machine runs the `if` part while the "else" ALUs wait, then runs the `else` part while the "if" ALUs wait. Up to half the ALUs (or more) are idle at any time.
   </QA>
-  <QA q="Give two advantages and two disadvantages of vector processors." level="easy">
+  <QA q="Give two advantages and two disadvantages of vector processors." level="easy" why="Pros: fast, easy, vectorising compilers, high bandwidth. Cons: irregular data structures and limited scalability.">
     **Pros:** fast and easy to use; vectorising compilers find exploitable code automatically; high memory bandwidth and they use every item in a cache line.
 
     **Cons:** poor at irregular data structures; limited scalability for very large problems.
   </QA>
-  <QA q="What is interleaved memory, and why do vector processors use it?" level="hard">
+  <QA q="What is interleaved memory, and why do vector processors use it?" level="hard" why="Banks are accessed in parallel, so consecutive elements come from different banks without waiting. That gives vectors the bandwidth they need.">
     Memory is split into multiple **banks** that can be accessed more or less independently. Successive vector elements are spread across banks, so while one bank is busy delivering element i, the next bank is already delivering element i+1. This removes the delay between loading and storing successive elements and gives the high bandwidth vector units need.
   </QA>
-  <QA q="Differentiate UMA and NUMA." level="easy">
+  <QA q="Differentiate UMA and NUMA." level="easy" why="UMA = same access time everywhere; NUMA = local memory faster than remote. NUMA comes from linking SMPs.">
     **UMA:** every processor has the **same** access time to all memory (one shared memory, typical of SMPs). **NUMA:** made by linking two or more SMPs; each processor accesses its **local** memory faster than **remote** memory across the link. With cache coherence they're called CC-UMA and CC-NUMA.
   </QA>
-  <QA q="Why don't bus-based shared memory systems scale beyond tens of processors?" level="medium">
+  <QA q="Why don't bus-based shared memory systems scale beyond tens of processors?" level="medium" why="Everyone shares one bus, so more processors means more waiting (contention).">
     All processors share the same bus to memory. As more processors are added, **bus contention** increases (they wait for their turn), so performance drops. Caches reduce bus traffic, but they bring the cache-coherence problem and add coherence traffic of their own.
   </QA>
-  <QA q="Explain the cache coherence problem with an example." level="medium">
+  <QA q="Explain the cache coherence problem with an example." level="medium" why="Private caches can hold different copies. After one core writes, another can still read its old, stale value.">
     Cores 1 and 2 both read x = 15213 into their private caches. Core 1 then writes x = 21660 (to its cache and, with write-through, to memory). Core 2 then reads x from **its own cache** and gets the old value 15213, a **stale copy**. Private caches can hold inconsistent copies of the same memory location.
   </QA>
-  <QA q="How does an invalidation-based snooping protocol solve cache coherence? Why is invalidation usually preferred to update?" level="hard">
+  <QA q="How does an invalidation-based snooping protocol solve cache coherence? Why is invalidation usually preferred to update?" level="hard" why="Writers broadcast 'invalidate', others drop their copy and re-fetch. Invalidation needs bus traffic only on the first of repeated writes.">
     All caches **snoop** on a shared bus. When a core writes a location, it broadcasts an **invalidation**, and the other caches mark their copy invalid. Their next read of that location is a miss, so they fetch the new value.
 
     Invalidation is preferred because for **repeated writes** to the same location only the first write generates bus traffic, while an update protocol must broadcast **every** write together with its value. Real CPUs use refined versions with extra state bits, such as **MSI** and **MESI**.
   </QA>
-  <QA q="What is false sharing?" level="hard">
+  <QA q="What is false sharing?" level="hard" why="Coherence works per cache line. Different variables in the same line still bounce between cores even though no data is really shared.">
     Two threads update **different variables** that happen to sit in the **same cache line**. Coherence works per line, so each write invalidates the other core's copy and the line bounces between the cores. The program slows down even though the threads share no data. The fix is to pad or align the data so each thread's variables are in separate cache lines.
   </QA>
-  <QA q="Give the advantages of private caches and of shared caches." level="easy">
+  <QA q="Give the advantages of private caches and of shared caches." level="easy" why="Private: closer and less contention. Shared: data sharing without coherence traffic, and more space for a single heavy thread.">
     **Private:** closer to the core, so faster; less contention. **Shared:** threads on different cores can share cached data; a single (or a few) heavy thread can use more cache space.
   </QA>
-  <QA q="Define a cluster (Pfister) and explain 'single system image'." level="medium">
+  <QA q="Define a cluster (Pfister) and explain 'single system image'." level="medium" why="Whole computers, used as one resource. Single system image = it looks like one machine to users and admins.">
     A cluster is a parallel or distributed system made of interconnected **whole computers** (each with its own CPU, memory, disk, I/O and OS) used as a **single unified computing resource**. **Single system image** means users and admins see it as one machine: a single entry point, one file system, coordinated job queues and location transparency.
   </QA>
-  <QA q="What is bisection width? What is the bisection width of an 8-node ring, and why is it 2, not 4?" level="medium">
+  <QA q="What is bisection width? What is the bisection width of an 8-node ring, and why is it 2, not 4?" level="medium" why="Bisection width uses the WORST case (minimum cut). A ring can always be cut with only 2 links crossing.">
     Bisection width is the **minimum** number of links that must be cut to split the network into two equal halves. It measures how many simultaneous communications can cross between the halves. For an 8-node ring you can cut it so only **2** links cross (cutting in different places can cross 4), and the definition takes the **worst case** (minimum), so it is **2**.
   </QA>
-  <QA q="For p = 64 nodes, compute diameter, bisection width and number of links for a hypercube and a fully connected network." level="hard">
+  <QA q="For p = 64 nodes, compute diameter, bisection width and number of links for a hypercube and a fully connected network." level="hard" why="Hypercube: log₂64 = 6, 64/2 = 32, 64·6/2 = 192. Fully connected: 1, 64²/4 = 1024, 64·63/2 = 2016.">
     | | Diameter | Bisection width | Links |
     |---|---|---|---|
     | Hypercube | log₂64 = **6** | 64/2 = **32** | (64×6)/2 = **192** |
@@ -481,13 +481,13 @@ For p = 8: a crossbar needs 64 switch points, while an omega network needs 12 sm
 
     Fully connected is better on paper but needs over 10× the links, so it's impractical.
   </QA>
-  <QA q="How is a 3-dimensional hypercube built, and how many links does each node have?" level="medium">
+  <QA q="How is a 3-dimensional hypercube built, and how many links does each node have?" level="medium" why="Join two 2-D squares at corresponding nodes. Each node gets one link per dimension, so 3.">
     Take two 2-D hypercubes (squares of 4 nodes) and connect each node to its "corresponding" node in the other square. The result has 8 nodes, and **each node has 3 links** (= dimension d = log₂8).
   </QA>
-  <QA q="Compare a crossbar and an omega network." level="hard">
+  <QA q="Compare a crossbar and an omega network." level="hard" why="Crossbar = p² switches, non-blocking, expensive. Omega = log₂p stages of 2×2 switches, cheap but can block.">
     Both are indirect interconnects. A **crossbar** uses a full grid of p² switches and lets every processor reach any free memory at the same time (non-blocking), but it's expensive. An **omega network** uses log₂p stages of p/2 small 2×2 switches, which is far cheaper, but some communication patterns **block** each other because they need the same switch.
   </QA>
-  <QA q="Your Flutter app's backend runs on 8 cloud VMs connected by ordinary Ethernet. Classify this system using Flynn's taxonomy and the memory model." level="medium">
+  <QA q="Your Flutter app's backend runs on 8 cloud VMs connected by ordinary Ethernet. Classify this system using Flynn's taxonomy and the memory model." level="medium" why="Each VM runs its own program (MIMD) and has its own memory, talking over the network (distributed memory).">
     **MIMD** (each VM runs its own instruction stream on its own data), **distributed memory**: it's a cluster or loosely coupled system where nodes communicate over the network (TCP/IP), not through shared memory.
   </QA>
 </QAList>

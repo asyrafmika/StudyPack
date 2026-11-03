@@ -551,85 +551,85 @@ Also called **distributed event-based systems**.
 | One message to a set of replicas | **Group communication / multicast** |
 
 <QAList>
-  <QA q="What is MPI, and what is it not?" level="easy">
+  <QA q="What is MPI, and what is it not?" level="easy" why="MPI is a standard API (a library specification). MPICH and Open MPI are implementations, not MPI itself.">
     MPI is a **message-passing library specification** (a standard API) for programs where each process has its own local memory and data moves by messages. It is **not a language, not a compiler specification, and not a specific product**: MPICH and Open MPI are implementations of it.
   </QA>
-  <QA q="Name the six basic MPI functions and what each does." level="easy">
+  <QA q="Name the six basic MPI functions and what each does." level="easy" why="Init, Finalize, Comm_size, Comm_rank, Send, Recv: start, stop, how many, who am I, send, receive.">
     `MPI_Init` (start), `MPI_Finalize` (end), `MPI_Comm_size` (number of processes), `MPI_Comm_rank` (my ID), `MPI_Send` (send a message), `MPI_Recv` (receive a message).
   </QA>
-  <QA q="What are a communicator and a rank? What is MPI_COMM_WORLD?" level="easy">
+  <QA q="What are a communicator and a rank? What is MPI_COMM_WORLD?" level="easy" why="Communicator = group + context; rank = your number in it; MPI_COMM_WORLD = everyone.">
     A **communicator** combines a group of processes with a communication context, and every MPI call uses one. A **rank** is a process's number (0, 1, 2…) within the communicator. **MPI_COMM_WORLD** is the default communicator created by `MPI_Init`, containing all processes.
   </QA>
-  <QA q="Differentiate blocking and non-blocking communication in MPI, with an example of each." level="medium">
+  <QA q="Differentiate blocking and non-blocking communication in MPI, with an example of each." level="medium" why="Blocking returns when it's safe to reuse the buffer. Non-blocking returns immediately; you check later with Wait or Test.">
     **Blocking** (`MPI_Send`, `MPI_Recv`): the call returns only when the operation is complete, so the buffer is safe to reuse. **Non-blocking** (`MPI_Isend`, `MPI_Irecv`): the call returns immediately with a request handle; the program continues and later checks completion with `MPI_Wait` or `MPI_Test`. Non-blocking calls let you **overlap communication with computation**.
   </QA>
-  <QA q="What's the difference between MPI_Send and MPI_Ssend?" level="medium">
+  <QA q="What's the difference between MPI_Send and MPI_Ssend?" level="medium" why="Ssend waits until the receiver has started receiving. Plain Send may return once the data is buffered.">
     `MPI_Send` (standard) returns once the send buffer can be reused; the message may be buffered and not yet received. `MPI_Ssend` (synchronous) returns only when the receiver has **started receiving** the message, so the sender knows it was delivered.
   </QA>
-  <QA q="Two processes each do a blocking synchronous send to the other, then a receive. What happens, and how do you fix it?" level="hard">
+  <QA q="Two processes each do a blocking synchronous send to the other, then a receive. What happens, and how do you fix it?" level="hard" why="Both wait for the other to receive first, so neither ever reaches its receive: deadlock. Reorder, go non-blocking, or use Sendrecv.">
     **Deadlock.** Each send waits for the other process to receive, but neither reaches its receive. Fixes: reverse the order on one process (rank 0 sends first, rank 1 receives first); use non-blocking `MPI_Isend`/`MPI_Irecv` with `MPI_Wait`; or use `MPI_Sendrecv`.
   </QA>
-  <QA q="Explain barrier, broadcast, scatter, gather and reduction." level="medium">
+  <QA q="Explain barrier, broadcast, scatter, gather and reduction." level="medium" why="Barrier = sync only; broadcast = same data to all; scatter = split; gather = collect; reduce = combine into one result.">
     - **Barrier:** everyone waits until all have arrived; no data exchanged.
     - **Broadcast:** one process sends the same data to all.
     - **Scatter:** one process splits data and sends a different piece to each.
     - **Gather:** collect a piece from each process into one place.
     - **Reduction:** combine everyone's values with an operation (sum, max) into one result.
   </QA>
-  <QA q="Give three benefits of multicast." level="easy">
+  <QA q="Give three benefits of multicast." level="easy" why="Fault tolerance, service discovery, performance from replicated data, event notification.">
     Any three of: fault tolerance through replicated services; discovering services in spontaneous networks; better performance through replicated data; propagating event notifications.
   </QA>
-  <QA q="What is an overlay network? Give two advantages and two examples." level="medium">
+  <QA q="What is an overlay network? Give two advantages and two examples." level="medium" why="A virtual network on top of an existing one, adding services without changing it (P2P, CDNs, VPNs).">
     A virtual network of nodes and logical links built on top of an existing network to provide extra services. **Advantages:** new services without changing the underlying network; easy experimentation and customisation; open and extensible. **Examples:** P2P file sharing (BitTorrent), Skype, CDNs, VPNs, distributed hash tables.
   </QA>
-  <QA q="How does the request-reply protocol handle lost messages and duplicate requests?" level="hard">
+  <QA q="How does the request-reply protocol handle lost messages and duplicate requests?" level="hard" why="Timeouts with resend, request IDs to drop duplicates, and a reply history so non-repeatable operations aren't re-run.">
     - **Timeouts:** the client resends the request if no reply arrives in time.
     - **Request IDs:** the server detects and **discards duplicate** requests.
     - **Lost replies:** if the operation isn't safe to repeat, the server keeps a **history** of recent replies and resends the saved reply instead of re-executing.
 
     The **RRA** variant lets the client acknowledge the reply so the server can delete it from the history.
   </QA>
-  <QA q="What does a client stub do in RPC? What is marshalling?" level="medium">
+  <QA q="What does a client stub do in RPC? What is marshalling?" level="medium" why="The stub makes a remote call look local. Marshalling flattens arguments into bytes for sending.">
     The **client stub** looks like a local procedure to the client. It **marshals** the procedure ID and arguments into a request message, sends it through the communication module, waits for the reply, then **un-marshals** the result and returns it. **Marshalling** is converting in-memory data into a flat byte format for transmission.
   </QA>
-  <QA q="List the 10 steps of a remote procedure call." level="medium">
+  <QA q="List the 10 steps of a remote procedure call." level="medium" why="Picture a U: down the client side (stub, OS), across the network, up the server side, then the same back.">
     1. Client calls the client stub. 2. Stub builds a message and calls the local OS. 3. Client OS sends it to the remote OS. 4. Remote OS gives it to the server stub. 5. Server stub unpacks the parameters and calls the server. 6. Server does the work and returns to the stub. 7. Server stub packs the result and calls its OS. 8. Server OS sends it to the client OS. 9. Client OS gives it to the client stub. 10. Stub unpacks the result and returns to the client.
   </QA>
-  <QA q="Differentiate synchronous, asynchronous and deferred synchronous RPC." level="medium">
+  <QA q="Differentiate synchronous, asynchronous and deferred synchronous RPC." level="medium" why="Synchronous waits for the result; asynchronous only for acceptance; deferred gets a callback with the result later.">
     - **Synchronous:** the client blocks until the result returns.
     - **Asynchronous:** the client waits only until the server **accepts** the request, then continues.
     - **Deferred synchronous:** two asynchronous RPCs. The client continues after acceptance, and the server later calls the client back with the result.
     - (**One-way:** the client doesn't even wait for acceptance.)
   </QA>
-  <QA q="Explain the roles of the proxy, skeleton, dispatcher and remote reference module in RMI." level="hard">
+  <QA q="Explain the roles of the proxy, skeleton, dispatcher and remote reference module in RMI." level="hard" why="Proxy (client stand-in), skeleton (server-side caller), dispatcher (picks the method), remote reference module (translates references).">
     - **Proxy** (client side): stands in for the remote object; marshals the call, sends it and un-marshals the reply, so the remote call looks local.
     - **Dispatcher** (server): picks the right method for an incoming request.
     - **Skeleton** (server): un-marshals the arguments, calls the real object's method, and marshals the result.
     - **Remote reference module** (both sides): translates between local and remote object references.
   </QA>
-  <QA q="State two similarities and two differences between RMI and RPC." level="medium">
+  <QA q="State two similarities and two differences between RMI and RPC." level="medium" why="Both use interfaces and request-reply. RMI uses objects and remote object references; RPC uses plain procedures.">
     **Similarities:** both use interfaces; both are built on request–reply; both make remote calls look like local calls (transparency); both run across machines.
 
     **Differences:** RMI invokes **methods on objects** while RPC invokes **procedures**; RMI uses full OO features and **unique remote object references**, which allow objects to be passed as parameters (richer semantics).
   </QA>
-  <QA q="What are gRPC and protocol buffers, and why might you choose gRPC over REST/JSON for microservices?" level="hard">
+  <QA q="What are gRPC and protocol buffers, and why might you choose gRPC over REST/JSON for microservices?" level="hard" why="protobuf + HTTP/2: smaller and faster messages, generated typed stubs, streaming. Ideal for service-to-service traffic.">
     **gRPC** is Google's open-source (2015) RPC framework on **HTTP/2**; **protocol buffers** (2008) is its binary serialisation format. Compared with REST/JSON, gRPC gives **smaller, faster messages** (low CPU and bandwidth), **strongly typed generated client and server code** from a `.proto` schema, **streaming**, HTTP/2 multiplexing, and **version tolerance**. That makes it a good fit for high-volume service-to-service traffic.
   </QA>
-  <QA q="Explain FIFO, causal and total ordering in group communication." level="hard">
+  <QA q="Explain FIFO, causal and total ordering in group communication." level="hard" why="FIFO = per sender; causal = cause before effect; total = everyone sees the same order.">
     - **FIFO:** messages from the same sender are delivered in the order that sender sent them.
     - **Causal:** if one message could have caused another (it was sent after the first was seen), every member delivers the cause before the effect.
     - **Total:** every member delivers all messages in exactly the same order, even from different senders.
   </QA>
-  <QA q="Compare publish-subscribe and message queues, giving a use case for each." level="medium">
+  <QA q="Compare publish-subscribe and message queues, giving a use case for each." level="medium" why="Pub-sub: every subscriber gets the event. Queue: one consumer takes each message.">
     **Publish–subscribe:** events go to **every** subscriber interested in that topic (one-to-many). Use case: notify all followers of a new post, or send sensor readings to every dashboard. **Message queue:** each message is taken by **one** consumer, and it waits in the queue if no consumer is running. Use case: hand "process this order" jobs to a pool of workers reliably.
   </QA>
-  <QA q="What are the four primitives of a message-queuing interface? Which one never blocks?" level="easy">
+  <QA q="What are the four primitives of a message-queuing interface? Which one never blocks?" level="easy" why="Put, Get, Poll, Notify. Poll is the non-blocking one.">
     **Put** (append a message), **Get** (block until non-empty, remove first), **Poll** (check and remove first if present; **never blocks**), **Notify** (install a handler called when a message arrives).
   </QA>
-  <QA q="Why can a message queue work even when the receiver is offline?" level="medium">
+  <QA q="Why can a message queue work even when the receiver is offline?" level="medium" why="The queue stores messages persistently (time decoupling), so sender and receiver needn't run at the same time.">
     It provides **time decoupling**: the queue **stores** messages persistently, so a sender can put messages while the receiver is passive (not running), and the receiver gets them when it starts. Sender and receiver never need to run at the same time.
   </QA>
-  <QA q="Compare the client-server and peer-to-peer topologies." level="easy">
+  <QA q="Compare the client-server and peer-to-peer topologies." level="easy" why="Client-server has clear roles but a central bottleneck. P2P peers are equal, scale well, and are harder to manage.">
     **Client–server:** clear roles. Servers provide, clients request. Simple to manage, but the server can be a bottleneck and a single point of failure. **P2P:** all peers are equal and both supply and consume. It scales well and has no central point of failure, but it's harder to manage and secure (e.g. BitTorrent).
   </QA>
 </QAList>

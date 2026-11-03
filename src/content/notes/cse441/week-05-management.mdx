@@ -236,55 +236,55 @@ In backlog questions, marks usually come from: the correct **"As a / I want / so
 </Callout>
 
 <QAList>
-  <QA q="Who are the 'customers' of a process definition, and why does it matter?" level="medium">
+  <QA q="Who are the 'customers' of a process definition, and why does it matter?" level="medium" why="Beneficiaries, external customers, and performers. They decide the value the process creates and how to write it.">
     (1) The **primary customer** who benefits from the process (often internal); (2) the organisation's **external customers** whose products or services the process supports; (3) the **performers** who use the definition. Identifying them clarifies the **value** the process must create and how the description must be written.
   </QA>
-  <QA q="Describe the expert, intermediate and beginner levels of a process definition." level="medium">
+  <QA q="Describe the expert, intermediate and beginner levels of a process definition." level="medium" why="Expert = checklist; intermediate = plus guidance; beginner = plus linked training.">
     **Expert:** a concise checklist or flowchart, often the mandatory and auditable part. **Intermediate:** plus optional guidance on how to perform and interpret it. **Beginner:** plus training material, linked from the description but not part of it.
   </QA>
-  <QA q="List the four major steps of software process development." level="easy">
+  <QA q="List the four major steps of software process development." level="easy" why="Preparation, agreement, documentation, validation.">
     **Preparation** (owner leads, with engineers and performers), **agreement** (involve the main stakeholders), **documentation** (in the chosen notation, with process assets), **validation** (check it's adequate for practical use before deploying).
   </QA>
-  <QA q="Explain 'degree of flexibility' and 'degree of obligation' as process properties." level="medium">
+  <QA q="Explain 'degree of flexibility' and 'degree of obligation' as process properties." level="medium" why="Flexibility = rigid steps vs building blocks. Obligation = suggested vs expected vs mandatory.">
     **Flexibility:** from a rigid fixed sequence of steps (easy to define, hard to use when assumptions don't hold) to basic building blocks assembled per case. **Obligation:** from **suggested** (performers decide) to **recommended or expected** (follow unless there's a convincing reason not to).
   </QA>
-  <QA q="Give an example of each process scope level." level="easy">
+  <QA q="Give an example of each process scope level." level="easy" why="Whole service life cycle (ITIL, 12207), development (V-Model, Scrum), single process (TMMi).">
     Whole service life cycle: **ITIL**, **ISO/IEC/IEEE 12207**. Development work: **V-Model**, **Scrum**. One or a few processes: **TMMi** (testing).
   </QA>
-  <QA q="Explain the Why–What–How approach to process selection." level="medium">
+  <QA q="Explain the Why–What–How approach to process selection." level="medium" why="Why do it, what parts matter, how to tailor and implement.">
     **Why:** understand why you want the process and what benefit it should bring. **What:** set priorities, deciding which parts of the model matter for your objectives and which don't apply. **How:** decide how to tailor and implement the selected parts so they genuinely help the organisation.
   </QA>
-  <QA q="State Boehm & Turner's five critical factors and which way each points." level="medium">
+  <QA q="State Boehm & Turner's five critical factors and which way each points." level="medium" why="Size, criticality, dynamism, personnel, culture.">
     **Size** (small → agile, large → plan-driven); **criticality** (high safety or regulation → plan-driven); **dynamism** (fast-changing requirements → agile); **personnel** (highly skilled → agile); **culture** (empowered, freedom → agile; structured, policies → plan-driven).
   </QA>
-  <QA q="A 200-person team builds rail signalling software under strict safety regulation; requirements are stable. Agile or plan-driven? Use Boehm & Turner." level="hard">
+  <QA q="A 200-person team builds rail signalling software under strict safety regulation; requirements are stable. Agile or plan-driven? Use Boehm & Turner." level="hard" why="Large, critical and stable all point to plan-driven.">
     **Plan-driven** (e.g. a V-Model). **Size** is large; **criticality** is very high, and regulations require proof of safety; **dynamism** is low (stable requirements). All three point to plan-driven. Some agile practices (e.g. continuous integration) can still be added through tailoring.
   </QA>
-  <QA q="What is tailoring? Is it only for plan-driven processes?" level="easy">
+  <QA q="What is tailoring? Is it only for plan-driven processes?" level="easy" why="Delete, modify or add parts. Agile teams tailor too.">
     Adapting a general process to a specific instance (project, team) by **deleting, modifying or adding** parts. **No**: agile teams tailor too. A self-organising team adapting Scrum to its project is tailoring.
   </QA>
-  <QA q="List the steps for tailoring a process for a project, and the four groups of tailoring criteria." level="medium">
+  <QA q="List the steps for tailoring a process for a project, and the four groups of tailoring criteria." level="medium" why="Guidelines first, then evaluate → assess → strategies → tailor. Criteria: team, internal, external, objectives.">
     **Prepare** tailoring guidelines, then: (1) evaluate project goals and environment, (2) assess challenges, (3) determine tailoring strategies for the process elements, (4) tailor the process and check it. **Criteria:** team, internal environment, external environment, objectives.
   </QA>
-  <QA q="Why is process deployment called the 'last-mile problem'?" level="medium">
+  <QA q="Why is process deployment called the 'last-mile problem'?" level="medium" why="Turning paper into real behaviour is the hardest part.">
     It's the hardest final step: turning a process definition (a piece of paper) into **actual changes in how people work**. People resist rules set by others, especially when the extra effort brings them no short-term benefit (e.g. documentation pays off only in later maintenance).
   </QA>
-  <QA q="Explain the State–Enable–Verify–Reward approach." level="medium">
+  <QA q="Explain the State–Enable–Verify–Reward approach." level="medium" why="State, enable, verify, reward, and react to non-conformance.">
     - **State** expectations clearly and explain why.
     - **Enable** with time, tools and training.
     - **Verify** with QA checks that the process is actually followed.
     - **Reward:** visibly appreciate conformance and react to non-conformance, because ignoring it signals that it doesn't matter.
   </QA>
-  <QA q="What are the two main goals of process quality assurance?" level="medium">
+  <QA q="What are the two main goals of process quality assurance?" level="medium" why="Achieve its goals consistently, and be performed as defined (audits).">
     (1) Ensure the process **achieves its goals**: high-quality results on time and within budget, consistently and reliably. (2) Ensure the process is **performed according to its definition**: the "verify" step of deployment, continued permanently. The main tool is **process audits**.
   </QA>
-  <QA q="Differentiate governance, IT governance, process governance and compliance." level="hard">
+  <QA q="Differentiate governance, IT governance, process governance and compliance." level="hard" why="Nested scopes: governance ⊃ IT ⊃ process. Compliance is a yes/no check.">
     - **Governance:** sets enterprise objectives and direction through prioritisation and decisions, and monitors performance against them (COBIT 5).
     - **IT governance:** directing and controlling the current and future use of IT (ISO/IEC 38500).
     - **Process governance:** ensures processes support the enterprise strategy and are performed efficiently and effectively.
     - **Compliance:** conforming to a rule, standard, law or requirement, with a yes/no result (PMBOK).
   </QA>
-  <QA q="What is COBIT, in simple terms?" level="easy">
+  <QA q="What is COBIT, in simple terms?" level="easy" why="An IT governance framework: compliance, risk, and aligning IT with the business.">
     An IT governance framework (Control Objectives for Information and Related Technologies) that helps organisations with **regulatory compliance, risk management and aligning IT with business goals**, treating processes as enablers of good governance. Simply: rules and tips for using IT well, safely and in line with the business.
   </QA>
 </QAList>

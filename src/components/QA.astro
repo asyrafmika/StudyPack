@@ -1,21 +1,16 @@
 ---
 /**
- * One question with a hidden answer. Uses native <details> so it works
- * without JavaScript and is keyboard/screen-reader friendly.
+ * One flashcard question. Written inside a note's MDX so questions live next to
+ * the content they test, but NOT rendered on the note page: the flashcard page
+ * (src/pages/[course]/[slug]/flashcards.astro) extracts them from the source.
  *
- * <QA q="What is X?" level="easy">Answer in **markdown**.</QA>
+ * <QA q="Question?" level="easy|medium|hard" why="Explanation shown if the learner gets it wrong">
+ *   Answer in **markdown**.
+ * </QA>
  */
 interface Props {
   q: string;
   level?: 'easy' | 'medium' | 'hard';
+  why?: string;
 }
-const { q, level } = Astro.props;
 ---
-
-<details class="qa">
-  <summary>
-    <span class="qa-q">{q}</span>
-    {level && <span class={`qa-level qa-${level}`}>{level}</span>}
-  </summary>
-  <div class="qa-a"><slot /></div>
-</details>

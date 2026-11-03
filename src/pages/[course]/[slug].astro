@@ -4,6 +4,7 @@ import { getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { courseIdOf, noteLabel, noteSlug, notesFor, noteUrl, progressId, url } from '../../lib/url';
+import { extractCards, countByLevel } from '../../lib/cards';
 
 export const getStaticPaths = (async () => {
   const notes = await getCollection('notes');
@@ -25,6 +26,9 @@ const next = siblings[idx + 1];
 const doneId = progressId(note);
 const sameWeek = siblings.filter((n) => n.data.week === note.data.week);
 const { Content, headings } = await render(note);
+const cards = extractCards(note.body);
+const levels = countByLevel(cards);
+const flashUrl = `${noteUrl(note)}flashcards/`;
 const toc = headings.filter((h) => h.depth === 2);
 ---
 
@@ -93,6 +97,17 @@ const toc = headings.filter((h) => h.depth === 2);
           )
         }
         {
+          cards.length > 0 && (
+            <a class="fc-cta-mini" href={flashUrl}>
+              <span class="fc-cta-ic" aria-hidden="true">🃏</span>
+              <span>
+                <b>Flashcards</b> · {cards.length} questions
+              </span>
+              <span class="fc-cta-go">Practise →</span>
+            </a>
+          )
+        }
+        {
           toc.length > 2 && (
             <details class="toc">
               <summary>On this page</summary>
@@ -111,6 +126,28 @@ const toc = headings.filter((h) => h.depth === 2);
       <article class="prose">
         <Content />
       </article>
+
+      {
+        cards.length > 0 && (
+          <section class="fc-cta" aria-label="Practise this week">
+            <div class="fc-cta-stack" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span>?</span>
+            </div>
+            <div class="fc-cta-text">
+              <p class="fc-cta-kicker">Test yourself</p>
+              <h2 class="serif">Practise with {cards.length} flashcards</h2>
+              <p class="fc-cta-levels">
+                <span class="lv lv-easy">{levels.easy} easy</span>
+                <span class="lv lv-medium">{levels.medium} medium</span>
+                <span class="lv lv-hard">{levels.hard} hard</span>
+              </p>
+            </div>
+            <a class="btn-big" href={flashUrl}>Start flashcards</a>
+          </section>
+        )
+      }
 
       <div class="done-bar">
         <button type="button" class="btn" id="done-btn" data-id={doneId} data-resume={JSON.stringify({ u: noteUrl(note), t: note.data.title, c: course.data.code, l: noteLabel(note), course: courseId })}>Mark as done</button>

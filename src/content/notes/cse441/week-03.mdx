@@ -278,29 +278,29 @@ flowchart LR
 | Publish a full method (roles, tasks, work products) | **SPEM** |
 
 <QAList>
-  <QA q="List the five families of detailed-level notations for individual processes." level="easy">
+  <QA q="List the five families of detailed-level notations for individual processes." level="easy" why="Patterns, requirements notations, high-level general, business process, formal.">
     (1) Process patterns; (2) modelling notations from requirements analysis; (3) high-level notations for general processes; (4) notations for modelling business processes; (5) process notations for formal analysis.
   </QA>
-  <QA q="What is a process pattern, and where does the idea come from?" level="medium">
+  <QA q="What is a process pattern, and where does the idea come from?" level="medium" why="Borrowed from design patterns. It's a proven solution described bottom-up: context → problem → solution.">
     A process pattern describes a **proven, successful approach** or series of actions for developing software. It's a **bottom-up** description that starts from a specific context and problem and suggests a solution. The idea comes from **design patterns** in software architecture; **Coplien (1994)** applied it to software processes.
   </QA>
-  <QA q="Describe the 'Team per task' pattern using its sections." level="hard">
+  <QA q="Describe the 'Team per task' pattern using its sections." level="hard" why="Read it like a diagnosis: sensation, symptoms, forces, try this, counterforce.">
     - **Sensation:** distraction is costing design time.
     - **Symptoms:** the project isn't moving, people juggle several tasks, a secondary task dominates and context-switching kills focus.
     - **Forces:** dropping everything for one task misses other deadlines, but multitasking isn't working.
     - **Try this:** split the team so each sub-team has one primary task and a dedicated lead, grouping distracting tasks together.
     - **Counterforce:** don't split down to one-person teams, because lost teamwork can outweigh the gain in focus.
   </QA>
-  <QA q="What does HIPO stand for, and what does it consist of?" level="easy">
+  <QA q="What does HIPO stand for, and what does it consist of?" level="easy" why="Hierarchy + Input-Process-Output: a module tree plus an IPO chart for each module.">
     **Hierarchy plus Input–Process–Output.** A hierarchy chart (visual table of contents) of the system's modules, plus an IPO diagram (input → process → output) documenting each module, both as an overview and in detail.
   </QA>
-  <QA q="Explain ETVX and give entry and exit criteria for a 'code review' process." level="medium">
+  <QA q="Explain ETVX and give entry and exit criteria for a 'code review' process." level="medium" why="Entry criteria, task, verification, exit criteria. Criteria must be checkable conditions, not activities.">
     **ETVX = Entry, Task, Verification (Validation), eXit**, introduced at IBM in the 1980s for quick process overviews. For code review: **Entry:** a pull request is open and CI passes. **Task:** a reviewer reads the change and comments. **Verification:** the comments are addressed and re-checked. **Exit:** at least one approval and no unresolved comments.
   </QA>
-  <QA q="Draw (describe) a turtle diagram. Which industry is it associated with?" level="medium">
+  <QA q="Draw (describe) a turtle diagram. Which industry is it associated with?" level="medium" why="Body = process, head/tail = input/output, legs = who, with what, how, KPI. It's an automotive favourite.">
     Central **process** (body), **input** and **output** (head and tail), and four legs: **Who?** (people), **With what?** (resources and tools), **How?** (methods and procedures), **KPI** (measures). It's well known in the **automotive** industry.
   </QA>
-  <QA q="What does SIPOC stand for? Create a SIPOC for 'online food delivery order'." level="hard">
+  <QA q="What does SIPOC stand for? Create a SIPOC for 'online food delivery order'." level="hard" why="Fill it from the middle outwards: process steps, then outputs/customers, then inputs/suppliers.">
     **Suppliers, Inputs, Process, Outputs, Customers.**
     - **Suppliers:** customer, restaurant, rider, payment gateway.
     - **Inputs:** order, menu, payment, address.
@@ -308,28 +308,28 @@ flowchart LR
     - **Outputs:** delivered meal, receipt, rating request.
     - **Customers:** the customer (and the restaurant, which receives payment).
   </QA>
-  <QA q="How does the ISO 9001:2015 process schematic differ from SIPOC?" level="medium">
+  <QA q="How does the ISO 9001:2015 process schematic differ from SIPOC?" level="medium" why="It's SIPOC plus explicit start/end points and check points for monitoring.">
     It's a **variant of SIPOC** (sources of inputs → inputs → activities → outputs → receivers of outputs) that adds an explicit **starting point and end point** and **possible controls and check points** to monitor and measure the process's performance.
   </QA>
-  <QA q="State the three basic elements and three rules of an EPC." level="medium">
+  <QA q="State the three basic elements and three rules of an EPC." level="medium" why="Functions, events, control flow. Start and end with events, alternate them, skip trivial events.">
     **Elements:** functions (activities), events (trigger or result from functions), control flow (sequence). **Rules:** every EPC starts and ends with an event; events and functions alternate; trivial events must not be modelled.
   </QA>
-  <QA q="Who developed EPC, and when?" level="easy">
+  <QA q="Who developed EPC, and when?" level="easy" why="Scheer, Saarland University, 1992.">
     Prof. **August-Wilhelm Scheer** and colleagues at **Saarland University**, in **1992**.
   </QA>
-  <QA q="What is the difference between a BPMN collaboration diagram and a choreography diagram?" level="hard">
+  <QA q="What is the difference between a BPMN collaboration diagram and a choreography diagram?" level="hard" why="Collaboration shows each participant's internal process plus messages. Choreography shows only the message sequence.">
     A **collaboration** diagram shows several participants (pools), each with its **own internal process**, connected by **message flows**. A **choreography** diagram shows **only the sequence of message exchanges** between participants, without their internal processes.
   </QA>
-  <QA q="What are Petri nets, and why would you model a process with one?" level="medium">
+  <QA q="What are Petri nets, and why would you model a process with one?" level="medium" why="Places, tokens and transitions are mathematical, so you can prove properties like 'no deadlock'.">
     Petri nets (place/transition nets) are a **mathematical** modelling language for distributed, discrete-event systems: tokens in **places** enable **transitions** to fire. Because they're formal, you can **analyse and prove** properties of a process, such as that it can't deadlock or that every case completes, and simulate it.
   </QA>
-  <QA q="How do formal process notations differ in purpose from notations like BPMN or ETVX?" level="medium">
+  <QA q="How do formal process notations differ in purpose from notations like BPMN or ETVX?" level="medium" why="Formal notations are descriptive (analyse, simulate). The others are prescriptive (tell people what to do).">
     Formal notations are mainly **descriptive**, used to **analyse and simulate** how a process behaves. Most other notations are **prescriptive**: they tell people how to perform the process. Formal notations are complex and so less widely used.
   </QA>
-  <QA q="What is SPEM, and what can it be used for?" level="easy">
+  <QA q="What is SPEM, and what can it be used for?" level="easy" why="OMG's meta-model for methods: roles perform tasks that use and produce work products.">
     The **Software & Systems Process Engineering Meta-Model** (OMG): a process engineering meta-model and conceptual framework that provides concepts for **modelling, documenting, presenting, managing, interchanging and enacting** development methods and processes, built around roles, tasks and work products.
   </QA>
-  <QA q="Your manager wants a one-page overview of the release process for a Six Sigma improvement project, but your DevOps team wants to automate it. Which notations do you use?" level="hard">
+  <QA q="Your manager wants a one-page overview of the release process for a Six Sigma improvement project, but your DevOps team wants to automate it. Which notations do you use?" level="hard" why="Match the notation to the audience: SIPOC for the manager, BPMN for automation.">
     A **SIPOC** for the manager: one page, suppliers to customers, the standard first step in Six Sigma. **BPMN** for the DevOps team: precise and **executable** by workflow and automation tools. The same process in two notations for two audiences, which is one of the benefits of defined notations from Week 2.
   </QA>
 </QAList>

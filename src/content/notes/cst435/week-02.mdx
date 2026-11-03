@@ -351,17 +351,17 @@ flowchart TB
 5. **SLA:** uptime guarantee, penalties, data ownership, and how you get your data back out.
 
 <QAList>
-  <QA q="Define cloud computing in one sentence and give the analogy used in the lecture." level="easy">
+  <QA q="Define cloud computing in one sentence and give the analogy used in the lecture." level="easy" why="The electricity grid analogy is the key: plug in, use on demand, pay for what you use, no power station of your own.">
     Internet-based computing where shared resources, software and information are provided to computers and devices **on demand** and paid for by use, like the **electricity grid**: you plug in and pay for what you consume instead of building your own power station.
   </QA>
-  <QA q="List and briefly explain the five essential characteristics of cloud computing." level="easy">
+  <QA q="List and briefly explain the five essential characteristics of cloud computing." level="easy" why="Use the memory trick 'On Broad Resources, Rapidly Measured'. Each must be explained, not just listed.">
     1. **On-demand self-service:** provision resources yourself, without asking the provider.
     2. **Broad network access:** available over the network from any device.
     3. **Resource pooling:** physical resources are shared among many tenants.
     4. **Rapid elasticity:** scale up or down quickly, and it appears unlimited.
     5. **Measured service:** usage is metered and billed.
   </QA>
-  <QA q="For IaaS, PaaS and SaaS, state what the consumer manages and give one example of each." level="medium">
+  <QA q="For IaaS, PaaS and SaaS, state what the consumer manages and give one example of each." level="medium" why="Move up the stack: IaaS you manage OS and up; PaaS only your app; SaaS nothing. Match the example to the right layer (EC2, App Engine, Gmail).">
     | Model | Consumer manages | Example |
     |---|---|---|
     | IaaS | Application, database, OS | Amazon EC2 |
@@ -370,52 +370,52 @@ flowchart TB
 
     The provider manages everything else.
   </QA>
-  <QA q="Your team built a Flutter app with a FastAPI backend and wants to deploy without managing servers or OS updates. Which service model fits, and why not IaaS?" level="medium">
+  <QA q="Your team built a Flutter app with a FastAPI backend and wants to deploy without managing servers or OS updates. Which service model fits, and why not IaaS?" level="medium" why="The requirement 'no servers or OS updates' rules out IaaS, where you patch the OS yourself. PaaS takes that work away.">
     **PaaS** (e.g. Google App Engine, AWS Elastic Beanstalk). You upload only your application code, and the provider manages the OS, runtime, scaling and patching. With **IaaS** you'd rent a VM and have to install, secure and update the OS, Python, web server and database yourself, which is more control but more work.
   </QA>
-  <QA q="Differentiate the four deployment models." level="easy">
+  <QA q="Differentiate the four deployment models." level="easy" why="Ask 'who is it for?': public = anyone, private = one organisation, community = a group with shared needs, hybrid = a mix.">
     - **Public:** one provider's infrastructure shared by the general public (e.g. AWS).
     - **Private:** used by a single organisation, either on-premise or externally hosted but dedicated to it.
     - **Community:** shared by several organisations with a common vision or common requirements.
     - **Hybrid:** a combination of two or more of the above, connected together.
   </QA>
-  <QA q="Give the two types of private cloud and one reason to choose each." level="medium">
+  <QA q="Give the two types of private cloud and one reason to choose each." level="medium" why="On-premise = own data centre (maximum control); externally hosted = provider's data centre but dedicated to you (privacy without building one).">
     - **On-premise private cloud:** in the organisation's own data centre. Choose it for maximum control, or when data must not leave the building.
     - **Externally hosted private cloud:** in a provider's data centre but dedicated to one organisation. Choose it for privacy without having to build and run your own data centre.
   </QA>
-  <QA q="Explain CapEx and OpEx, and how cloud computing changes them." level="easy">
+  <QA q="Explain CapEx and OpEx, and how cloud computing changes them." level="easy" why="CapEx = buying things up front; OpEx = paying as you go. Cloud converts the first into the second.">
     **CapEx** is a large upfront purchase of long-term assets (buying servers). **OpEx** is the ongoing operating cost (monthly bills). Cloud converts CapEx into OpEx: no hardware purchase, you pay per use or by subscription. This lowers the barrier to entry and the investment risk.
   </QA>
-  <QA q="Is cloud computing always cheaper? Give two situations where it may not be." level="hard">
+  <QA q="Is cloud computing always cheaper? Give two situations where it may not be." level="hard" why="The trap is saying 'yes'. Long, steady 24/7 workloads can cost more to rent than to own; mention that OpEx can grow.">
     No. You save on upfront CapEx but may pay more OpEx over time. It may not be cheaper when:
     1. The workload runs **24/7 at a steady level for years**, so renting costs more in total than buying.
     2. The **capital expense would be small** anyway, or the organisation has more room in its capital budget than its operating budget.
 
     It also depends on how efficient your own data centre is compared with the provider's, and on data-transfer charges.
   </QA>
-  <QA q="Amazon's data centres were running at about 10% of capacity. Explain why this happened and how it led to AWS." level="medium">
+  <QA q="Amazon's data centres were running at about 10% of capacity. Explain why this happened and how it led to AWS." level="medium" why="Capacity was sized for rare peaks, so most of it sat idle. Renting out that spare capacity became AWS in 2006.">
     They were sized for **occasional peak traffic** (e.g. holiday sales), so most of the time ~90% sat idle. After moving to a more efficient cloud architecture internally, Amazon started **renting that spare capacity** to other companies on a utility basis, which became Amazon Web Services in 2006.
   </QA>
-  <QA q="What is vendor lock-in? How can a company reduce it?" level="medium">
+  <QA q="What is vendor lock-in? How can a company reduce it?" level="medium" why="Lock-in comes from proprietary services and APIs. The fix is portability: containers, open standards, exportable data, multi-cloud.">
     Vendor lock-in is becoming so dependent on one provider's proprietary services and APIs that switching to another provider is difficult and expensive. To reduce it: use open standards and portable technologies (containers, Kubernetes, standard SQL databases), avoid provider-specific services where possible, keep data in exportable formats, or use more than one cloud (multi-cloud or hybrid).
   </QA>
-  <QA q="Name the five enabling technologies of cloud computing. Which one is the key technical enabler, and why?" level="medium">
+  <QA q="Name the five enabling technologies of cloud computing. Which one is the key technical enabler, and why?" level="medium" why="Grid, cluster, utility, virtualization, SOA. Virtualization is the key because it lets one server be split and pooled on demand.">
     Grid computing, cluster computing, utility computing, virtualization, and service-oriented architecture (SOA). **Virtualization** is the key technical enabler: it lets one physical server be split into many isolated virtual machines, so the provider can **pool** resources and hand them out **on demand**.
   </QA>
-  <QA q="A university, a hospital group and a government agency all must follow the same data-protection regulation and want to share costs. Recommend a deployment model." level="hard">
+  <QA q="A university, a hospital group and a government agency all must follow the same data-protection regulation and want to share costs. Recommend a deployment model." level="hard" why="Same regulation + shared costs + several organisations = community cloud. Public is too uncontrolled; private for each is too expensive.">
     A **community cloud**. It is shared by organisations with a common goal or requirement (here, the same regulation), so they split the cost while the cloud is configured to meet their shared compliance rules. It gives them more control than a public cloud and costs less than each building its own private cloud.
   </QA>
-  <QA q="Discuss security as a feature of cloud computing (give both sides)." level="hard">
+  <QA q="Discuss security as a feature of cloud computing (give both sides)." level="hard" why="'Discuss' means both sides: better (expert security teams) and worse (loss of control, harder audits). One-sided answers lose marks.">
     **Better:** providers centralise data and can afford dedicated security teams, tools and monitoring that most companies can't, and they usually log all access.
 
     **Worse:** customers **lose control** over sensitive data, audit logs can be hard or impossible for them to access, and data spread over a wider area and many devices makes security more complex.
 
     **Conclusion:** cloud security is often as good as or better than traditional systems, but it depends on choosing a trustworthy provider and a strong SLA.
   </QA>
-  <QA q="List four things a cloud provider might charge you for." level="easy">
+  <QA q="List four things a cloud provider might charge you for." level="easy" why="Think of the bill: instances, data transfer, storage per GB-month, requests, IPs, load balancing.">
     Any four of: instances (VMs, with more for high-CPU or high-memory types), data transfer in and out, storage (per GB-month), I/O requests, PUT and GET requests, IP addresses, load balancing.
   </QA>
-  <QA q="How is cloud computing different from grid computing?" level="medium">
+  <QA q="How is cloud computing different from grid computing?" level="medium" why="Grid = loosely coupled computers solving big tasks, mostly science. Cloud = on-demand, pay-per-use service for everyone, built on virtualization.">
     Both pool many computers. **Grid computing** links loosely coupled computers, often across organisations, into a "virtual supercomputer" for very large tasks, mainly in science. **Cloud computing** delivers resources **as an on-demand, pay-per-use service** to anyone, using virtualization and self-service, for general workloads such as websites, apps and storage.
   </QA>
 </QAList>

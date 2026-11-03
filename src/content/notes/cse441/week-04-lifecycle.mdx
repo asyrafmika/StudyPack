@@ -239,43 +239,43 @@ Many life cycle models try to be **method-neutral**, but some are tied closely t
 | Incremental / release train | Evolving | Every increment/release | Time-box | Products with regular releases |
 
 <QAList>
-  <QA q="State the waterfall model's main characteristic and why it is combined with stage gates." level="easy">
+  <QA q="State the waterfall model's main characteristic and why it is combined with stage gates." level="easy" why="No going back between phases, so quality gates catch problems before moving on.">
     Phases are performed in a fixed order, and once a phase is reached there's no going back. Because there's little or no iteration, mistakes must be caught before moving on, so **stage or quality gates** formally check each phase's results before the next phase starts.
   </QA>
-  <QA q="Explain the structure of the V-Model and where it is commonly used." level="medium">
+  <QA q="Explain the structure of the V-Model and where it is commonly used." level="medium" why="Left side goes down through specification, right side goes up through testing, each level paired. Used in safety-critical systems.">
     The linear life cycle is split into two branches. The **left** goes down through requirements, analysis and design to **coding** at the bottom; the **right** goes up through integration, testing and verification. Each design level is paired with a test level (e.g. architecture ↔ integration testing). It's common in **technical and safety-related systems**, e.g. IEC 61508-3.
   </QA>
-  <QA q="What problem do component- or matrix-based models solve? Give the best-known example." level="medium">
+  <QA q="What problem do component- or matrix-based models solve? Give the best-known example." level="medium" why="Processes run across the whole project, not in one phase. RUP is the classic example.">
     They separate the **temporal** dimension (phases) from the **logical** dimension (processes) in a matrix, showing that most processes, such as requirements analysis, happen **across the whole project at varying intensity** rather than in one phase. Best-known example: **RUP**.
   </QA>
-  <QA q="Compare exploratory and experimental prototypes." level="medium">
+  <QA q="Compare exploratory and experimental prototypes." level="medium" why="Exploratory = early, finds requirements. Experimental = later, validates a solution.">
     **Exploratory:** built in the **initial** phase to help **identify requirements**; mainly a **communication medium** between developers and stakeholders. **Experimental:** built **later**, once initial requirements exist, to **validate** the current solution (e.g. technical feasibility).
   </QA>
-  <QA q="Compare exploratory and evolutionary prototypes. (From the 'Additional questions' slide.)" level="hard">
+  <QA q="Compare exploratory and evolutionary prototypes. (From the 'Additional questions' slide.)" level="hard" why="Different dimensions: exploratory is about the purpose, evolutionary is about the prototype's fate (it grows into the product).">
     They classify prototypes on **different dimensions**. *Exploratory* is about the **purpose** (find requirements early, communicate with users). *Evolutionary* is about **what happens afterwards**: it is revised repeatedly until it becomes the final system. An exploratory prototype **can** be evolutionary (if you keep refining it into the product) or **throw-away** (if discarded). Evolutionary prototyping leads to iterative/incremental development; exploratory prototyping mainly reduces **requirements risk**.
   </QA>
-  <QA q="What is the main risk of throw-away prototypes, and how do you manage it?" level="medium">
+  <QA q="What is the main risk of throw-away prototypes, and how do you manage it?" level="medium" why="Customers think it's nearly finished. Say clearly that it's a throw-away prototype.">
     Customers see a UI that seems to satisfy their requirements and assume the system is **almost complete**, when there is no proper design and development has only just started. Manage it by making it **very clear** to customers that it's a throw-away prototype (labels, a different look, explicit communication).
   </QA>
-  <QA q="How does rapid prototyping differ from exploratory prototyping?" level="easy">
+  <QA q="How does rapid prototyping differ from exploratory prototyping?" level="easy" why="Rapid prototyping is always throw-away; exploratory can be kept or discarded.">
     Rapid prototyping focuses on building prototypes **early and quickly for fast feedback**, and it is **limited to throw-away** prototypes. Exploratory prototypes may be thrown away or evolved.
   </QA>
-  <QA q="What is the main advantage of iterative development? Distinguish iteration from increment." level="medium">
+  <QA q="What is the main advantage of iterative development? Distinguish iteration from increment." level="medium" why="Fast feedback reduces risk. Iteration = refine; increment = add functionality.">
     It **reduces risk through fast feedback** on the work done. An **iteration** is one pass of repeating a sequence of steps (refining); an **increment** successively **adds functionality** to the product. In an iterative/incremental life cycle, scope is set early while time and cost estimates are revised as understanding grows.
   </QA>
-  <QA q="What is distinctive about Boehm's spiral model?" level="medium">
+  <QA q="What is distinctive about Boehm's spiral model?" level="medium" why="First explicitly iterative model, with risk analysis in every loop.">
     It was the **first model to explicitly describe an iterative life cycle**, and its main emphasis is **risk reduction**: every loop includes **risk analysis** and mitigation (e.g. with prototypes). Activities are repeated in loops until the software is complete, with cost growing as the spiral expands.
   </QA>
-  <QA q="Explain release trains and the concept of a time-box." level="medium">
+  <QA q="Explain release trains and the concept of a time-box." level="medium" why="Fixed dates, flexible scope: ship whatever is ready. That's the time-box.">
     A release train delivers releases on a **regular, fixed schedule** (e.g. quarterly). If not everything is ready, the release still happens on the date (**time-box**) with whatever is complete and ready. It keeps delivery predictable and helps **coordinate multiple teams**.
   </QA>
-  <QA q="Name three structured development methods and the life cycle they used." level="easy">
+  <QA q="Name three structured development methods and the life cycle they used." level="easy" why="SSADM, SADT, Yourdon, all on a waterfall-style life cycle.">
     **SSADM**, **SADT**, the **Yourdon** structured method (also others). They used a variant of the **waterfall** life cycle, adding analysis concepts.
   </QA>
-  <QA q="What are formal methods and Cleanroom, and where are they used?" level="medium">
+  <QA q="What are formal methods and Cleanroom, and where are they used?" level="medium" why="Formal = mathematical proof against a spec. Cleanroom = formal methods + iterative + statistical testing.">
     **Formal methods:** specify requirements in a formal language with precise semantics and **prove mathematically** that the implementation meets them. They're used for systems with very high reliability requirements. **Cleanroom:** combines formal methods with **iterative development** and **statistics-based testing**, to reduce the number of bugs built in and find more in testing.
   </QA>
-  <QA q="A hospital needs software for an infusion pump (safety-critical, regulated). A startup needs an MVP social app whose features aren't clear yet. Recommend a life cycle model for each and justify." level="hard">
+  <QA q="A hospital needs software for an infusion pump (safety-critical, regulated). A startup needs an MVP social app whose features aren't clear yet. Recommend a life cycle model for each and justify." level="hard" why="Regulated and stable → V-Model. Unclear and fast-moving → iterative with prototypes.">
     **Infusion pump: V-Model**. Requirements must be stable and fully specified, safety standards (like IEC 61508 or IEC 62304) expect a V-shaped process, and every specification needs a matching verification step that can be documented for auditors.
 
     **Social app: iterative/incremental, starting with exploratory prototypes**. Requirements are unclear, so prototypes help discover what users want, and short iterations give fast feedback and reduce the risk of building the wrong thing. That leads naturally into Scrum (Part 2).

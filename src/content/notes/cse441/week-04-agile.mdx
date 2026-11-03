@@ -290,50 +290,50 @@ Each column becomes **one test case**: 2 conditions give 2² = 4 rules.
 **Choosing the right method** depends on the development stage, the testing objectives and the available resources. The two **complement** each other. *Further topics:* grey-box, regression, usability and security testing.
 
 <QAList>
-  <QA q="What led to the creation of agile methods, and what do they aim to achieve?" level="easy">
+  <QA q="What led to the creation of agile methods, and what do they aim to achieve?" level="easy" why="A reaction to heavy 1980s–90s overheads: aim for less documentation and fast response to change.">
     Dissatisfaction with the **overheads** of 1980s–90s design methods. Agile methods focus on code rather than design, are iterative, and deliver working software quickly. They aim to **reduce process overheads** (e.g. by limiting documentation) and **respond quickly to changing requirements** without excessive rework.
   </QA>
-  <QA q="State the four values of the Agile Manifesto." level="easy">
+  <QA q="State the four values of the Agile Manifesto." level="easy" why="Individuals, working software, customer collaboration, responding to change, each valued over its counterpart.">
     Individuals and interactions over processes and tools; working software over comprehensive documentation; customer collaboration over contract negotiation; responding to change over following a plan.
   </QA>
-  <QA q="In which two situations is agile development most applicable?" level="medium">
+  <QA q="In which two situations is agile development most applicable?" level="medium" why="Small or medium product development, or in-house custom work with an involved customer and few regulations.">
     (1) **Product development** of a small or medium-sized product for sale. (2) **Custom system development** within an organisation where the customer is clearly committed to being involved and there are few external rules and regulations.
   </QA>
-  <QA q="Describe the three phases of Scrum." level="easy">
+  <QA q="Describe the three phases of Scrum." level="easy" why="Outline planning → sprint cycles → project closure.">
     (1) **Outline planning:** set general objectives and design the software architecture. (2) **Sprint cycles:** each develops an increment of the system. (3) **Project closure:** wrap up, finish documentation (help frames, manuals) and assess lessons learned.
   </QA>
-  <QA q="Explain the Scrum sprint cycle from product backlog to review." level="medium">
+  <QA q="Explain the Scrum sprint cycle from product backlog to review." level="medium" why="Backlog → select with customer → self-organised development + daily scrum → review → next sprint.">
     Sprints are fixed-length (2–4 weeks). The team and customer **select** features from the **product backlog**. The team **self-organises** to develop them, isolated from outside distractions by the Scrum master, with a **daily scrum**. At the end the work is **reviewed and presented** to stakeholders, and the next sprint begins.
   </QA>
-  <QA q="What are the responsibilities of the Scrum master?" level="medium">
+  <QA q="What are the responsibilities of the Scrum master?" level="medium" why="A facilitator: runs daily meetings, tracks the backlog, communicates outside, shields the team.">
     A **facilitator** who arranges daily meetings, tracks the backlog, records decisions, measures progress against the backlog, communicates with customers and management outside the team, and **protects the team from external distractions**.
   </QA>
-  <QA q="List four benefits of Scrum." level="easy">
+  <QA q="List four benefits of Scrum." level="easy" why="Manageable chunks, unstable requirements don't block, visibility, on-time increments, trust.">
     The product is broken into manageable chunks; unstable requirements don't hold up progress; the whole team has visibility, which improves communication; customers get on-time increments and give feedback; trust between customers and developers builds a positive culture.
   </QA>
-  <QA q="Define a maturity model and list the five CMMI maturity levels." level="easy">
+  <QA q="Define a maturity model and list the five CMMI maturity levels." level="easy" why="Initial, Managed, Defined, Quantitatively Managed, Optimizing.">
     A **structured collection of elements** describing aspects of an organisation's maturity, used to improve its processes. CMMI levels: **1 Initial, 2 Managed, 3 Defined, 4 Quantitatively Managed, 5 Optimizing**.
   </QA>
-  <QA q="What is the difference between CMMI level 2 (Managed) and level 3 (Defined)?" level="medium">
+  <QA q="What is the difference between CMMI level 2 (Managed) and level 3 (Defined)?" level="medium" why="Level 2 = disciplined per project. Level 3 = one standard process across the organisation.">
     **Level 2:** processes are managed **per project**; each project is planned, performed, measured and controlled, but projects may do things differently. **Level 3:** there are **organisation-wide standard** processes that every project follows (tailored as needed), which makes the organisation **proactive** rather than reactive.
   </QA>
-  <QA q="How can maturity models be applied in quality assurance?" level="medium">
+  <QA q="How can maturity models be applied in quality assurance?" level="medium" why="Self-assess → compare with the model → improve. The principle: better process gives a better product.">
     To **assess** the effectiveness of current QA processes and **identify areas for improvement**. The steps are self-assessment, comparison with the maturity model, and implementing improvement strategies. Benefits: better product quality, higher customer satisfaction, more efficiency. The underlying principle: product quality depends on process quality.
   </QA>
-  <QA q="Compare statement, branch and path coverage." level="medium">
+  <QA q="Compare statement, branch and path coverage." level="medium" why="Statement ⊂ branch ⊂ path, from weakest to strongest coverage.">
     - **Statement:** every line runs at least once (weakest).
     - **Branch:** every decision takes both true and false.
     - **Path:** every possible route through the code (strongest; it grows exponentially, 2ⁿ for n independent decisions, and some paths may be infeasible).
 
     100% path coverage implies 100% branch coverage, which implies 100% statement coverage.
   </QA>
-  <QA q="A function has three independent if-else statements. How many paths are there? What's the minimum number of tests for 100% branch coverage?" level="hard">
+  <QA q="A function has three independent if-else statements. How many paths are there? What's the minimum number of tests for 100% branch coverage?" level="hard" why="Paths = 2³ = 8; branch coverage can be reached with 2 tests (all true, all false).">
     Paths = 2³ = **8**. Branch coverage needs each if to be both true and false, which can be done with **2 tests** (all true, then all false), if the conditions are independent.
   </QA>
-  <QA q="An age field accepts 18 to 60 inclusive. Give the equivalence partitions and the boundary values to test." level="medium">
+  <QA q="An age field accepts 18 to 60 inclusive. Give the equivalence partitions and the boundary values to test." level="medium" why="Three partitions (below, inside, above); boundaries just either side of 18 and 60.">
     **Partitions:** invalid ≤ 17 (e.g. 10), valid 18–60 (e.g. 35), invalid ≥ 61 (e.g. 70). **Boundaries:** **17, 18, 60, 61** (optionally 19 and 59).
   </QA>
-  <QA q="Build a decision table: free shipping if the order is ≥ RM100, OR the customer is a premium member." level="hard">
+  <QA q="Build a decision table: free shipping if the order is ≥ RM100, OR the customer is a premium member." level="hard" why="2 conditions → 4 rules. Only the 'neither' case gets no free shipping.">
     | Rule | 1 | 2 | 3 | 4 |
     |---|---|---|---|---|
     | Order ≥ RM100? | Y | Y | N | N |
@@ -342,7 +342,7 @@ Each column becomes **one test case**: 2 conditions give 2² = 4 rules.
 
     Four rules give four test cases.
   </QA>
-  <QA q="Compare white-box and black-box testing, with one advantage and one disadvantage of black-box testing." level="medium">
+  <QA q="Compare white-box and black-box testing, with one advantage and one disadvantage of black-box testing." level="medium" why="White box uses the code; black box uses the requirements. Black box needs no coding knowledge but can miss internal defects.">
     **White-box** uses the internal code (coverage-based, needs programming skill). **Black-box** uses only requirements and external behaviour. Black-box advantage: no programming knowledge needed, and it's effective at finding functional problems. Disadvantage: it can miss internal defects, needs more test cases, and is harder to automate or measure for coverage.
   </QA>
 </QAList>

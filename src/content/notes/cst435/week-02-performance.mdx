@@ -301,25 +301,25 @@ That table is the map of the whole parallel half of this course. Real HPC progra
 </Callout>
 
 <QAList>
-  <QA q="Define speedup, efficiency and cost, with formulas." level="easy">
+  <QA q="Define speedup, efficiency and cost, with formulas." level="easy" why="Everything starts from S = T(1)/T(p). Efficiency divides by p; cost multiplies T(p) by p.">
     - **Speedup** S = T(1)/T(p): how many times faster on p processors.
     - **Efficiency** E = S/p = T(1)/(p·T(p)): the fraction of processor time doing useful work.
     - **Cost** C = p × T(p): total processor-time used.
   </QA>
-  <QA q="A program takes 120 s on 1 core and 20 s on 8 cores. Find speedup, efficiency and cost. Is it cost-optimal?" level="medium">
+  <QA q="A program takes 120 s on 1 core and 20 s on 8 cores. Find speedup, efficiency and cost. Is it cost-optimal?" level="medium" why="S = 120/20 = 6, E = 6/8 = 75%, C = 8 × 20 = 160. Cost-optimal would need C close to T(1) = 120.">
     - S = 120 / 20 = **6**
     - E = 6 / 8 = **75%**
     - C = 8 × 20 = **160 core-seconds**
 
     Not perfectly cost-optimal: cost 160 > T(1) = 120, so 40 core-seconds are wasted on overhead (communication, waiting).
   </QA>
-  <QA q="Distinguish sub-linear, linear and super-linear speedup. How can super-linear speedup happen?" level="medium">
+  <QA q="Distinguish sub-linear, linear and super-linear speedup. How can super-linear speedup happen?" level="medium" why="Super-linear usually comes from caches: each processor's smaller share fits in fast cache, so it runs faster than the single big run.">
     Sub-linear: S < p (the normal case, because of overhead). Linear: S ≈ p (ideal). Super-linear: S > p. It usually comes from **cache effects**: once the data is split, each processor's share fits in its fast cache, so it runs faster per element than the single processor working on the whole dataset.
   </QA>
-  <QA q="What's the difference between strong and weak scalability?" level="easy">
+  <QA q="What's the difference between strong and weak scalability?" level="easy" why="Strong = same problem, more processors. Weak = problem grows with processors. Always state which one you measured.">
     Both increase the number of processors. **Strong:** the problem size stays **fixed**, so you're asking whether the same problem gets solved faster. **Weak:** the problem size **grows with p** (e.g. n = 1024 × p), so you're asking whether a bigger problem gets solved in the same time.
   </QA>
-  <QA q="Using the summation model (add = 1 unit, send = 3 units, tree distribution), derive T(4) for n = 1024 and compute speedup." level="hard">
+  <QA q="Using the summation model (add = 1 unit, send = 3 units, tree distribution), derive T(4) for n = 1024 and compute speedup." level="hard" why="Spread: 2 rounds × 3 = 6; local sum of 256 numbers = 255; combine: 2 × (3 + 1) = 8. Total 269, S = 1023/269.">
     - Spread out: 2 rounds × 3 = 6
     - Local sum of 1024/4 = 256 numbers: 255
     - Combine back: 2 rounds × (3 send + 1 add) = 8
@@ -327,36 +327,36 @@ That table is the map of the whole parallel half of this course. Real HPC progra
 
     S = 1023 / 269 = **3.80**, E = 3.80 / 4 = **95.1%**.
   </QA>
-  <QA q="In the strong-scaling summation experiment, speedup peaks near p = 128 and then falls. Explain why." level="hard">
+  <QA q="In the strong-scaling summation experiment, speedup peaks near p = 128 and then falls. Explain why." level="hard" why="Computation n/p shrinks but communication 7·log₂p grows. Once communication dominates, more processors make it slower.">
     T(p) = 7·log₂p + n/p − 1. The computation part n/p shrinks as p grows (only 2 numbers each at p = 512), while the communication part 7·log₂p keeps **growing**. Past about p = 128, each extra doubling adds more communication time than it saves in computation. The **computation-to-communication ratio** becomes too low, so T(p) rises and speedup drops.
   </QA>
-  <QA q="Why does the same summation program scale well in the weak-scaling experiment?" level="medium">
+  <QA q="Why does the same summation program scale well in the weak-scaling experiment?" level="medium" why="Each processor keeps 1024 numbers, so computation per processor is constant while communication only grows as log p.">
     With n = 1024 × p, every processor always has 1024 numbers to add, so the computation per processor stays constant while communication only grows logarithmically. The computation-to-communication ratio stays high, so efficiency stays above 94% even at p = 512.
   </QA>
-  <QA q="Compare distributed memory and shared memory systems, naming one programming tool for each." level="easy">
+  <QA q="Compare distributed memory and shared memory systems, naming one programming tool for each." level="easy" why="Distributed = private memory + messages (MPI). Shared = one memory + threads (Pthreads/OpenMP/CUDA). Don't swap the tools.">
     **Distributed:** each processor has private memory, communicates by explicit messages over a network, scales to thousands of nodes. Tool: **MPI**.
 
     **Shared:** all cores access one main memory, communicate by reading and writing shared variables, risk race conditions, limited to one machine. Tools: **Pthreads, OpenMP, CUDA**.
   </QA>
-  <QA q="Two threads write to A[4] at the same time, one writing 3.1 and the other 2.9. What is this problem called, and what's the final value?" level="easy">
+  <QA q="Two threads write to A[4] at the same time, one writing 3.1 and the other 2.9. What is this problem called, and what's the final value?" level="easy" why="Concurrent writes with no ordering = race condition. The result is unpredictable, not 'the second one'.">
     A **race condition**. The final value is **unpredictable**: it can be 3.1 or 2.9 depending on which thread writes last, and it can change from run to run. It must be prevented with synchronisation (e.g. a mutex or lock).
   </QA>
-  <QA q="Classify each as data, task or model parallelism: (a) resizing 10,000 photos on 8 cores; (b) a web server where one thread handles logins, another payments, another search; (c) splitting a neural network's layers across 4 GPUs." level="medium">
+  <QA q="Classify each as data, task or model parallelism: (a) resizing 10,000 photos on 8 cores; (b) a web server where one thread handles logins, another payments, another search; (c) splitting a neural network's layers across 4 GPUs." level="medium" why="Same work on different data = data; different jobs = task; splitting the model itself = model.">
     (a) **Data** parallelism: the same operation on different data. (b) **Task** parallelism: different functions running at the same time. (c) **Model** parallelism: the model itself is partitioned.
   </QA>
-  <QA q="What are the four considerations when designing a parallel program?" level="easy">
+  <QA q="What are the four considerations when designing a parallel program?" level="easy" why="Partitioning, communication, synchronisation, load balancing. Load balancing is the one students often forget.">
     1. **Partitioning:** split the work (data, task or model).
     2. **Communication:** which processors exchange what (depends on the partitioning).
     3. **Synchronisation:** coordinate threads and processes so results are correct.
     4. **Load balancing:** give everyone equal work to reduce idle time.
   </QA>
-  <QA q="What does the TOP500 measure, and why do we also need the Green500?" level="medium">
+  <QA q="What does the TOP500 measure, and why do we also need the Green500?" level="medium" why="TOP500 = raw LINPACK speed. Green500 = performance per watt, because power is now the main limit.">
     TOP500 ranks supercomputers by **LINPACK (HPL)** performance, the speed of solving a dense linear system Ax = b, in floating-point operations per second. The **Green500** ranks by **performance per watt**, because top systems consume tens of megawatts. Energy, not just speed, is now the main limit on building faster machines.
   </QA>
-  <QA q="A modern supercomputer combines MPI, OpenMP and CUDA. What level of parallelism does each handle?" level="medium">
+  <QA q="A modern supercomputer combines MPI, OpenMP and CUDA. What level of parallelism does each handle?" level="medium" why="Between machines = MPI; between cores in one machine = OpenMP; inside the GPU = CUDA.">
     **MPI:** node-level, between machines in the cluster (distributed memory). **OpenMP:** intra-node, between the cores of one CPU (shared memory). **CUDA:** accelerator-level, the thousands of cores on a GPU.
   </QA>
-  <QA q="You rent cloud VMs at RM 1 per VM-hour. A job takes 64 h on 1 VM and 10 h on 8 VMs. Is the parallel run worth it?" level="hard">
+  <QA q="You rent cloud VMs at RM 1 per VM-hour. A job takes 64 h on 1 VM and 10 h on 8 VMs. Is the parallel run worth it?" level="hard" why="Speedup 6.4, efficiency 80%. Parallel costs RM 80 vs RM 64, i.e. RM 16 more for results 54 hours earlier.">
     - Speedup = 64 / 10 = **6.4**, efficiency = 6.4 / 8 = **80%**
     - Cost: 1 VM = 64 VM-hours = **RM 64**; 8 VMs = 8 × 10 = 80 VM-hours = **RM 80**
 

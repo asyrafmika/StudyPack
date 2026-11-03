@@ -1,0 +1,291 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { courseIdOf, noteLabel, noteSlug, notesFor, noteUrl, url } from '../../../lib/url';
+import { extractCards, countByLevel } from '../../../lib/cards';
+
+export const getStaticPaths = (async () => {
+  const notes = await getCollection('notes');
+  return notes
+    .filter((n) => extractCards(n.body).length > 0)
+    .map((note) => ({ params: { course: courseIdOf(note), slug: noteSlug(note) }, props: { note } }));
+}) satisfies GetStaticPaths;
+
+const { note } = Astro.props;
+const courseId = courseIdOf(note);
+const course = (await getEntry('courses', courseId))!;
+const cards = extractCards(note.body);
+const levels = countByLevel(cards);
+
+// Next page in this course that also has flashcards, for the "keep going" link
+const siblings = await notesFor(courseId);
+const next = siblings.slice(siblings.findIndex((n) => n.id === note.id) + 1).find((n) => extractCards(n.body).length);
+const deckId = note.id;
+---
+
+<Base title={`Flashcards · ${course.data.code} ${noteLabel(note)}`} description={`Flashcards for ${note.data.title}`}>
+  <main class="fcp" style={`--accent:${course.data.color}`}>
+    <nav class="crumbs small">
+      <a href={url()}>Courses</a> / <a href={url(`${courseId}/`)}>{course.data.code}</a> /
+      <a href={noteUrl(note)}>{noteLabel(note)}</a> / Flashcards
+    </nav>
+
+    <header class="fcp-head">
+      <p class="course-code">Flashcards · {noteLabel(note)}</p>
+      <h1 class="serif">{note.data.title}</h1>
+      <div class="fcp-sub">
+        <a class="btn-pill" href={noteUrl(note)}>← Back to notes</a>
+        <span class="muted small" id="best"></span>
+      </div>
+    </header>
+
+    <div class="lvl" role="radiogroup" aria-label="Difficulty">
+      <button role="radio" aria-checked="true" data-level="all">All <i>{cards.length}</i></button>
+      {levels.easy > 0 && <button role="radio" aria-checked="false" data-level="easy" class="lv-easy">Easy <i>{levels.easy}</i></button>}
+      {levels.medium > 0 && <button role="radio" aria-checked="false" data-level="medium" class="lv-medium">Medium <i>{levels.medium}</i></button>}
+      {levels.hard > 0 && <button role="radio" aria-checked="false" data-level="hard" class="lv-hard">Hard <i>{levels.hard}</i></button>}
+      <label class="shuffle"><input type="checkbox" id="shuffle" /> Shuffle</label>
+    </div>
+
+    <!-- Session -->
+    <section id="session">
+      <div class="fcp-progress">
+        <span id="counter" class="small muted">Card 1 of {cards.length}</span>
+        <div class="bar"><div class="bar-fill" id="pbar"></div></div>
+        <span class="score small"><b class="ok" id="nRight">0</b> right · <b class="no" id="nWrong">0</b> wrong</span>
+      </div>
+
+      <div class="deck">
+        <div class="deck-shadow" aria-hidden="true"></div>
+        <article class="card" id="card" tabindex="0" aria-live="polite">
+          <div class="face front" id="front">
+            <span class="lv-badge" id="lvl"></span>
+            <span class="retry-tag" id="retryTag" hidden>Second try</span>
+            <p class="card-q" id="q"></p>
+            <p class="card-hint">Tap the card or press <kbd>Space</kbd> to reveal</p>
+          </div>
+          <div class="face back" id="back" hidden>
+            <p class="face-label">Answer</p>
+            <p class="card-q small-q" id="q2"></p>
+            <div class="prose card-a" id="a"></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="grade" id="grade" hidden>
+        <button class="g g-wrong" id="btnWrong" type="button"><span>✗</span> I got it wrong <kbd>1</kbd></button>
+        <button class="g g-right" id="btnRight" type="button"><span>✓</span> I got it right <kbd>2</kbd></button>
+      </div>
+
+      <div class="why" id="why" hidden>
+        <p class="why-title">💡 Why this is the answer</p>
+        <p id="whyText"></p>
+        <p class="why-foot">
+          <a href={noteUrl(note)}>📖 Review this in the notes</a>
+          <span class="muted">· This card will come back at the end.</span>
+        </p>
+        <button class="btn-big" id="btnNext" type="button">Next card →</button>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="result" id="result" hidden>
+      <div class="ring" id="ring"><span id="pct">0%</span></div>
+      <h2 class="serif" id="resTitle">Nice work</h2>
+      <p class="muted" id="resText"></p>
+      <div class="res-actions">
+        <button class="btn-big" id="btnRetryMissed" type="button">Retry missed</button>
+        <button class="btn-big ghost" id="btnRestart" type="button">Restart deck</button>
+      </div>
+      <div class="missed" id="missedList"></div>
+      <div class="res-links">
+        <a class="btn-pill" href={noteUrl(note)}>← Back to notes</a>
+        {next && <a class="btn-pill dark" href={`${noteUrl(next)}flashcards/`}>Next: {noteLabel(next)} flashcards →</a>}
+      </div>
+    </section>
+  </main>
+
+  <script type="application/json" id="cards-data" set:html={JSON.stringify(cards)} />
+  <div id="deck-meta" data-deck={deckId} hidden></div>
+
+  <script>
+    import type { Card } from '../../../lib/cards';
+    const all: Card[] = JSON.parse(document.getElementById('cards-data')!.textContent || '[]');
+    const deckId = document.getElementById('deck-meta')!.dataset.deck!;
+    const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+    const LABEL = { easy: 'Easy', medium: 'Medium', hard: 'Hard' } as const;
+
+    let level: 'all' | Card['level'] = 'all';
+    let queue: { card: Card; retry: boolean }[] = [];
+    let pos = 0;
+    let firstTry = 0; // number of distinct cards in this round
+    let right = 0;
+    let wrong = 0;
+    let missed = new Map<number, Card>();
+    let state: 'question' | 'answer' | 'why' | 'done' = 'question';
+
+    const store = {
+      get() {
+        try {
+          return JSON.parse(localStorage.getItem(`sp:fc:${deckId}`) || '{}');
+        } catch {
+          return {};
+        }
+      },
+      set(v: object) {
+        try {
+          localStorage.setItem(`sp:fc:${deckId}`, JSON.stringify(v));
+        } catch {
+          /* ignore */
+        }
+      },
+    };
+    const showBest = () => {
+      const s = store.get();
+      $('best').textContent = s.best != null ? `Best first-try score: ${s.best}%` : '';
+    };
+
+    function start(cards: Card[]) {
+      let list = [...cards];
+      if (($('shuffle') as HTMLInputElement).checked) list.sort(() => Math.random() - 0.5);
+      queue = list.map((card) => ({ card, retry: false }));
+      firstTry = list.length;
+      pos = 0;
+      right = wrong = 0;
+      missed = new Map();
+      $('session').hidden = false;
+      $('result').hidden = true;
+      show();
+    }
+
+    function filtered() {
+      return level === 'all' ? all : all.filter((c) => c.level === level);
+    }
+
+    function show() {
+      if (pos >= queue.length) return finish();
+      const { card, retry } = queue[pos];
+      state = 'question';
+      $('front').hidden = false;
+      $('back').hidden = true;
+      $('grade').hidden = true;
+      $('why').hidden = true;
+      $('card').classList.remove('is-right', 'is-wrong');
+      const badge = $('lvl');
+      badge.textContent = LABEL[card.level];
+      badge.className = `lv-badge lv-${card.level}`;
+      $('retryTag').hidden = !retry;
+      $('q').innerHTML = card.q;
+      $('q2').innerHTML = card.q;
+      $('a').innerHTML = card.a;
+      $('counter').textContent = `Card ${Math.min(pos + 1, queue.length)} of ${queue.length}`;
+      ($('pbar') as HTMLElement).style.width = `${(pos / queue.length) * 100}%`;
+      $('nRight').textContent = String(right);
+      $('nWrong').textContent = String(wrong);
+    }
+
+    function flip() {
+      if (state !== 'question') return;
+      const el = $('card');
+      el.classList.add('flipping');
+      setTimeout(() => {
+        $('front').hidden = true;
+        $('back').hidden = false;
+        el.classList.remove('flipping');
+        el.classList.add('flipped-in');
+        setTimeout(() => el.classList.remove('flipped-in'), 260);
+      }, 180);
+      state = 'answer';
+      $('grade').hidden = false;
+    }
+
+    function grade(ok: boolean) {
+      if (state !== 'answer') return;
+      const item = queue[pos];
+      if (!item.retry) {
+        if (ok) right++;
+        else wrong++;
+      }
+      if (ok) {
+        $('card').classList.add('is-right');
+        setTimeout(() => {
+          pos++;
+          show();
+        }, 350);
+        state = 'why'; // block double input during the short delay
+        return;
+      }
+      // Wrong: explain, and put the card back at the end (once)
+      missed.set(item.card.id, item.card);
+      if (!item.retry) queue.push({ card: item.card, retry: true });
+      $('card').classList.add('is-wrong');
+      $('grade').hidden = true;
+      $('whyText').innerHTML = item.card.why || 'Read the answer above carefully, then try this card again at the end.';
+      $('why').hidden = false;
+      state = 'why';
+      $('nWrong').textContent = String(wrong);
+      $('btnNext').focus();
+    }
+
+    function finish() {
+      state = 'done';
+      $('session').hidden = true;
+      $('result').hidden = false;
+      const pct = firstTry ? Math.round((right / firstTry) * 100) : 0;
+      $('pct').textContent = `${pct}%`;
+      $('ring').style.setProperty('--p', String(pct));
+      $('resTitle').textContent = pct === 100 ? 'Perfect score 🎉' : pct >= 70 ? 'Nice work' : 'Keep going';
+      $('resText').textContent = `${right} of ${firstTry} right on the first try${missed.size ? ` · ${missed.size} to review` : ''}.`;
+      const retryBtn = $('btnRetryMissed') as HTMLButtonElement;
+      retryBtn.hidden = missed.size === 0;
+      retryBtn.textContent = `Retry the ${missed.size} I missed`;
+      $('missedList').innerHTML = missed.size
+        ? `<h3>Review these</h3>` +
+          [...missed.values()]
+            .map((c) => `<details class="mi"><summary><span class="lv-badge lv-${c.level}">${LABEL[c.level]}</span>${c.q}</summary><div class="mi-body"><p class="mi-why">💡 ${c.why}</p><div class="prose">${c.a}</div></div></details>`)
+            .join('')
+        : '';
+      if (level === 'all') {
+        const s = store.get();
+        store.set({ best: Math.max(s.best ?? 0, pct), last: pct, at: Date.now() });
+        showBest();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Events
+    $('card').addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) return;
+      flip();
+    });
+    $('btnWrong').addEventListener('click', () => grade(false));
+    $('btnRight').addEventListener('click', () => grade(true));
+    $('btnNext').addEventListener('click', () => {
+      pos++;
+      show();
+    });
+    $('btnRestart').addEventListener('click', () => start(filtered()));
+    $('btnRetryMissed').addEventListener('click', () => start([...missed.values()]));
+    document.querySelectorAll<HTMLButtonElement>('.lvl [role="radio"]').forEach((b) =>
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.lvl [role="radio"]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+        level = b.dataset.level as typeof level;
+        start(filtered());
+      }),
+    );
+    $('shuffle').addEventListener('change', () => start(filtered()));
+    document.addEventListener('keydown', (e) => {
+      if ((document.getElementById('search') as HTMLDialogElement)?.open) return;
+      // (In the "why" state the focused Next button already handles Enter/Space.)
+      if ((e.key === ' ' || e.key === 'Enter') && state === 'question') {
+        e.preventDefault();
+        flip();
+      } else if (state === 'answer' && (e.key === '1' || e.key === 'ArrowLeft')) grade(false);
+      else if (state === 'answer' && (e.key === '2' || e.key === 'ArrowRight')) grade(true);
+    });
+
+    showBest();
+    start(all);
+  </script>
+</Base>

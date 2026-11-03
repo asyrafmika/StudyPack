@@ -68,9 +68,16 @@ mindmap
 ```
 
 <QAList>
-  <QA q="Question?" level="easy">Answer.</QA>
+  <QA q="Question?" level="easy" why="Short explanation shown if the learner gets it wrong">Answer.</QA>
 </QAList>
 ~~~
 
 Callout types: `why`, `key`, `tip`, `warn`, `exam`, `note`.
 Diagrams: any [Mermaid](https://mermaid.js.org) type (`mindmap`, `flowchart`, `sequenceDiagram`, `classDiagram`, `erDiagram`, `stateDiagram-v2`, `timeline`…).
+
+## Flashcards
+
+Questions are written in the note's MDX (inside `<QAList>`), but they are **not shown on the note page**.
+Each page with questions gets a flashcard deck at `/<course>/<slug>/flashcards/`:
+filter by easy/medium/hard, flip to reveal, self-grade, and see the `why` explanation when wrong
+(missed cards come back at the end). Best scores are saved per device in localStorage.

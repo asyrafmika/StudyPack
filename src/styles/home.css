@@ -59,36 +59,6 @@
   gap: 12px;
   margin-top: 30px;
 }
-.btn-big {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 200px;
-  height: 54px;
-  padding: 0 28px;
-  border-radius: 999px;
-  background: var(--brand);
-  color: #fff !important;
-  font-weight: 650;
-  font-size: 1rem;
-  text-decoration: none;
-  box-shadow: 0 4px 0 var(--brand-strong), 0 12px 24px -12px color-mix(in srgb, var(--brand) 70%, transparent);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-}
-.btn-big:hover {
-  transform: translateY(-1px);
-}
-.btn-big:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 var(--brand-strong);
-}
-.btn-big.ghost {
-  background: var(--surface);
-  color: var(--text) !important;
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 0 var(--bg-2);
-}
-
 /* ---------- Hero stage with floating cards ---------- */
 .h-stage {
   position: relative;

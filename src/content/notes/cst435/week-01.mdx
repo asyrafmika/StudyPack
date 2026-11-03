@@ -283,20 +283,20 @@ Expect calculation questions like this one. Always show: time for each option �
 </Callout>
 
 <QAList>
-  <QA q="State Moore's Law. Has it stopped?" level="easy">
+  <QA q="State Moore's Law. Has it stopped?" level="easy" why="Moore's Law is about transistor COUNT, not speed. Clock speed stalled around 2005 because of heat; the extra transistors now become extra cores.">
     The number of transistors on a chip doubles roughly every 18–24 months. It has slowed but largely continues. What stopped around 2005 was the rise in **clock speed** — the extra transistors are now used for more cores instead of faster single cores.
   </QA>
-  <QA q="What is a multi-core processor (CMP)?" level="easy">
+  <QA q="What is a multi-core processor (CMP)?" level="easy" why="Key words: one chip (die), several independent cores, one socket. Don't confuse it with several separate CPUs (SMP) or with Hyper-Threading.">
     A single chip (die) containing two or more independent processor cores, fitting in one socket. Each core has its own execution pipeline, so cores run in parallel. CMP = Chip Multi-Processor.
   </QA>
-  <QA q="Give three reasons why manufacturers moved from single-core to multi-core." level="medium">
+  <QA q="Give three reasons why manufacturers moved from single-core to multi-core." level="medium" why="Think of the three walls: power/heat, design complexity, and software already being multithreaded. Any answer that only says 'faster' misses the point.">
     1. **Power/heat** — power ∝ C·V²·f; raising frequency needs more voltage, so heat grows very fast (power wall).
     2. **Design complexity** — very deep pipelines are hard to design and verify and need huge teams.
     3. **Applications are multithreaded** — software can already use many cores.
 
     Also: the general trend in architecture toward more parallelism, and the cooling cost of server farms.
   </QA>
-  <QA q="Using P ∝ C·V²·f, show why two cores at half frequency use about ¼ the power of one core at full frequency for the same performance." level="hard">
+  <QA q="Using P ∝ C·V²·f, show why two cores at half frequency use about ¼ the power of one core at full frequency for the same performance." level="hard" why="Voltage is squared, so halving V cuts power to a quarter per core. Two cores double C, half f halves again: 2 × 1/4 × 1/2 = 1/4 while total work stays the same.">
     - One core: P₁ = C·V²·f
     - Two cores at f/2 can run at about V/2, and capacitance doubles to 2C:
       P₂ = 2C · (V/2)² · (f/2) = 2C · V²/4 · f/2 = **C·V²·f / 4**
@@ -304,37 +304,37 @@ Expect calculation questions like this one. Always show: time for each option �
 
     So: **same performance at ¼ of the power.**
   </QA>
-  <QA q="A laptop shows '8 logical processors' but has a 4-core CPU. Explain." level="medium">
+  <QA q="A laptop shows '8 logical processors' but has a 4-core CPU. Explain." level="medium" why="Logical processors = physical cores × hardware threads per core. HT shares one core's units, so 8 logical ≠ 8× speed.">
     The CPU has **Hyper-Threading**: each physical core runs 2 hardware threads, so 4 cores × 2 = 8 logical processors. But there are only 4 real cores — the two threads on a core share its execution units, so it is not 8× the speed of one core.
   </QA>
-  <QA q="Differentiate parallel computing and distributed computing in terms of goal, grain size and architecture." level="medium">
+  <QA q="Differentiate parallel computing and distributed computing in terms of goal, grain size and architecture." level="medium" why="Remember the three axes: goal (speed vs sharing), grain (fine vs coarse), coupling (tight/homogeneous vs loose/heterogeneous).">
     | | Parallel | Distributed |
     |---|---|---|
     | Goal | Faster execution of one application | Resource sharing, higher throughput |
     | Grain size | Fine | Coarse |
     | Architecture | Tightly coupled, homogeneous | Loosely coupled, heterogeneous |
   </QA>
-  <QA q="Name the three types of parallel machines and how their memory differs." level="easy">
+  <QA q="Name the three types of parallel machines and how their memory differs." level="easy" why="Cluster = many memories over a network; SMP = many CPUs, one memory; CMP = many cores on one chip. The memory layout is what separates them.">
     - **Cluster** — many PCs, each with its own memory, joined by a fast network.
     - **SMP (Symmetric Multi-Processor)** — several processors sharing one memory system.
     - **CMP (Chip Multi-Processor)** — many cores on one chip sharing memory.
   </QA>
-  <QA q="What does 'grain size' mean, and why does it matter for choosing parallel vs distributed?" level="hard">
+  <QA q="What does 'grain size' mean, and why does it matter for choosing parallel vs distributed?" level="hard" why="Grain size is about how often tasks talk. Frequent talking needs a fast, tight link (parallel); rare talking tolerates a slow network (distributed).">
     Grain size is how much computation a task does between communications. **Fine-grained** tasks communicate very often, so they need a tightly coupled, low-latency system (parallel machine). **Coarse-grained** tasks are mostly independent, so they work fine on loosely coupled machines over a slower network (distributed system). Too fine a grain on a slow network = time wasted communicating instead of computing.
   </QA>
-  <QA q="From the 2005–2007 table, how many threads per chip did the Sun '07 processor have, and how is it calculated?" level="easy">
+  <QA q="From the 2005–2007 table, how many threads per chip did the Sun '07 processor have, and how is it calculated?" level="easy" why="Multiply cores per chip by threads per core: 8 × 16 = 128. Read the table column for Sun '07, not the row totals of others.">
     **128** = 8 cores per chip × 16 threads per core.
   </QA>
-  <QA q="Your company's office PCs are only used ~25% of the time. Which motivation for distributed computing does this relate to, and how could you use it?" level="medium">
+  <QA q="Your company's office PCs are only used ~25% of the time. Which motivation for distributed computing does this relate to, and how could you use it?" level="medium" why="Idle machines = wasted capacity = scavenging. The trap is answering 'resource sharing'; scavenging is specifically about using unused cycles.">
     **Scavenging** — making use of wasted computing power. Idle PCs (e.g. at night) can be joined into a grid or volunteer-computing system to run batch jobs like rendering or data analysis, instead of buying new servers.
   </QA>
-  <QA q="What is the Von Neumann bottleneck, and how does parallel computing help?" level="medium">
+  <QA q="What is the Von Neumann bottleneck, and how does parallel computing help?" level="medium" why="The bottleneck is the single path between CPU and memory plus one instruction at a time. Parallelism adds more processing units and caches to relieve it.">
     In the Von Neumann architecture, instructions and data share one memory and one path to the CPU, and the CPU executes one instruction at a time. That single path limits speed. Parallel computing adds more processing units (cores, GPU units, machines) so many instructions run at once, and uses caches/local memories to reduce the traffic on that one path.
   </QA>
-  <QA q="Why is a GPU better than a CPU for processing every pixel of a 4K image, but worse for running a web browser?" level="hard">
+  <QA q="Why is a GPU better than a CPU for processing every pixel of a 4K image, but worse for running a web browser?" level="hard" why="GPUs win on many identical, independent operations (data parallel). Browsers are branchy and sequential, which suits a few strong CPU cores.">
     A GPU has **thousands of simple cores** that do the same operation on lots of data at once — perfect for per-pixel work (data parallelism). A browser is full of branching, unpredictable, mostly sequential logic, which runs best on a **few powerful CPU cores** with large caches and branch prediction.
   </QA>
-  <QA q="What is quantum computing (in one paragraph)?" level="easy">
+  <QA q="What is quantum computing (in one paragraph)?" level="easy" why="Qubits use superposition and entanglement to speed up specific problems. It is not simply a faster general-purpose computer.">
     A quantum computer uses **qubits**, which can be in a combination (superposition) of 0 and 1, and can be **entangled** with each other. For certain problems — factoring large numbers, simulating molecules, some optimisation — quantum algorithms can be dramatically faster than classical ones. It is **not** a faster general-purpose CPU, and current machines are still small and error-prone.
   </QA>
 </QAList>

@@ -257,30 +257,30 @@ Two **defined** notations exist:
 - Each transition has a **condition**, e.g. design may start when `rs.status = complete AND dd.status = non_existent`.
 
 <QAList>
-  <QA q="Name the three core elements of a software process model." level="easy">
+  <QA q="Name the three core elements of a software process model." level="easy" why="Products (what), activities (how it's made), roles (who). Nearly every process model is built on these three.">
     **Products** (what is created), **activities** (what is done to create them) and **roles** (who is responsible).
   </QA>
-  <QA q="Give four reasons for using a defined notation rather than plain text to describe a process." level="medium">
+  <QA q="Give four reasons for using a defined notation rather than plain text to describe a process." level="medium" why="Plain text can't be filtered, exchanged between tools, executed or audited reliably. A defined notation can.">
     Any four of: an explicit, structured description at different levels; automated selection of the parts relevant to a role or phase; displaying the same content in different formats (HTML, print); exchanging descriptions between tools (e.g. BPMN); automated support for analysis, tailoring or execution; clear criteria for checking the process in assessments and audits.
   </QA>
-  <QA q="Distinguish abstract syntax, concrete syntax and semantics, using BPMN as an example." level="medium">
+  <QA q="Distinguish abstract syntax, concrete syntax and semantics, using BPMN as an example." level="medium" why="Abstract = which building blocks exist; concrete = how they're drawn; semantics = what they mean.">
     **Abstract syntax:** the building blocks (activity, event, gateway). **Concrete syntax:** the symbols that draw them (rounded rectangle, circle, diamond). **Semantics:** what they mean (a gateway chooses one path based on a condition).
   </QA>
-  <QA q="List the six properties of process meta-models." level="easy">
+  <QA q="List the six properties of process meta-models." level="easy" why="Abstraction, structuredness, ease of use, formality, enactment support, graphical vs text.">
     Level of abstraction/detail; degree of structuredness; ease of use; degree of formality; process enactment/execution/simulation support; graphical vs text-based notation.
   </QA>
-  <QA q="Explain the three groups of process meta-models and notations, with an example of each." level="medium">
+  <QA q="Explain the three groups of process meta-models and notations, with an example of each." level="medium" why="Interaction = between processes (high level); internal = inside one process (detailed); combination = both.">
     1. **Process interaction notations:** high-level, show how multiple processes trigger each other (Coding → Testing → Deployment; value chains, MVP-L).
     2. **Process-internal structure notations:** detailed view inside one process: activities, results, roles (Unit → Integration → System testing inside Testing; BPMN, SIPOC).
     3. **Combination notations:** both levels in one notation (RUP, V-Model XT, SPEM-based models).
   </QA>
-  <QA q="Differentiate product-oriented and activity-oriented process models." level="medium">
+  <QA q="Differentiate product-oriented and activity-oriented process models." level="medium" why="Ask what leads: deliverables (product-oriented) or steps (activity-oriented). Roles attach to whichever leads.">
     In a **product-oriented** model the **products** lead and roles are attached to products (who is responsible for each deliverable). In an **activity-oriented** model the **activities** lead and roles are attached to activities (who performs each step). Templates describe products; methods describe activities.
   </QA>
-  <QA q="List the elements of a process description in ISO/IEC/IEEE 24774:2021. What's missing?" level="medium">
+  <QA q="List the elements of a process description in ISO/IEC/IEEE 24774:2021. What's missing?" level="medium" why="Title, purpose, outcome, activities, tasks, information items. Roles are missing; products appear only as outcomes.">
     Title, purpose, outcome, activities, tasks and information items. **Products** are only briefly covered as a kind of outcome, and **roles** are not covered at all.
   </QA>
-  <QA q="Write an ISO/IEC/IEEE 24774-style description of a 'bug triage' process." level="hard">
+  <QA q="Write an ISO/IEC/IEEE 24774-style description of a 'bug triage' process." level="hard" why="Use the six headings in order, with a measurable outcome (e.g. assessed within 2 days).">
     - **Title:** Bug triage.
     - **Purpose:** ensure every reported bug is assessed and prioritised quickly.
     - **Outcomes:** each new bug has a severity, a priority and an owner within 2 working days.
@@ -288,16 +288,16 @@ Two **defined** notations exist:
     - **Tasks:** reproduce the bug; set severity and priority; assign to a developer; notify the reporter.
     - **Information items:** severity definitions, triage checklist, bug-tracker workflow.
   </QA>
-  <QA q="What are value chain and process landscape diagrams used for?" level="easy">
+  <QA q="What are value chain and process landscape diagrams used for?" level="easy" why="They give a bird's-eye view of all processes and how software fits into the organisation.">
     They come from business process modelling and give an **overview of many or all processes** in an organisation and the interfaces between them, showing how processes such as software development fit into the whole organisation (management, primary and supporting processes).
   </QA>
-  <QA q="Name and explain the four views of MVP-L." level="medium">
+  <QA q="Name and explain the four views of MVP-L." level="medium" why="What (functional), when (behavioural), who (organisational), what goes in and out (data).">
     **Functional** (what tasks are performed), **behavioural** (sequence and timing), **organisational** (roles, responsibilities and units), **data** (information objects used and produced).
   </QA>
-  <QA q="In the MVP-L figure, when may the design process start?" level="hard">
+  <QA q="In the MVP-L figure, when may the design process start?" level="hard" why="Read the transition condition: input complete AND output not yet existing.">
     When its transition condition holds: `rs.status = complete AND dd.status = non_existent`, meaning the requirements specification (its input) is complete and the design document (its output) doesn't exist yet. When design finishes, `dd.status = complete`, which in turn enables coding.
   </QA>
-  <QA q="Why are life cycle models like the waterfall called 'ad hoc' notations?" level="easy">
+  <QA q="Why are life cycle models like the waterfall called 'ad hoc' notations?" level="easy" why="Drawn freely, with no formal rules for what each symbol means.">
     They're usually drawn with whatever boxes and arrows the author chooses, with **no formally defined syntax or semantics**. Everyone understands the picture, but there are no rules saying what each symbol means, unlike BPMN or MVP-L.
   </QA>
 </QAList>

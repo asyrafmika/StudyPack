@@ -432,56 +432,56 @@ You'll write explicitly parallel programs in **C**, using extensions:
 - **CUDA** for GPUs (Week 11)
 
 <QAList>
-  <QA q="Why is automatically converting serial programs to parallel programs difficult?" level="easy">
+  <QA q="Why is automatically converting serial programs to parallel programs difficult?" level="easy" why="Tools only spot simple patterns, and the best parallel solution often needs a different algorithm entirely.">
     Translators can only recognise simple patterns (such as independent loops), and the parallel code they produce is often inefficient. The best parallel solution frequently needs a **completely different algorithm** (like the tree-based global sum), which a translator can't invent.
   </QA>
-  <QA q="In the global sum with 8 cores, how many receives does the master do in the 'master adds all' version vs the tree version? What about 1024 cores?" level="medium">
+  <QA q="In the global sum with 8 cores, how many receives does the master do in the 'master adds all' version vs the tree version? What about 1024 cores?" level="medium" why="Master version = p − 1 receives; tree version = log₂p. For 1024 that's 1023 vs 10.">
     8 cores: **7** vs **3** (log₂8). 1024 cores: **1023** vs **10** (log₂1024). The tree version turns p − 1 steps into log₂p.
   </QA>
-  <QA q="Given my_sum = 8, 19, 7, 15, 7, 13, 12, 14 on cores 0–7, show each round of the tree-based global sum." level="medium">
+  <QA q="Given my_sum = 8, 19, 7, 15, 7, 13, 12, 14 on cores 0–7, show each round of the tree-based global sum." level="medium" why="Add neighbours each round: 27, 22, 20, 26 → 49, 46 → 95. Only even cores, then multiples of 4, keep working.">
     - Round 1: core 0 = 8+19 = **27**, core 2 = 7+15 = **22**, core 4 = 7+13 = **20**, core 6 = 12+14 = **26**
     - Round 2: core 0 = 27+22 = **49**, core 4 = 20+26 = **46**
     - Round 3: core 0 = 49+46 = **95**
   </QA>
-  <QA q="Differentiate task parallelism and data parallelism using the exam-marking example." level="easy">
+  <QA q="Differentiate task parallelism and data parallelism using the exam-marking example." level="easy" why="Split scripts = data parallelism (same work, different data). Split questions = task parallelism (different work).">
     **Data parallelism:** each TA marks 100 **different scripts** (all 15 questions), so the data is split. **Task parallelism:** each TA marks **different questions** (1–5, 6–10, 11–15) on all 300 scripts, so the tasks are split.
   </QA>
-  <QA q="Name and explain the three coordination issues in parallel programs." level="easy">
+  <QA q="Name and explain the three coordination issues in parallel programs." level="easy" why="Communication, load balancing, synchronisation. Each one is a different reason cores have to coordinate.">
     - **Communication:** cores send data (e.g. partial sums) to other cores.
     - **Load balancing:** share the work evenly so no core is overloaded and others idle.
     - **Synchronisation:** cores run at their own pace, so make them wait for each other where needed so results are correct.
   </QA>
-  <QA q="State one advantage each of fine-grained and coarse-grained parallelism." level="easy">
+  <QA q="State one advantage each of fine-grained and coarse-grained parallelism." level="easy" why="Coarse = less communication overhead. Fine = easier to spread evenly (load balance).">
     **Coarse-grained:** high computation-to-communication ratio (less overhead). **Fine-grained:** easier to achieve load balance.
   </QA>
-  <QA q="Why should the speedup formula use the best sequential program for T₁, not the parallel program run on 1 core?" level="medium">
+  <QA q="Why should the speedup formula use the best sequential program for T₁, not the parallel program run on 1 core?" level="medium" why="The parallel code on one core still carries overhead, which makes speedup look better than it really is. Compare against the best serial program.">
     The parallel program on 1 core still has parallel overhead (thread creation, synchronisation, extra computation), so it's usually slower than the best serial program. Using it as T₁ inflates the speedup. The fair question is how much faster the parallel solution is than the **best you could do serially**.
   </QA>
-  <QA q="When timing a parallel program, why do we use a barrier and take the maximum elapsed time?" level="medium">
+  <QA q="When timing a parallel program, why do we use a barrier and take the maximum elapsed time?" level="medium" why="Barrier = everyone starts together. Max = the program is only done when the slowest thread finishes.">
     The **barrier** makes all threads or processes start the timed section together. Each one finishes at a different time, and the parallel section is only complete when the **slowest** finishes, so the program's elapsed time is the **maximum** of the individual times.
   </QA>
-  <QA q="A program is 20% serial. Using Amdahl's Law, find the speedup on 4 and on 16 processors, and the maximum possible speedup." level="medium">
+  <QA q="A program is 20% serial. Using Amdahl's Law, find the speedup on 4 and on 16 processors, and the maximum possible speedup." level="medium" why="S = 1/(β + (1 − β)/P). P = 4 gives 2.5, P = 16 gives 4.0, and the limit is 1/β = 5.">
     - P = 4: S = 1 / (0.2 + 0.8/4) = 1 / 0.4 = **2.5**
     - P = 16: S = 1 / (0.2 + 0.8/16) = 1 / 0.25 = **4.0**
     - Max: 1 / 0.2 = **5×**
 
     Going from 4 to 16 processors (4× the hardware) gives only 1.6× more speedup.
   </QA>
-  <QA q="Using Gustafson's Law, find the speedup on 16 processors for a serial fraction of 0.2. Why is it so different from Amdahl's answer?" level="hard">
+  <QA q="Using Gustafson's Law, find the speedup on 16 processors for a serial fraction of 0.2. Why is it so different from Amdahl's answer?" level="hard" why="Gustafson grows the problem with P, so the serial part shrinks relatively: 16 − 15 × 0.2 = 13.">
     S = P + (1 − P)α = 16 + (1 − 16)(0.2) = 16 − 3 = **13.0** (Amdahl gave 4.0).
 
     Gustafson assumes the **problem grows** with P, so the parallel part grows while the serial part stays the same, and the serial fraction is measured on the **parallel** run. Amdahl assumes a **fixed** problem, so the serial part is a fixed share of the total and limits the speedup.
   </QA>
-  <QA q="In the picket-fence example, why can't speedup exceed 6×?" level="easy">
+  <QA q="In the picket-fence example, why can't speedup exceed 6×?" level="easy" why="60 of 360 minutes are serial, so even infinite painters leave 60 minutes. 360/60 = 6.">
     60 of the 360 minutes (preparation + clean-up) are serial and can't be shared. Even with infinite painters the job takes 60 minutes, so S<sub>max</sub> = 360/60 = 6, which is Amdahl's 1/β with β = 1/6.
   </QA>
-  <QA q="The fence owner gets a spray gun that paints all 300 pickets in 60 minutes (one gun only). What's the maximum parallel speedup now?" level="hard">
+  <QA q="The fence owner gets a spray gun that paints all 300 pickets in 60 minutes (one gun only). What's the maximum parallel speedup now?" level="hard" why="Compare against the new best serial time: 120 minutes. Parallel best is 60, so the maximum is only 2×.">
     The best serial time becomes 30 + 60 + 30 = **120 min**. With unlimited hand painters the parallel time is at best 30 + 0 + 30 = 60 min, so S<sub>max</sub> = 120/60 = **2×**. A better serial algorithm shrinks the possible speedup, which is why speedup must be measured against the best serial solution.
   </QA>
-  <QA q="List the five sources of overhead in parallel programs." level="easy">
+  <QA q="List the five sources of overhead in parallel programs." level="easy" why="Communication, synchronisation, idling, contention, excess computation.">
     Interprocess interaction (communication), synchronisation, idling (from load imbalance, synchronisation or serial parts), contention for shared resources, and excess computation.
   </QA>
-  <QA q="Define latency and bandwidth. If latency is 50 µs and bandwidth is 1 GB/s, how long does it take to send one 1 KB message, and 1000 messages of 1 KB?" level="hard">
+  <QA q="Define latency and bandwidth. If latency is 50 µs and bandwidth is 1 GB/s, how long does it take to send one 1 KB message, and 1000 messages of 1 KB?" level="hard" why="Time ≈ latency + size/bandwidth. Many small messages pay the latency each time, so batch them.">
     **Latency:** the time for a message to travel from one node to another (fixed start-up cost). **Bandwidth:** data transferred per unit of time.
     - One 1 KB message ≈ 50 µs + 1 KB / 1 GB/s = 50 + 1 µs = **51 µs**.
     - 1000 separate messages ≈ 1000 × 51 = **51 ms**.
@@ -489,7 +489,7 @@ You'll write explicitly parallel programs in **C**, using extensions:
 
     Batching avoids paying the latency 1000 times.
   </QA>
-  <QA q="Your 8-thread program shows: 70% computation, 15% waiting at barriers, 10% fighting for one lock, 5% repeated work. Name each overhead and suggest a fix." level="hard">
+  <QA q="Your 8-thread program shows: 70% computation, 15% waiting at barriers, 10% fighting for one lock, 5% repeated work. Name each overhead and suggest a fix." level="hard" why="Barriers = idling or imbalance; lock = contention; repeated work = excess computation. Fix the biggest first.">
     - **Waiting at barriers = synchronisation/idling**, probably load imbalance. Fix: divide work more evenly, or use dynamic scheduling.
     - **Fighting for a lock = contention.** Fix: shorter critical sections, per-thread local results combined at the end (a reduction).
     - **Repeated work = excess computation.** Fix: compute once and share, if communication is cheaper than recomputing.

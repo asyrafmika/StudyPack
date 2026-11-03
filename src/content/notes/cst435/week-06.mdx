@@ -367,13 +367,13 @@ int main(void) {
 Remove the two mutex lines and run it a few times: you'll get **different, wrong** totals (less than 4,000,000). That's the race condition in action. With the mutex it's always correct, but slower, because the threads queue for the lock (**contention**). A better design gives each thread its own local counter and adds them up at the end (a **reduction**), which is exactly what OpenMP's `reduction` clause does in Week 7.
 
 <QAList>
-  <QA q="What are the two roles of a process from the OS's point of view?" level="easy">
+  <QA q="What are the two roles of a process from the OS's point of view?" level="easy" why="Resource holder (memory, files) and execution unit (its threads).">
     **Resource holder** (memory, file pointers and other resources assigned to the process) and **execution unit** (the thread or threads that run its instructions).
   </QA>
-  <QA q="What do threads in the same process share, and what does each have privately?" level="easy">
+  <QA q="What do threads in the same process share, and what does each have privately?" level="easy" why="Shared: code, data/heap, files. Private: stack, registers, program counter.">
     **Shared:** the code segment and data segment (global variables, heap), open files. **Private to each thread:** its own **stack**, **program counter**, **stack pointer** and **registers**.
   </QA>
-  <QA q="Compare processes and threads in terms of address space, interaction, context switching and security." level="medium">
+  <QA q="Compare processes and threads in terms of address space, interaction, context switching and security." level="medium" why="Threads share and are cheap but unprotected. Processes are isolated and secure but heavy to switch.">
     | | Process | Thread |
     |---|---|---|
     | Address space | Own, OS-protected | Shared with the other threads |
@@ -381,46 +381,46 @@ Remove the two mutex lines and run it a few times: you'll get **different, wrong
     | Context switch | Heavy (whole process state) | Light (registers only) |
     | Security | Secure | Not secure (can overwrite another thread's memory) |
   </QA>
-  <QA q="What is latency hiding and why is it a benefit of threads, even on one core?" level="medium">
+  <QA q="What is latency hiding and why is it a benefit of threads, even on one core?" level="medium" why="While one thread waits for I/O, another uses the CPU. The wait is hidden behind useful work.">
     While one thread is **waiting** (for memory, disk or the network), another thread can use the CPU. The waiting time is **hidden** behind useful work, so the CPU stays busy and overall throughput improves even with a single core.
   </QA>
-  <QA q="Differentiate concurrency and parallelism. Can you have concurrency without parallelism?" level="easy">
+  <QA q="Differentiate concurrency and parallelism. Can you have concurrency without parallelism?" level="easy" why="Concurrency = in progress together (possible on one core). Parallelism = executing at the same instant (needs multiple cores).">
     **Concurrency:** two or more threads are in progress at the same time. **Parallelism:** two or more threads are executing at the same instant. **Yes**, you can have concurrency without parallelism: one core time-slicing between threads is concurrent but not parallel. Parallelism needs multiple cores.
   </QA>
-  <QA q="Differentiate threading for functionality and threading for performance, with an example of each." level="medium">
+  <QA q="Differentiate threading for functionality and threading for performance, with an example of each." level="medium" why="Functionality = separate jobs (GUI thread, network thread). Performance = finishing computation faster or doing more of it.">
     **Functionality:** give threads separate jobs of the application (e.g. a GUI thread, a network thread, a file-saving thread), like a bricklayer, carpenter and plumber building a house. **Performance:** use threads to finish computation faster (turnaround) or do more of it (throughput), like an assembly line.
   </QA>
-  <QA q="What's the difference between turnaround and throughput?" level="easy">
+  <QA q="What's the difference between turnaround and throughput?" level="easy" why="Turnaround = one task as fast as possible. Throughput = as many tasks as possible in a fixed time.">
     **Turnaround:** finish **one** task in the shortest time (set one dinner table as fast as possible). **Throughput:** finish the **most** tasks in a fixed time (set up a whole banquet).
   </QA>
-  <QA q="Explain task decomposition and data decomposition using the slide examples." level="medium">
+  <QA q="Explain task decomposition and data decomposition using the slide examples." level="medium" why="Paint-by-numbers splits by colour (task). Grading splits by paper (data).">
     **Task:** paint-by-numbers, where each colour is a separate task; two artists split the colours (even and odd). **Data:** grading test papers, where many graders with the same answer key each grade a different pile of the same exam.
   </QA>
-  <QA q="Define a race condition. What two conditions must be true for a storage conflict?" level="easy">
+  <QA q="Define a race condition. What two conditions must be true for a storage conflict?" level="easy" why="Same location, accessed concurrently, at least one writer. Two readers alone never race.">
     A race condition is when threads race for a resource and the outcome depends on an execution order that isn't guaranteed. A storage conflict needs (1) **concurrent access to the same memory location** by multiple threads, and (2) **at least one of them is writing**.
   </QA>
-  <QA q="Two threads each run count++ 1000 times on a shared count starting at 0, with no locking. Is the final value always 2000? Explain." level="hard">
+  <QA q="Two threads each run count++ 1000 times on a shared count starting at 0, with no locking. Is the final value always 2000? Explain." level="hard" why="count++ is read, add, write. Two threads reading the same old value lose one increment, so the total varies.">
     **No.** It can be anything from about 1000 up to 2000. `count++` is three steps (read, add 1, write). If both threads read the same old value before either writes, both write the same new value and **one increment is lost**. How many are lost depends on timing, so it changes from run to run.
   </QA>
-  <QA q="Define critical region and mutual exclusion." level="easy">
+  <QA q="Define critical region and mutual exclusion." level="easy" why="Critical region = code touching shared data. Mutual exclusion = only one thread in it at a time.">
     **Critical region:** the portion of code that accesses (reads and writes) shared variables. **Mutual exclusion:** program logic that ensures only one thread at a time executes in the critical region, preventing race conditions.
   </QA>
-  <QA q="How does a synchronisation object enforce mutual exclusion? Give four types." level="medium">
+  <QA q="How does a synchronisation object enforce mutual exclusion? Give four types." level="medium" why="One holder at a time; the others wait. Types: lock/mutex, semaphore, condition variable, event, atomic.">
     One thread **holds** the object while the others **wait**; when it's done, the holder **releases** it and one waiting thread gets it (like a library book). Types: lock/mutex, semaphore, critical section, event, condition variable, atomic.
   </QA>
-  <QA q="What is a barrier, and why is it a source of overhead?" level="medium">
+  <QA q="What is a barrier, and why is it a source of overhead?" level="medium" why="Everyone waits for the slowest. Early arrivals sit idle, which is overhead.">
     A barrier is a point where threads pause until **all** threads have arrived, and then all are released together (like a race starting line). It's overhead because the threads that arrive early sit **idle** while they wait for the slowest one.
   </QA>
-  <QA q="Thread A locks L1 then tries to lock L2. Thread B locks L2 then tries to lock L1. What happens? How do you prevent it?" level="hard">
+  <QA q="Thread A locks L1 then tries to lock L2. Thread B locks L2 then tries to lock L1. What happens? How do you prevent it?" level="hard" why="Circular wait: each holds one lock and wants the other. Always acquire locks in the same order.">
     **Deadlock:** each holds one lock and waits forever for the other (a circular wait). Prevent it by making **all threads acquire the locks in the same order** (e.g. always L1 before L2), which breaks the circular-wait condition. Alternatives: lock with a timeout, or take both locks atomically.
   </QA>
-  <QA q="Name the four conditions necessary for deadlock." level="medium">
+  <QA q="Name the four conditions necessary for deadlock." level="medium" why="Mutual exclusion, hold and wait, no pre-emption, circular wait. Break any one to prevent deadlock.">
     **Mutual exclusion**, **hold and wait**, **no pre-emption**, **circular wait**. All four must hold at the same time, so removing any one prevents deadlock.
   </QA>
-  <QA q="Differentiate deadlock and livelock, with an analogy for each." level="medium">
+  <QA q="Differentiate deadlock and livelock, with an analogy for each." level="medium" why="Deadlock = blocked, using no CPU. Livelock = busy reacting to each other but making no progress.">
     **Deadlock:** threads are **blocked**, waiting for something that never happens (cars gridlocked at an intersection). **Livelock:** threads stay **active**, repeatedly changing state in response to each other, but make no progress (Robin Hood and Little John stepping aside for each other on a log bridge). Neither makes progress, but a livelocked thread still uses CPU.
   </QA>
-  <QA q="In the Pthreads example, which variables are shared and which are private? Why does adding the mutex make the program slower?" level="hard">
+  <QA q="In the Pthreads example, which variables are shared and which are private? Why does adding the mutex make the program slower?" level="hard" why="Globals are shared, locals are private. The mutex serialises every increment, so the threads queue (contention).">
     **Shared:** `counter` and `lock` (globals, in the data segment). **Private:** `i` and `arg` (local, on each thread's own stack). The mutex makes it slower because threads must **queue** for the lock on every single increment (**contention**), so the increments effectively run one at a time and the parallelism is lost. A per-thread local count combined at the end (a reduction) avoids this.
   </QA>
 </QAList>
