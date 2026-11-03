@@ -1,13 +1,20 @@
 ---
+import '@fontsource-variable/inter';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
 import '../styles/global.css';
 import { url } from '../lib/url';
+import { searchIndex } from '../lib/search';
 
 interface Props {
   title: string;
   description?: string;
+  /** Full-width header (note pages with a sidebar) instead of the centred floating pill */
+  wide?: boolean;
 }
-const { title, description = 'Study notes and Q&A, week by week.' } = Astro.props;
-const fullTitle = title === 'StudyPack' ? title : `${title} · StudyPack`;
+const { title, description = 'Visual study notes and self-test questions, week by week.', wide = false } = Astro.props;
+const fullTitle = title === 'StudyPack' ? 'StudyPack — lecture slides, turned into understanding' : `${title} · StudyPack`;
+const index = await searchIndex();
 ---
 
 <!doctype html>
@@ -16,41 +23,68 @@ const fullTitle = title === 'StudyPack' ? title : `${title} · StudyPack`;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1012" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
     <title>{fullTitle}</title>
-    <!-- Set theme before paint so dark-mode users don't see a white flash -->
+    <!-- Set theme + sidebar state before paint (no flash / layout jump) -->
     <script is:inline>
       (() => {
         let t = null;
         try { t = localStorage.getItem('sp:theme'); } catch {}
         if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         document.documentElement.dataset.theme = t;
-        // Restore desktop sidebar state before paint (no layout jump)
         try { if (localStorage.getItem('sp:sidebar') === 'closed') document.documentElement.dataset.sidebar = 'closed'; } catch {}
       })();
     </script>
   </head>
   <body>
-    <header class="topbar">
+    <header class={`topbar ${wide ? 'is-wide' : ''}`}>
       <div class="topbar-inner">
         <slot name="menu-button" />
-        <a class="brand" href={url()}>
-          <span class="brand-mark" aria-hidden="true">📚</span> StudyPack
+        <a class="brand" href={url()} aria-label="StudyPack home">
+          <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+            <rect x="3" y="9" width="20" height="20" rx="6" fill="var(--brand-soft)"></rect>
+            <rect x="9" y="3" width="20" height="20" rx="6" fill="var(--brand)"></rect>
+            <path d="M15 10.5h8M15 15.5h5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"></path>
+          </svg>
+          <span>StudyPack</span>
         </a>
-        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
-          <span class="theme-icon-light" aria-hidden="true">☀️</span>
-          <span class="theme-icon-dark" aria-hidden="true">🌙</span>
-        </button>
+        <div class="topbar-actions">
+          <button class="search-trigger" id="search-open" type="button" aria-label="Search notes">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            <span class="search-label">Search</span>
+            <kbd class="search-kbd">⌘K</kbd>
+          </button>
+          <button class="icon-btn round" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+            <svg class="theme-icon-light" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+            <svg class="theme-icon-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"></path></svg>
+          </button>
+          <a class="btn-pill dark hide-sm" href={url('#courses')}>Courses</a>
+        </div>
       </div>
     </header>
 
     <slot />
 
+    <dialog class="search" id="search" aria-label="Search notes">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+        <input id="search-input" type="search" placeholder="Search topics — try “amdahl”, “scrum”, “cache”…" autocomplete="off" spellcheck="false" />
+        <kbd>esc</kbd>
+      </div>
+      <ul class="search-results" id="search-results" role="listbox"></ul>
+      <p class="search-foot"><span><kbd>↑</kbd><kbd>↓</kbd> to move</span><span><kbd>↵</kbd> to open</span></p>
+    </dialog>
+    <script type="application/json" id="search-data" set:html={JSON.stringify(index)} />
+
     <script>
       import { initTheme } from '../lib/theme';
       import { renderMermaid } from '../lib/mermaid';
+      import { initSearch } from '../lib/search-ui';
       initTheme(() => renderMermaid(true));
       renderMermaid();
+      initSearch();
     </script>
   </body>
 </html>

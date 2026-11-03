@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
+import CourseArt from '../../components/CourseArt.astro';
 import { sortedCourses, notesFor, url, noteUrl, progressId } from '../../lib/url';
 
 export const getStaticPaths = (async () => {
@@ -24,8 +25,9 @@ const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
   <main class="container" style={`--accent:${c.color}`}>
     <nav class="crumbs small"><a href={url()}>Courses</a> / {c.code}</nav>
     <section class="hero">
+      <div class="course-banner" aria-hidden="true"><CourseArt id={course.id} color={c.color} fit="meet" /></div>
       <span class="course-code">{c.code}</span>
-      <h1>{c.title}</h1>
+      <h1 class="serif">{c.title}</h1>
       {c.description && <p class="muted">{c.description}</p>}
       {
         (c.lecturer || c.semester) && (

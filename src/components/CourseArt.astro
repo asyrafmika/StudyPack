@@ -1,0 +1,84 @@
+---
+/**
+ * Decorative artwork for a course card. Each known course gets a motif that
+ * hints at its subject; unknown courses fall back to a generic dot pattern.
+ */
+interface Props {
+  id: string;
+  color: string;
+  /** 'slice' fills the box (cards); 'meet' shows the whole drawing (wide banners) */
+  fit?: 'slice' | 'meet';
+}
+const { id, color, fit = 'slice' } = Astro.props;
+---
+
+<svg class="course-art" viewBox="0 0 480 220" preserveAspectRatio={`xMidYMid ${fit}`} aria-hidden="true" style={`--c:${color}`}>
+  <defs>
+    <radialGradient id={`glow-${id}`} cx="70%" cy="30%" r="80%">
+      <stop offset="0" stop-color={color} stop-opacity="0.28"></stop>
+      <stop offset="1" stop-color={color} stop-opacity="0"></stop>
+    </radialGradient>
+    <pattern id={`dots-${id}`} width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.3" fill={color} opacity="0.22"></circle>
+    </pattern>
+  </defs>
+  {/* in 'meet' mode the container paints the background, so no hard edges show */}
+  {fit === 'slice' && <rect width="480" height="220" fill={`url(#dots-${id})`} />}
+  {fit === 'slice' && <rect width="480" height="220" fill={`url(#glow-${id})`} />}
+
+  {
+    id === 'cst435' && (
+      <g class="art-float">
+        {/* a parallel task graph: one node fans out to many cores and joins back */}
+        <g stroke={color} stroke-width="2" fill="none" opacity="0.55">
+          <path d="M90 110 C150 110 160 50 220 50" />
+          <path d="M90 110 C150 110 160 90 220 90" />
+          <path d="M90 110 C150 110 160 130 220 130" />
+          <path d="M90 110 C150 110 160 170 220 170" />
+          <path d="M260 50 C320 50 330 110 390 110" />
+          <path d="M260 90 C320 90 330 110 390 110" />
+          <path d="M260 130 C320 130 330 110 390 110" />
+          <path d="M260 170 C320 170 330 110 390 110" />
+        </g>
+        <circle cx="80" cy="110" r="16" fill={color} />
+        <circle cx="400" cy="110" r="16" fill={color} />
+        {[50, 90, 130, 170].map((y, i) => (
+          <rect x="216" y={y - 13} width="48" height="26" rx="8" fill="var(--surface)" stroke={color} stroke-width="2" style={`animation-delay:${i * 0.25}s`} class="art-pulse" />
+        ))}
+        <text x="240" y="54" text-anchor="middle" font-size="11" font-weight="700" fill={color}>core 0</text>
+        <text x="240" y="94" text-anchor="middle" font-size="11" font-weight="700" fill={color}>core 1</text>
+        <text x="240" y="134" text-anchor="middle" font-size="11" font-weight="700" fill={color}>core 2</text>
+        <text x="240" y="174" text-anchor="middle" font-size="11" font-weight="700" fill={color}>core 3</text>
+      </g>
+    )
+  }
+
+  {
+    id === 'cse441' && (
+      <g class="art-float">
+        {/* a process flow: plan → build → test → release, looping back (iterative) */}
+        <path d="M70 140 H410" stroke={color} stroke-width="2" opacity="0.5" />
+        <path d="M400 128 C430 70 70 50 70 120" stroke={color} stroke-width="2" fill="none" stroke-dasharray="5 6" opacity="0.6" />
+        {['Plan', 'Build', 'Test', 'Release'].map((t, i) => (
+          <g class="art-pulse" style={`animation-delay:${i * 0.3}s`}>
+            <rect x={60 + i * 100} y="120" width="80" height="40" rx="12" fill="var(--surface)" stroke={color} stroke-width="2" />
+            <text x={100 + i * 100} y="145" text-anchor="middle" font-size="13" font-weight="700" fill={color}>{t}</text>
+          </g>
+        ))}
+        <circle cx="240" cy="62" r="5" fill={color} />
+        <text x="252" y="66" font-size="11" font-weight="600" fill={color} opacity="0.8">iterate</text>
+      </g>
+    )
+  }
+
+  {
+    id !== 'cst435' && id !== 'cse441' && (
+      <g class="art-float">
+        <circle cx="360" cy="100" r="54" fill={color} opacity="0.18" />
+        <circle cx="300" cy="140" r="30" fill={color} opacity="0.3" />
+        <rect x="80" y="70" width="140" height="18" rx="9" fill={color} opacity="0.35" />
+        <rect x="80" y="100" width="100" height="18" rx="9" fill={color} opacity="0.22" />
+      </g>
+    )
+  }
+</svg>

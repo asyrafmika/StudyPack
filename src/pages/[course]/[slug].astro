@@ -28,7 +28,7 @@ const { Content, headings } = await render(note);
 const toc = headings.filter((h) => h.depth === 2);
 ---
 
-<Base title={`${course.data.code} ${noteLabel(note)}: ${note.data.title}`} description={note.data.summary}>
+<Base title={`${course.data.code} ${noteLabel(note)}: ${note.data.title}`} description={note.data.summary} wide>
   <button slot="menu-button" class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="Open week list" aria-controls="sidebar" aria-expanded="false">☰</button>
 
   <div class="page" style={`--accent:${course.data.color}`}>
@@ -81,7 +81,7 @@ const toc = headings.filter((h) => h.depth === 2);
             </nav>
           )
         }
-        <h1>{note.data.title}</h1>
+        <h1 class="serif">{note.data.title}</h1>
         {note.data.summary && <p class="muted lead">{note.data.summary}</p>}
         {
           note.data.examinedIn.length > 0 && (
@@ -113,7 +113,7 @@ const toc = headings.filter((h) => h.depth === 2);
       </article>
 
       <div class="done-bar">
-        <button type="button" class="btn" id="done-btn" data-id={doneId}>Mark as done</button>
+        <button type="button" class="btn" id="done-btn" data-id={doneId} data-resume={JSON.stringify({ u: noteUrl(note), t: note.data.title, c: course.data.code, l: noteLabel(note), course: courseId })}>Mark as done</button>
       </div>
 
       <nav class="pager">
@@ -156,6 +156,15 @@ const toc = headings.filter((h) => h.depth === 2);
       sync();
     });
     sync();
+
+    // Remember this page for "Continue" on the homepage and course cards
+    try {
+      const r = JSON.parse(btn.dataset.resume!);
+      localStorage.setItem('sp:last', JSON.stringify(r));
+      localStorage.setItem(`sp:last:${r.course}`, JSON.stringify(r));
+    } catch {
+      /* storage unavailable */
+    }
 
     // Sidebar toggle
     // - Phone (≤860px): slide-in drawer over the page, closed by default

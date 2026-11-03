@@ -1,47 +1,325 @@
 ---
 import Base from '../layouts/Base.astro';
-import { sortedCourses, notesFor, url, progressId } from '../lib/url';
+import '../styles/home.css';
+import CourseArt from '../components/CourseArt.astro';
+import { sortedCourses, notesFor, url, progressId, noteUrl, noteLabel } from '../lib/url';
+import { contentStats } from '../lib/search';
 
 const courses = await Promise.all(
   (await sortedCourses()).map(async (c) => {
     const notes = await notesFor(c.id);
-    return { ...c, notes, ids: notes.map(progressId) };
+    const stats = contentStats(notes.map((n) => n.body));
+    const weeks = new Set(notes.map((n) => n.data.week)).size;
+    const latest = notes.at(-1);
+    return { ...c, notes, stats, weeks, latest, ids: notes.map(progressId) };
   }),
 );
+const totals = courses.reduce(
+  (t, c) => ({ pages: t.pages + c.notes.length, questions: t.questions + c.stats.questions, visuals: t.visuals + c.stats.visuals }),
+  { pages: 0, questions: 0, visuals: 0 },
+);
+const firstNote = courses[0]?.notes[0];
 ---
 
 <Base title="StudyPack">
-  <main class="container">
-    <section class="hero">
-      <h1>Your courses</h1>
-      <p class="muted">Weekly notes with diagrams, explanations and self-test questions.</p>
+  <main class="home">
+    <!-- ───────────── Hero ───────────── -->
+    <section class="h-hero">
+      <p class="eyebrow"><span class="dot"></span> USM · Software Engineering · 2026/2027</p>
+      <h1 class="serif h-title">
+        Lecture slides, turned into <em>real understanding</em>
+      </h1>
+      <p class="h-sub">
+        Visual notes, worked examples and exam-style questions for every week of every course. Read it on your laptop, revise it on your phone.
+      </p>
+      <div class="h-cta">
+        <a class="btn-big" href="#courses">Start studying</a>
+        <a class="btn-big ghost" id="resume" href={firstNote ? noteUrl(firstNote) : '#courses'}>
+          <span id="resume-label">How it works</span>
+        </a>
+      </div>
+
+      <!-- Floating preview cards (pure HTML/CSS, original illustrations) -->
+      <div class="h-stage" aria-hidden="true">
+        <div class="h-scene">
+          <article class="fc fc-code">
+            <p class="fc-label">Critical region</p>
+            <pre><span class="k">pthread_mutex_lock</span>(&amp;lock);
+counter<span class="o">++</span>;   <span class="c">// one thread at a time</span>
+<span class="k">pthread_mutex_unlock</span>(&amp;lock);</pre>
+          </article>
+
+          <article class="fc fc-flow">
+            <p class="fc-label">Remote procedure call</p>
+            <div class="flow">
+              <span>Client</span><i></i><span>Stub</span><i></i><span>Network</span><i></i><span>Server</span>
+            </div>
+            <div class="flow back"><span class="ghost">reply ← marshalled result</span></div>
+          </article>
+
+          <article class="fc fc-chart">
+            <p class="fc-label">Speedup vs cores</p>
+            <svg viewBox="0 0 220 130">
+              <line x1="20" y1="110" x2="210" y2="110" class="ax"></line>
+              <line x1="20" y1="110" x2="20" y2="10" class="ax"></line>
+              <line x1="20" y1="110" x2="200" y2="14" class="ideal"></line>
+              <polyline points="20,110 45,88 70,70 95,58 120,51 145,47 170,45 195,44" class="real"></polyline>
+              {[[20, 110], [45, 88], [70, 70], [95, 58], [120, 51], [145, 47], [170, 45], [195, 44]].map(([x, y]) => <circle cx={x} cy={y} r="3.5" class="pt" />)}
+              <text x="150" y="30" class="lbl">ideal</text>
+              <text x="150" y="62" class="lbl strong">Amdahl</text>
+            </svg>
+          </article>
+
+          <article class="fc fc-quiz">
+            <p class="fc-label">Test yourself</p>
+            <p class="q">A program is 20% serial. Max speedup with unlimited cores?</p>
+            <div class="opts">
+              <span>2×</span><span class="right">5× <b>✓</b></span><span>20×</span>
+            </div>
+          </article>
+
+          <article class="fc fc-why">
+            <p class="fc-label">🎯 Why learn this?</p>
+            <span class="bar w90"></span><span class="bar w70"></span><span class="bar w80"></span>
+            <div class="chips"><span>Real life</span><span>Exam</span></div>
+          </article>
+
+          <svg class="cursor" viewBox="0 0 24 24"><path d="M4 3l7 17 2.5-7L21 10.5z"></path></svg>
+        </div>
+      </div>
     </section>
 
-    <div class="course-grid">
-      {
-        courses.map((c) => (
-          <a class="course-card" href={url(`${c.id}/`)} style={`--accent:${c.data.color}`}>
-            <span class="course-code">{c.data.code}</span>
-            <h2>{c.data.title}</h2>
-            {c.data.description && <p class="muted small">{c.data.description}</p>}
-            <div class="progress" data-progress-of={c.ids.join(',')}>
-              <div class="bar">
-                <div class="bar-fill" />
+    <!-- ───────────── Stats ───────────── -->
+    <section class="h-stats" aria-label="What's inside">
+      <div><b>{courses.length}</b><span>courses</span></div>
+      <div><b>{totals.pages}</b><span>note pages</span></div>
+      <div><b>{totals.questions}</b><span>practice questions</span></div>
+      <div><b>{totals.visuals}</b><span>diagrams & figures</span></div>
+    </section>
+
+    <!-- ───────────── Courses ───────────── -->
+    <section class="h-section" id="courses">
+      <h2 class="serif h-h2">Your courses</h2>
+      <p class="h-lead">Every week explained: why it matters, what to know, and questions to check yourself.</p>
+
+      <div class="h-courses">
+        {
+          courses.map((c) => (
+            <a class="cc" href={url(`${c.id}/`)} style={`--accent:${c.data.color}`} data-course={c.id}>
+              <div class="cc-art">
+                <CourseArt id={c.id} color={c.data.color} />
+                <span class="cc-code">{c.data.code}</span>
               </div>
-              <span class="bar-label small muted">
-                0/{c.notes.length} pages done
-              </span>
+              <div class="cc-body">
+                <h3 class="serif cc-title">{c.data.title}</h3>
+                {c.data.description && <p class="cc-desc">{c.data.description}</p>}
+                <ul class="cc-meta">
+                  <li>
+                    <b>{c.weeks}</b>/{c.data.totalWeeks} weeks
+                  </li>
+                  <li>
+                    <b>{c.notes.length}</b> pages
+                  </li>
+                  <li>
+                    <b>{c.stats.questions}</b> questions
+                  </li>
+                </ul>
+                <div class="progress" data-progress-of={c.ids.join(',')}>
+                  <div class="bar">
+                    <div class="bar-fill" />
+                  </div>
+                  <span class="bar-label small muted">0/{c.notes.length} pages done</span>
+                </div>
+                <div class="cc-foot">
+                  {c.latest && (
+                    <span class="cc-latest">
+                      Latest: W{c.latest.data.week} · {c.latest.data.title.split(/ — |:/)[0]}
+                    </span>
+                  )}
+                  <span class="cc-go" data-resume-course={c.id}>Open course →</span>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+        <div class="cc cc-add">
+          <div>
+            <p class="serif cc-title">More courses soon</p>
+            <p class="cc-desc">Send the slides and a new course appears here, with its own weeks and questions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────── How a week works ───────────── -->
+    <section class="h-section">
+      <h2 class="serif h-h2">Every week, the same <em>clear</em> shape</h2>
+      <p class="h-lead">No walls of copied slides. Each page is built to be understood, then remembered.</p>
+
+      <div class="tabs" role="tablist" aria-label="How a note page is structured">
+        <button role="tab" aria-selected="true" data-tab="why">Why it matters</button>
+        <button role="tab" aria-selected="false" data-tab="key">Key points</button>
+        <button role="tab" aria-selected="false" data-tab="visual">Visuals</button>
+        <button role="tab" aria-selected="false" data-tab="qa">Self-test</button>
+        <button role="tab" aria-selected="false" data-tab="progress">Progress</button>
+      </div>
+
+      <div class="panel-wrap">
+        <div class="panel" data-panel="why">
+          <div class="panel-demo">
+            <div class="demo-callout why">
+              <p class="dc-title">🎯 Why learn this?</p>
+              <p>A function that's only 10% of your runtime can never make the whole program more than ~11% faster, however good the parallel code is.</p>
+              <p class="dc-meta"><b>Real life:</b> deciding what to optimise first · <b>Connects to:</b> Assignment 1</p>
             </div>
-            <span class="small muted">
-              {new Set(c.notes.map((n) => n.data.week)).size} of {c.data.totalWeeks} weeks available
-            </span>
-          </a>
-        ))
-      }
-    </div>
+          </div>
+          <p class="panel-cap"><b>Motivation first.</b> Every topic opens with the problem it solves and where you'll meet it in real projects.</p>
+        </div>
+
+        <div class="panel" data-panel="key" hidden>
+          <div class="panel-demo">
+            <div class="demo-callout key">
+              <p class="dc-title">📌 Key points</p>
+              <ol>
+                <li><b>Speedup</b> S = T(1) / T(p)</li>
+                <li><b>Efficiency</b> E = S / p</li>
+                <li><b>Amdahl:</b> S can never exceed 1/β</li>
+              </ol>
+            </div>
+          </div>
+          <p class="panel-cap"><b>The essentials in 30 seconds.</b> A short list of what you must know, before the detail.</p>
+        </div>
+
+        <div class="panel" data-panel="visual" hidden>
+          <div class="panel-demo">
+            <svg viewBox="0 0 360 170" class="demo-mind">
+              <g class="mm-lines">
+                <path d="M180 85 L70 35"></path><path d="M180 85 L70 135"></path><path d="M180 85 L290 35"></path><path d="M180 85 L290 135"></path>
+              </g>
+              <circle cx="180" cy="85" r="34" class="mm-root"></circle>
+              <text x="180" y="89" class="mm-rt">Week 6</text>
+              {[[70, 35, 'Threads'], [70, 135, 'Race'], [290, 35, 'Mutex'], [290, 135, 'Deadlock']].map(([x, y, t]) => (
+                <g>
+                  <rect x={Number(x) - 44} y={Number(y) - 15} width="88" height="30" rx="15" class="mm-node" />
+                  <text x={x} y={Number(y) + 5} class="mm-t">{t}</text>
+                </g>
+              ))}
+            </svg>
+          </div>
+          <p class="panel-cap"><b>Mind maps, flowcharts and slide figures.</b> Diagrams stay sharp on any screen and switch to dark mode with you.</p>
+        </div>
+
+        <div class="panel" data-panel="qa" hidden>
+          <div class="panel-demo">
+            <details class="qa demo-qa" open>
+              <summary><span class="qa-q">Two threads run count++ 1000 times each. Always 2000?</span><span class="qa-level qa-hard">hard</span></summary>
+              <div class="qa-a">No. count++ is read → add → write. If both read the same value, one increment is lost.</div>
+            </details>
+            <details class="qa demo-qa">
+              <summary><span class="qa-q">Concurrency vs parallelism?</span><span class="qa-level qa-easy">easy</span></summary>
+              <div class="qa-a">Concurrency: in progress together. Parallelism: running at the same instant.</div>
+            </details>
+          </div>
+          <p class="panel-cap"><b>Tap to reveal.</b> Exam-style questions, from definitions to calculations and scenarios. Try it on the left.</p>
+        </div>
+
+        <div class="panel" data-panel="progress" hidden>
+          <div class="panel-demo">
+            <div class="demo-progress">
+              {['W1 Introduction', 'W2 Cloud computing', 'W3 Parallel machines', 'W4 Amdahl & Gustafson'].map((t, i) => (
+                <div class={`dp-row ${i < 2 ? 'done' : ''}`}>
+                  <span class="dp-num">{t.split(' ')[0]}</span>
+                  <span>{t.split(' ').slice(1).join(' ')}</span>
+                  <span class="dp-check">✓</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <p class="panel-cap"><b>Mark pages as done.</b> Your progress is saved on this device, so you always know what's left before a test.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────── Features ───────────── -->
+    <section class="h-section">
+      <div class="h-features">
+        <div class="ft">
+          <span class="ft-ic">✍️</span>
+          <h3>Explained, not copied</h3>
+          <p>Hard parts rewritten in plain words, with analogies and worked examples the slides skip.</p>
+        </div>
+        <div class="ft">
+          <span class="ft-ic">📱</span>
+          <h3>Made for your phone</h3>
+          <p>Clean layout, swipeable diagrams and tables, and a dark mode for late-night revision.</p>
+        </div>
+        <div class="ft">
+          <span class="ft-ic">⌘</span>
+          <h3>Find anything fast</h3>
+          <p>
+            Press <kbd class="search-kbd">⌘K</kbd> to search every topic across every course.
+          </p>
+          <button class="btn-pill" type="button" data-open-search>Try search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────── Closing CTA ───────────── -->
+    <section class="h-final">
+      <h2 class="serif">Ready for the next test?</h2>
+      <a class="btn-big" href="#courses">Pick a course</a>
+    </section>
   </main>
+
+  <footer class="h-footer">
+    <span class="brand-foot">StudyPack</span>
+    <span>Built from USM lecture material for personal revision.</span>
+    <a href="https://github.com/asyrafmika/StudyPack" rel="noopener">GitHub</a>
+  </footer>
+
   <script>
     import { paintProgress } from '../lib/progress';
     paintProgress();
+
+    // "Pick up where you left off": saved by note pages in localStorage
+    try {
+      const last = JSON.parse(localStorage.getItem('sp:last') || 'null');
+      const btn = document.getElementById('resume') as HTMLAnchorElement;
+      const label = document.getElementById('resume-label')!;
+      if (last?.u) {
+        btn.href = last.u;
+        label.textContent = `Continue · ${last.c} ${last.l}`;
+        btn.title = last.t;
+      } else {
+        btn.href = '#how';
+        label.textContent = 'How it works';
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.querySelector('.tabs')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      }
+      // Per-course resume link on each card
+      document.querySelectorAll<HTMLElement>('[data-resume-course]').forEach((el) => {
+        const l = JSON.parse(localStorage.getItem(`sp:last:${el.dataset.resumeCourse}`) || 'null');
+        if (!l?.u) return;
+        el.textContent = `Resume ${l.l} →`;
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          location.href = l.u;
+        });
+      });
+    } catch {
+      /* storage unavailable */
+    }
+
+    // Tabs
+    const tabs = document.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    const panels = document.querySelectorAll<HTMLElement>('[data-panel]');
+    tabs.forEach((t) =>
+      t.addEventListener('click', () => {
+        tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+        panels.forEach((p) => (p.hidden = p.dataset.panel !== t.dataset.tab));
+      }),
+    );
   </script>
 </Base>
