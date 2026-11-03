@@ -14,11 +14,13 @@ interface Props {
   caption?: string;
   /** Source slide, e.g. "Lecture 1, slide 12" */
   credit?: string;
+  /** Max display width in px — use for small/blurry or very tall images */
+  max?: number;
 }
-const { src, alt, caption, credit } = Astro.props;
+const { src, alt, caption, credit, max } = Astro.props;
 ---
 
-<figure class="figure">
+<figure class="figure" style={max ? `--fig-max:${max}px` : undefined}>
   <a href={src.src} target="_blank" rel="noopener" title="Open full size">
     <Image src={src} alt={alt} widths={[480, 800, 1200]} sizes="(max-width: 860px) 100vw, 760px" />
   </a>

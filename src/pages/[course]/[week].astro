@@ -68,6 +68,15 @@ const toc = headings.filter((h) => h.depth === 2);
         <h1>{note.data.title}</h1>
         {note.data.summary && <p class="muted lead">{note.data.summary}</p>}
         {
+          note.data.examinedIn.length > 0 && (
+            <p class="badges">
+              {note.data.examinedIn.map((e) => (
+                <span class="badge badge-exam">🏷️ {e}</span>
+              ))}
+            </p>
+          )
+        }
+        {
           toc.length > 2 && (
             <details class="toc">
               <summary>On this page</summary>

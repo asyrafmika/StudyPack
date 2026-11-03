@@ -257,7 +257,69 @@ a.week-row:hover {
   border-color: var(--accent);
 }
 .week-row.is-empty {
-  opacity: 0.55;
+  opacity: 0.6;
+}
+.week-row.is-break {
+  background: transparent;
+  border-style: dashed;
+}
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  color: var(--muted);
+}
+.badge-exam {
+  background: color-mix(in srgb, var(--exam) 14%, transparent);
+  color: var(--exam);
+}
+.badge-event {
+  background: color-mix(in srgb, var(--key) 14%, transparent);
+  color: var(--key);
+}
+.course-info {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  margin-bottom: 16px;
+}
+.course-info summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.course-info .prose {
+  margin-top: 12px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.chip {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  min-height: 36px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
 }
 .week-num {
   flex: none;
@@ -510,6 +572,7 @@ pre:has(> code.language-mermaid) {
 }
 .figure img {
   display: block;
+  max-width: min(100%, var(--fig-max, 100%));
   margin: 0 auto;
   border-radius: 10px;
   border: 1px solid var(--border);
@@ -520,6 +583,17 @@ pre:has(> code.language-mermaid) {
   font-size: 0.875rem;
   color: var(--muted);
   text-align: center;
+}
+
+/* Two images side by side on wide screens, stacked on phones */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.grid-2 .figure {
+  margin: 0;
 }
 
 /* Callouts */

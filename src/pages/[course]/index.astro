@@ -9,45 +9,146 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { course } = Astro.props;
+const c = course.data;
 const notes = await notesFor(course.id);
 const byWeek = new Map(notes.map((n) => [n.data.week, n]));
-const weeks = Array.from({ length: course.data.totalWeeks }, (_, i) => i + 1);
+const planned = new Map(c.schedule.map((s) => [s.week, s]));
+const weeks = Array.from({ length: c.totalWeeks }, (_, i) => i + 1);
 const ids = notes.map((n) => `${course.id}/${weekSlug(n.data.week)}`);
+// Filter chips = every assessment that at least one note is tagged with
+const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
 ---
 
-<Base title={course.data.code} description={course.data.description}>
-  <main class="container" style={`--accent:${course.data.color}`}>
-    <nav class="crumbs small"><a href={url()}>Courses</a> / {course.data.code}</nav>
+<Base title={c.code} description={c.description}>
+  <main class="container" style={`--accent:${c.color}`}>
+    <nav class="crumbs small"><a href={url()}>Courses</a> / {c.code}</nav>
     <section class="hero">
-      <span class="course-code">{course.data.code}</span>
-      <h1>{course.data.title}</h1>
-      {course.data.description && <p class="muted">{course.data.description}</p>}
+      <span class="course-code">{c.code}</span>
+      <h1>{c.title}</h1>
+      {c.description && <p class="muted">{c.description}</p>}
+      {
+        (c.lecturer || c.semester) && (
+          <p class="small muted">
+            {c.lecturer}
+            {c.lecturer && c.semester && ' · '}
+            {c.semester}
+          </p>
+        )
+      }
       <div class="progress" data-progress-of={ids.join(',')}>
         <div class="bar"><div class="bar-fill"></div></div>
         <span class="bar-label small muted"></span>
       </div>
     </section>
 
+    {
+      (c.assessments.length > 0 || c.outcomes.length > 0) && (
+        <details class="course-info">
+          <summary>📋 Course info — assessment &amp; learning outcomes</summary>
+          {c.assessments.length > 0 && (
+            <div class="prose">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Assessment</th>
+                    <th>Weight</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {c.assessments.map((a) => (
+                    <tr>
+                      <td>
+                        <strong>{a.name}</strong>
+                      </td>
+                      <td>{a.weight}</td>
+                      <td>{a.detail}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {c.outcomes.length > 0 && (
+            <ul class="small">
+              {c.outcomes.map((o) => (
+                <li>{o}</li>
+              ))}
+            </ul>
+          )}
+        </details>
+      )
+    }
+
+    {
+      examFilters.length > 0 && (
+        <div class="chips" role="group" aria-label="Filter weeks by assessment">
+          <button type="button" class="chip active" data-filter="">
+            All weeks
+          </button>
+          {examFilters.map((f) => (
+            <button type="button" class="chip" data-filter={f}>
+              {f}
+            </button>
+          ))}
+        </div>
+      )
+    }
+
     <ol class="week-list">
       {
         weeks.map((w) => {
           const n = byWeek.get(w);
+          const plan = planned.get(w);
+          const events = plan?.events ?? [];
+          if (plan?.isBreak) {
+            return (
+              <li data-exams="">
+                <div class="week-row is-break">
+                  <span class="week-num">W{w}</span>
+                  <span class="week-text muted">☕ {plan.topic}</span>
+                </div>
+              </li>
+            );
+          }
           return n ? (
-            <li>
+            <li data-exams={n.data.examinedIn.join('|')}>
               <a class="week-row" href={weekUrl(course.id, w)} data-progress-id={`${course.id}/${weekSlug(w)}`}>
                 <span class="week-num">W{w}</span>
                 <span class="week-text">
                   <strong>{n.data.title}</strong>
                   {n.data.summary && <span class="small muted">{n.data.summary}</span>}
+                  {(n.data.examinedIn.length > 0 || events.length > 0) && (
+                    <span class="badges">
+                      {n.data.examinedIn.map((e) => (
+                        <span class="badge badge-exam">🏷️ {e}</span>
+                      ))}
+                      {events.map((e) => (
+                        <span class="badge badge-event">📅 {e}</span>
+                      ))}
+                    </span>
+                  )}
                 </span>
-                <span class="week-check" aria-label="Done">✓</span>
+                <span class="week-check" aria-label="Done">
+                  ✓
+                </span>
               </a>
             </li>
           ) : (
-            <li>
+            <li data-exams="">
               <div class="week-row is-empty">
                 <span class="week-num">W{w}</span>
-                <span class="week-text muted">Coming soon</span>
+                <span class="week-text">
+                  <span>{plan?.topic ?? 'Coming soon'}</span>
+                  <span class="small muted">Notes coming soon</span>
+                  {events.length > 0 && (
+                    <span class="badges">
+                      {events.map((e) => (
+                        <span class="badge badge-event">📅 {e}</span>
+                      ))}
+                    </span>
+                  )}
+                </span>
               </div>
             </li>
           );
@@ -58,5 +159,18 @@ const ids = notes.map((n) => `${course.id}/${weekSlug(n.data.week)}`);
   <script>
     import { paintProgress } from '../../lib/progress';
     paintProgress();
+
+    // Assessment filter: show only weeks tagged with the chosen test/exam
+    const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+    const rows = document.querySelectorAll<HTMLLIElement>('.week-list > li');
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        const f = chip.dataset.filter ?? '';
+        chips.forEach((c) => c.classList.toggle('active', c === chip));
+        rows.forEach((li) => {
+          li.hidden = f !== '' && !(li.dataset.exams ?? '').split('|').includes(f);
+        });
+      }),
+    );
   </script>
 </Base>
