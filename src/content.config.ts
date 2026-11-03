@@ -37,13 +37,17 @@ const courses = defineCollection({
 });
 
 /**
- * notes — one MDX file per week: src/content/notes/<course-id>/week-NN.mdx
- * The id becomes "<course-id>/week-NN", which we split to find the course.
+ * notes — one MDX file per page: src/content/notes/<course-id>/week-NN[-name].mdx
+ * The id becomes "<course-id>/<file-name>"; the file name is also the URL slug.
+ * A week can have several pages — use `order` and `part` to sequence them.
  */
 const notes = defineCollection({
   loader: glob({ pattern: '*/week-*.mdx', base: './src/content/notes' }),
   schema: z.object({
     week: z.number().int().positive(),
+    /** Several pages in one week? Give each an order (1, 2 …) and a short part label. */
+    order: z.number().default(1),
+    part: z.string().optional(), // e.g. "Part 2"
     title: z.string(),
     summary: z.string().optional(),
     tags: z.array(z.string()).default([]),

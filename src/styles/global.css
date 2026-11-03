@@ -717,3 +717,25 @@ pre:has(> code.language-mermaid) {
 .pager-link:hover {
   border-color: var(--accent);
 }
+
+/* Part switcher when a week has several pages */
+.parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 10px;
+}
+.part {
+  padding: 4px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+.part.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}

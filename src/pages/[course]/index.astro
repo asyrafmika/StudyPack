@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
-import { sortedCourses, notesFor, url, weekSlug, weekUrl } from '../../lib/url';
+import { sortedCourses, notesFor, url, noteUrl, progressId } from '../../lib/url';
 
 export const getStaticPaths = (async () => {
   const courses = await sortedCourses();
@@ -11,10 +11,11 @@ export const getStaticPaths = (async () => {
 const { course } = Astro.props;
 const c = course.data;
 const notes = await notesFor(course.id);
-const byWeek = new Map(notes.map((n) => [n.data.week, n]));
+// A week can have several pages, so group notes by week number
+const byWeek = Map.groupBy(notes, (n) => n.data.week);
 const planned = new Map(c.schedule.map((s) => [s.week, s]));
 const weeks = Array.from({ length: c.totalWeeks }, (_, i) => i + 1);
-const ids = notes.map((n) => `${course.id}/${weekSlug(n.data.week)}`);
+const ids = notes.map(progressId);
 // Filter chips = every assessment that at least one note is tagged with
 const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
 ---
@@ -98,7 +99,7 @@ const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
     <ol class="week-list">
       {
         weeks.map((w) => {
-          const n = byWeek.get(w);
+          const pages = byWeek.get(w) ?? [];
           const plan = planned.get(w);
           const events = plan?.events ?? [];
           if (plan?.isBreak) {
@@ -111,29 +112,33 @@ const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
               </li>
             );
           }
-          return n ? (
-            <li data-exams={n.data.examinedIn.join('|')}>
-              <a class="week-row" href={weekUrl(course.id, w)} data-progress-id={`${course.id}/${weekSlug(w)}`}>
-                <span class="week-num">W{w}</span>
-                <span class="week-text">
-                  <strong>{n.data.title}</strong>
-                  {n.data.summary && <span class="small muted">{n.data.summary}</span>}
-                  {(n.data.examinedIn.length > 0 || events.length > 0) && (
-                    <span class="badges">
-                      {n.data.examinedIn.map((e) => (
-                        <span class="badge badge-exam">🏷️ {e}</span>
-                      ))}
-                      {events.map((e) => (
-                        <span class="badge badge-event">📅 {e}</span>
-                      ))}
-                    </span>
-                  )}
-                </span>
-                <span class="week-check" aria-label="Done">
-                  ✓
-                </span>
-              </a>
-            </li>
+          return pages.length ? (
+            pages.map((n, i) => (
+              <li data-exams={n.data.examinedIn.join('|')}>
+                <a class="week-row" href={noteUrl(n)} data-progress-id={progressId(n)}>
+                  <span class="week-num">W{w}</span>
+                  <span class="week-text">
+                    {n.data.part && <span class="small muted">{n.data.part}</span>}
+                    <strong>{n.data.title}</strong>
+                    {n.data.summary && <span class="small muted">{n.data.summary}</span>}
+                    {(n.data.examinedIn.length > 0 || (i === 0 && events.length > 0)) && (
+                      <span class="badges">
+                        {n.data.examinedIn.map((e) => (
+                          <span class="badge badge-exam">🏷️ {e}</span>
+                        ))}
+                        {i === 0 &&
+                          events.map((e) => (
+                            <span class="badge badge-event">📅 {e}</span>
+                          ))}
+                      </span>
+                    )}
+                  </span>
+                  <span class="week-check" aria-label="Done">
+                    ✓
+                  </span>
+                </a>
+              </li>
+            ))
           ) : (
             <li data-exams="">
               <div class="week-row is-empty">

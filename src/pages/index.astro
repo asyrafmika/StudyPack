@@ -1,11 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-import { sortedCourses, notesFor, url, weekSlug } from '../lib/url';
+import { sortedCourses, notesFor, url, progressId } from '../lib/url';
 
 const courses = await Promise.all(
   (await sortedCourses()).map(async (c) => {
     const notes = await notesFor(c.id);
-    return { ...c, notes, ids: notes.map((n) => `${c.id}/${weekSlug(n.data.week)}`) };
+    return { ...c, notes, ids: notes.map(progressId) };
   }),
 );
 ---
@@ -29,11 +29,11 @@ const courses = await Promise.all(
                 <div class="bar-fill" />
               </div>
               <span class="bar-label small muted">
-                0/{c.notes.length} weeks done
+                0/{c.notes.length} pages done
               </span>
             </div>
             <span class="small muted">
-              {c.notes.length} of {c.data.totalWeeks} weeks available
+              {new Set(c.notes.map((n) => n.data.week)).size} of {c.data.totalWeeks} weeks available
             </span>
           </a>
         ))

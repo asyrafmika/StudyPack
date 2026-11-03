@@ -2,13 +2,13 @@
 import type { GetStaticPaths } from 'astro';
 import { getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import { courseIdOf, notesFor, url, weekSlug, weekUrl } from '../../lib/url';
 import { getCollection } from 'astro:content';
+import { courseIdOf, noteLabel, noteSlug, notesFor, noteUrl, progressId, url } from '../../lib/url';
 
 export const getStaticPaths = (async () => {
   const notes = await getCollection('notes');
   return notes.map((note) => ({
-    params: { course: courseIdOf(note), week: weekSlug(note.data.week) },
+    params: { course: courseIdOf(note), slug: noteSlug(note) },
     props: { note },
   }));
 }) satisfies GetStaticPaths;
@@ -22,12 +22,13 @@ const siblings = await notesFor(courseId);
 const idx = siblings.findIndex((n) => n.id === note.id);
 const prev = siblings[idx - 1];
 const next = siblings[idx + 1];
-const progressId = `${courseId}/${weekSlug(note.data.week)}`;
+const doneId = progressId(note);
+const sameWeek = siblings.filter((n) => n.data.week === note.data.week);
 const { Content, headings } = await render(note);
 const toc = headings.filter((h) => h.depth === 2);
 ---
 
-<Base title={`${course.data.code} W${note.data.week}: ${note.data.title}`} description={note.data.summary}>
+<Base title={`${course.data.code} ${noteLabel(note)}: ${note.data.title}`} description={note.data.summary}>
   <button slot="menu-button" class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="Open week list" aria-controls="sidebar" aria-expanded="false">☰</button>
 
   <div class="page" style={`--accent:${course.data.color}`}>
@@ -42,10 +43,10 @@ const toc = headings.filter((h) => h.depth === 2);
             siblings.map((n) => (
               <li>
                 <a
-                  href={weekUrl(courseId, n.data.week)}
+                  href={noteUrl(n)}
                   class={n.id === note.id ? 'active' : ''}
                   aria-current={n.id === note.id ? 'page' : undefined}
-                  data-progress-id={`${courseId}/${weekSlug(n.data.week)}`}
+                  data-progress-id={progressId(n)}
                 >
                   <span class="week-num">W{n.data.week}</span>
                   <span class="side-title">{n.data.title}</span>
@@ -61,10 +62,25 @@ const toc = headings.filter((h) => h.depth === 2);
 
     <main class="note">
       <nav class="crumbs small">
-        <a href={url()}>Courses</a> / <a href={url(`${courseId}/`)}>{course.data.code}</a> / Week {note.data.week}
+        <a href={url()}>Courses</a> / <a href={url(`${courseId}/`)}>{course.data.code}</a> / Week {note.data.week}{note.data.part && ` · ${note.data.part}`}
       </nav>
       <header class="note-head">
-        <span class="course-code">Week {note.data.week}</span>
+        <span class="course-code">Week {note.data.week}{note.data.part && ` · ${note.data.part}`}</span>
+        {
+          sameWeek.length > 1 && (
+            <nav class="parts small" aria-label="Pages in this week">
+              {sameWeek.map((n) =>
+                n.id === note.id ? (
+                  <span class="part active">{n.data.part ?? n.data.title}</span>
+                ) : (
+                  <a class="part" href={noteUrl(n)}>
+                    {n.data.part ?? n.data.title}
+                  </a>
+                ),
+              )}
+            </nav>
+          )
+        }
         <h1>{note.data.title}</h1>
         {note.data.summary && <p class="muted lead">{note.data.summary}</p>}
         {
@@ -97,14 +113,14 @@ const toc = headings.filter((h) => h.depth === 2);
       </article>
 
       <div class="done-bar">
-        <button type="button" class="btn" id="done-btn" data-id={progressId}>Mark week as done</button>
+        <button type="button" class="btn" id="done-btn" data-id={doneId}>Mark as done</button>
       </div>
 
       <nav class="pager">
         {
           prev ? (
-            <a href={weekUrl(courseId, prev.data.week)} class="pager-link">
-              <span class="small muted">← Week {prev.data.week}</span>
+            <a href={noteUrl(prev)} class="pager-link">
+              <span class="small muted">← {noteLabel(prev)}</span>
               <span>{prev.data.title}</span>
             </a>
           ) : (
@@ -113,8 +129,8 @@ const toc = headings.filter((h) => h.depth === 2);
         }
         {
           next && (
-            <a href={weekUrl(courseId, next.data.week)} class="pager-link next">
-              <span class="small muted">Week {next.data.week} →</span>
+            <a href={noteUrl(next)} class="pager-link next">
+              <span class="small muted">{noteLabel(next)} →</span>
               <span>{next.data.title}</span>
             </a>
           )
@@ -131,7 +147,7 @@ const toc = headings.filter((h) => h.depth === 2);
     const id = btn.dataset.id!;
     const sync = () => {
       const done = isDone(id);
-      btn.textContent = done ? '✓ Done — mark as not done' : 'Mark week as done';
+      btn.textContent = done ? '✓ Done — mark as not done' : 'Mark as done';
       btn.classList.toggle('is-done', done);
       paintProgress();
     };

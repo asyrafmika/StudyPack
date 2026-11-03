@@ -33,6 +33,6 @@ export function paintProgress(root: ParentNode = document) {
     const bar = el.querySelector<HTMLElement>('.bar-fill');
     const label = el.querySelector<HTMLElement>('.bar-label');
     if (bar) bar.style.width = ids.length ? `${(done / ids.length) * 100}%` : '0%';
-    if (label) label.textContent = `${done}/${ids.length} weeks done`;
+    if (label) label.textContent = `${done}/${ids.length} pages done`;
   });
 }
