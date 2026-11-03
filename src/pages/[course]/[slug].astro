@@ -157,17 +157,48 @@ const toc = headings.filter((h) => h.depth === 2);
     });
     sync();
 
-    // Mobile drawer
+    // Sidebar toggle
+    // - Phone (≤860px): slide-in drawer over the page, closed by default
+    // - Desktop: docked panel that can be collapsed; the choice is remembered
     const menu = document.getElementById('menu-btn')!;
     const sidebar = document.getElementById('sidebar')!;
     const scrim = document.getElementById('scrim')!;
-    const setOpen = (open: boolean) => {
+    const root = document.documentElement;
+    const mobile = matchMedia('(max-width: 860px)');
+
+    const setDrawer = (open: boolean) => {
       sidebar.classList.toggle('open', open);
       scrim.hidden = !open;
       menu.setAttribute('aria-expanded', String(open));
     };
-    menu.addEventListener('click', () => setOpen(!sidebar.classList.contains('open')));
-    scrim.addEventListener('click', () => setOpen(false));
-    document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+    const setDocked = (open: boolean) => {
+      if (open) delete root.dataset.sidebar;
+      else root.dataset.sidebar = 'closed';
+      try {
+        localStorage.setItem('sp:sidebar', open ? 'open' : 'closed');
+      } catch {
+        /* storage unavailable — state just won't persist */
+      }
+      menu.setAttribute('aria-expanded', String(open));
+    };
+    const syncAria = () =>
+      menu.setAttribute(
+        'aria-expanded',
+        String(mobile.matches ? sidebar.classList.contains('open') : root.dataset.sidebar !== 'closed'),
+      );
+
+    menu.setAttribute('aria-label', 'Show or hide the week list');
+    menu.addEventListener('click', () => {
+      if (mobile.matches) setDrawer(!sidebar.classList.contains('open'));
+      else setDocked(root.dataset.sidebar === 'closed');
+    });
+    scrim.addEventListener('click', () => setDrawer(false));
+    document.addEventListener('keydown', (e) => e.key === 'Escape' && setDrawer(false));
+    // Resizing from phone to desktop width: close the drawer so it doesn't linger
+    mobile.addEventListener('change', () => {
+      setDrawer(false);
+      syncAria();
+    });
+    syncAria();
   </script>
 </Base>
