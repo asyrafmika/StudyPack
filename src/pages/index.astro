@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import { sortedCourses, notesFor, url, weekSlug } from '../lib/url';
+
+const courses = await Promise.all(
+  (await sortedCourses()).map(async (c) => {
+    const notes = await notesFor(c.id);
+    return { ...c, notes, ids: notes.map((n) => `${c.id}/${weekSlug(n.data.week)}`) };
+  }),
+);
+---
+
+<Base title="StudyPack">
+  <main class="container">
+    <section class="hero">
+      <h1>Your courses</h1>
+      <p class="muted">Weekly notes with diagrams, explanations and self-test questions.</p>
+    </section>
+
+    <div class="course-grid">
+      {
+        courses.map((c) => (
+          <a class="course-card" href={url(`${c.id}/`)} style={`--accent:${c.data.color}`}>
+            <span class="course-code">{c.data.code}</span>
+            <h2>{c.data.title}</h2>
+            {c.data.description && <p class="muted small">{c.data.description}</p>}
+            <div class="progress" data-progress-of={c.ids.join(',')}>
+              <div class="bar">
+                <div class="bar-fill" />
+              </div>
+              <span class="bar-label small muted">
+                0/{c.notes.length} weeks done
+              </span>
+            </div>
+            <span class="small muted">
+              {c.notes.length} of {c.data.totalWeeks} weeks available
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+  <script>
+    import { paintProgress } from '../lib/progress';
+    paintProgress();
+  </script>
+</Base>

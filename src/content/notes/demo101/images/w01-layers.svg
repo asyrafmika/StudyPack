@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" width="640" height="300" font-family="system-ui, sans-serif">
+  <rect width="640" height="300" fill="#ffffff"/>
+  <g font-size="18" font-weight="600">
+    <rect x="40" y="20" width="400" height="56" rx="10" fill="#e8eeff" stroke="#4f7cff" stroke-width="2"/>
+    <text x="60" y="55" fill="#1b1f24">Application — HTTP, DNS</text>
+    <rect x="40" y="86" width="400" height="56" rx="10" fill="#e9f7ef" stroke="#2e9d5b" stroke-width="2"/>
+    <text x="60" y="121" fill="#1b1f24">Transport — TCP / UDP</text>
+    <rect x="40" y="152" width="400" height="56" rx="10" fill="#fff4e0" stroke="#e08600" stroke-width="2"/>
+    <text x="60" y="187" fill="#1b1f24">Internet — IP</text>
+    <rect x="40" y="218" width="400" height="56" rx="10" fill="#f0f2f5" stroke="#5d6673" stroke-width="2"/>
+    <text x="60" y="253" fill="#1b1f24">Link — Wi-Fi, Ethernet</text>
+  </g>
+  <g font-size="15" fill="#5d6673">
+    <path d="M460 48 h30" stroke="#4f7cff" stroke-width="2"/>
+    <text x="500" y="53">what to say</text>
+    <path d="M460 114 h30" stroke="#2e9d5b" stroke-width="2"/>
+    <text x="500" y="119">deliver reliably</text>
+    <path d="M460 180 h30" stroke="#e08600" stroke-width="2"/>
+    <text x="500" y="185">find the route</text>
+    <path d="M460 246 h30" stroke="#5d6673" stroke-width="2"/>
+    <text x="500" y="251">send the bits</text>
+  </g>
+</svg>

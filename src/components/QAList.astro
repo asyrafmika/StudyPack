@@ -1,0 +1,32 @@
+---
+/** Wraps a group of <QA> items and adds a "Reveal all / Hide all" toggle. */
+interface Props {
+  title?: string;
+}
+const { title = 'Test yourself' } = Astro.props;
+---
+
+<section class="qa-list" data-qa-list>
+  <div class="qa-list-head">
+    <h2 id="qa">❓ {title}</h2>
+    <button type="button" class="btn-ghost" data-qa-toggle>Reveal all</button>
+  </div>
+  <p class="muted small">Try answering in your head first, then tap a question to check.</p>
+  <slot />
+</section>
+
+<script>
+  for (const list of document.querySelectorAll<HTMLElement>('[data-qa-list]')) {
+    const btn = list.querySelector<HTMLButtonElement>('[data-qa-toggle]')!;
+    const items = () => [...list.querySelectorAll<HTMLDetailsElement>('details.qa')];
+    const sync = () => {
+      btn.textContent = items().every((d) => d.open) ? 'Hide all' : 'Reveal all';
+    };
+    btn.addEventListener('click', () => {
+      const open = !items().every((d) => d.open);
+      items().forEach((d) => (d.open = open));
+      sync();
+    });
+    list.addEventListener('toggle', sync, true);
+  }
+</script>

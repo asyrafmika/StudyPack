@@ -1,0 +1,148 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { courseIdOf, notesFor, url, weekSlug, weekUrl } from '../../lib/url';
+import { getCollection } from 'astro:content';
+
+export const getStaticPaths = (async () => {
+  const notes = await getCollection('notes');
+  return notes.map((note) => ({
+    params: { course: courseIdOf(note), week: weekSlug(note.data.week) },
+    props: { note },
+  }));
+}) satisfies GetStaticPaths;
+
+const { note } = Astro.props;
+const courseId = courseIdOf(note);
+const course = await getEntry('courses', courseId);
+if (!course) throw new Error(`Note "${note.id}" is in folder "${courseId}" but no course with that id exists in courses.json`);
+
+const siblings = await notesFor(courseId);
+const idx = siblings.findIndex((n) => n.id === note.id);
+const prev = siblings[idx - 1];
+const next = siblings[idx + 1];
+const progressId = `${courseId}/${weekSlug(note.data.week)}`;
+const { Content, headings } = await render(note);
+const toc = headings.filter((h) => h.depth === 2);
+---
+
+<Base title={`${course.data.code} W${note.data.week}: ${note.data.title}`} description={note.data.summary}>
+  <button slot="menu-button" class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="Open week list" aria-controls="sidebar" aria-expanded="false">☰</button>
+
+  <div class="page" style={`--accent:${course.data.color}`}>
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-course" href={url(`${courseId}/`)}>
+        <span class="course-code">{course.data.code}</span>
+        <span class="small">{course.data.title}</span>
+      </a>
+      <nav>
+        <ol class="side-weeks">
+          {
+            siblings.map((n) => (
+              <li>
+                <a
+                  href={weekUrl(courseId, n.data.week)}
+                  class={n.id === note.id ? 'active' : ''}
+                  aria-current={n.id === note.id ? 'page' : undefined}
+                  data-progress-id={`${courseId}/${weekSlug(n.data.week)}`}
+                >
+                  <span class="week-num">W{n.data.week}</span>
+                  <span class="side-title">{n.data.title}</span>
+                  <span class="week-check" aria-hidden="true">✓</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+    </aside>
+    <div class="scrim" id="scrim" hidden></div>
+
+    <main class="note">
+      <nav class="crumbs small">
+        <a href={url()}>Courses</a> / <a href={url(`${courseId}/`)}>{course.data.code}</a> / Week {note.data.week}
+      </nav>
+      <header class="note-head">
+        <span class="course-code">Week {note.data.week}</span>
+        <h1>{note.data.title}</h1>
+        {note.data.summary && <p class="muted lead">{note.data.summary}</p>}
+        {
+          toc.length > 2 && (
+            <details class="toc">
+              <summary>On this page</summary>
+              <ul>
+                {toc.map((h) => (
+                  <li>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )
+        }
+      </header>
+
+      <article class="prose">
+        <Content />
+      </article>
+
+      <div class="done-bar">
+        <button type="button" class="btn" id="done-btn" data-id={progressId}>Mark week as done</button>
+      </div>
+
+      <nav class="pager">
+        {
+          prev ? (
+            <a href={weekUrl(courseId, prev.data.week)} class="pager-link">
+              <span class="small muted">← Week {prev.data.week}</span>
+              <span>{prev.data.title}</span>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next && (
+            <a href={weekUrl(courseId, next.data.week)} class="pager-link next">
+              <span class="small muted">Week {next.data.week} →</span>
+              <span>{next.data.title}</span>
+            </a>
+          )
+        }
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    import { isDone, setDone, paintProgress } from '../../lib/progress';
+
+    // Done button
+    const btn = document.getElementById('done-btn') as HTMLButtonElement;
+    const id = btn.dataset.id!;
+    const sync = () => {
+      const done = isDone(id);
+      btn.textContent = done ? '✓ Done — mark as not done' : 'Mark week as done';
+      btn.classList.toggle('is-done', done);
+      paintProgress();
+    };
+    btn.addEventListener('click', () => {
+      setDone(id, !isDone(id));
+      sync();
+    });
+    sync();
+
+    // Mobile drawer
+    const menu = document.getElementById('menu-btn')!;
+    const sidebar = document.getElementById('sidebar')!;
+    const scrim = document.getElementById('scrim')!;
+    const setOpen = (open: boolean) => {
+      sidebar.classList.toggle('open', open);
+      scrim.hidden = !open;
+      menu.setAttribute('aria-expanded', String(open));
+    };
+    menu.addEventListener('click', () => setOpen(!sidebar.classList.contains('open')));
+    scrim.addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+  </script>
+</Base>

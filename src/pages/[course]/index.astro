@@ -1,0 +1,62 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import { sortedCourses, notesFor, url, weekSlug, weekUrl } from '../../lib/url';
+
+export const getStaticPaths = (async () => {
+  const courses = await sortedCourses();
+  return courses.map((course) => ({ params: { course: course.id }, props: { course } }));
+}) satisfies GetStaticPaths;
+
+const { course } = Astro.props;
+const notes = await notesFor(course.id);
+const byWeek = new Map(notes.map((n) => [n.data.week, n]));
+const weeks = Array.from({ length: course.data.totalWeeks }, (_, i) => i + 1);
+const ids = notes.map((n) => `${course.id}/${weekSlug(n.data.week)}`);
+---
+
+<Base title={course.data.code} description={course.data.description}>
+  <main class="container" style={`--accent:${course.data.color}`}>
+    <nav class="crumbs small"><a href={url()}>Courses</a> / {course.data.code}</nav>
+    <section class="hero">
+      <span class="course-code">{course.data.code}</span>
+      <h1>{course.data.title}</h1>
+      {course.data.description && <p class="muted">{course.data.description}</p>}
+      <div class="progress" data-progress-of={ids.join(',')}>
+        <div class="bar"><div class="bar-fill"></div></div>
+        <span class="bar-label small muted"></span>
+      </div>
+    </section>
+
+    <ol class="week-list">
+      {
+        weeks.map((w) => {
+          const n = byWeek.get(w);
+          return n ? (
+            <li>
+              <a class="week-row" href={weekUrl(course.id, w)} data-progress-id={`${course.id}/${weekSlug(w)}`}>
+                <span class="week-num">W{w}</span>
+                <span class="week-text">
+                  <strong>{n.data.title}</strong>
+                  {n.data.summary && <span class="small muted">{n.data.summary}</span>}
+                </span>
+                <span class="week-check" aria-label="Done">✓</span>
+              </a>
+            </li>
+          ) : (
+            <li>
+              <div class="week-row is-empty">
+                <span class="week-num">W{w}</span>
+                <span class="week-text muted">Coming soon</span>
+              </div>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </main>
+  <script>
+    import { paintProgress } from '../../lib/progress';
+    paintProgress();
+  </script>
+</Base>

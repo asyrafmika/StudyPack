@@ -1,0 +1,21 @@
+---
+/**
+ * One question with a hidden answer. Uses native <details> so it works
+ * without JavaScript and is keyboard/screen-reader friendly.
+ *
+ * <QA q="What is X?" level="easy">Answer in **markdown**.</QA>
+ */
+interface Props {
+  q: string;
+  level?: 'easy' | 'medium' | 'hard';
+}
+const { q, level } = Astro.props;
+---
+
+<details class="qa">
+  <summary>
+    <span class="qa-q">{q}</span>
+    {level && <span class={`qa-level qa-${level}`}>{level}</span>}
+  </summary>
+  <div class="qa-a"><slot /></div>
+</details>

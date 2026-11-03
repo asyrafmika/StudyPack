@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+import { url } from '../lib/url';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'Study notes and Q&A, week by week.' } = Astro.props;
+const fullTitle = title === 'StudyPack' ? title : `${title} · StudyPack`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <title>{fullTitle}</title>
+    <!-- Set theme before paint so dark-mode users don't see a white flash -->
+    <script is:inline>
+      (() => {
+        let t = null;
+        try { t = localStorage.getItem('sp:theme'); } catch {}
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <slot name="menu-button" />
+        <a class="brand" href={url()}>
+          <span class="brand-mark" aria-hidden="true">📚</span> StudyPack
+        </a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <span class="theme-icon-light" aria-hidden="true">☀️</span>
+          <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <slot />
+
+    <script>
+      import { initTheme } from '../lib/theme';
+      import { renderMermaid } from '../lib/mermaid';
+      initTheme(() => renderMermaid(true));
+      renderMermaid();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+---
+/**
+ * Coloured box for highlighted content.
+ * <Callout type="why">…</Callout>   — 🎯 Why learn this?
+ * <Callout type="key">…</Callout>   — 📌 Key points
+ * <Callout type="tip">…</Callout>   — 💡 Tip
+ * <Callout type="warn">…</Callout>  — ⚠️ Common mistake
+ * <Callout type="exam">…</Callout>  — 📝 Likely exam question
+ * <Callout type="note">…</Callout>  — ℹ️ Note
+ */
+type Kind = 'why' | 'key' | 'tip' | 'warn' | 'exam' | 'note';
+interface Props {
+  type?: Kind;
+  title?: string;
+}
+const presets: Record<Kind, { icon: string; label: string }> = {
+  why: { icon: '🎯', label: 'Why learn this?' },
+  key: { icon: '📌', label: 'Key points' },
+  tip: { icon: '💡', label: 'Tip' },
+  warn: { icon: '⚠️', label: 'Common mistake' },
+  exam: { icon: '📝', label: 'Likely exam question' },
+  note: { icon: 'ℹ️', label: 'Note' },
+};
+const { type = 'note', title } = Astro.props;
+const p = presets[type];
+---
+
+<aside class={`callout callout-${type}`}>
+  <p class="callout-title"><span aria-hidden="true">{p.icon}</span> {title ?? p.label}</p>
+  <div class="callout-body"><slot /></div>
+</aside>
