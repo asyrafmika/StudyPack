@@ -43,9 +43,9 @@ const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
     </section>
 
     {
-      (c.assessments.length > 0 || c.outcomes.length > 0) && (
+      (c.assessments.length > 0 || c.outcomes.length > 0 || c.topics.length > 0) && (
         <details class="course-info">
-          <summary>📋 Course info — assessment &amp; learning outcomes</summary>
+          <summary>📋 Course info</summary>
           {c.assessments.length > 0 && (
             <div class="prose">
               <table>
@@ -69,6 +69,16 @@ const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
                 </tbody>
               </table>
             </div>
+          )}
+          {c.topics.length > 0 && (
+            <>
+              <p class="small"><strong>Course topics</strong></p>
+              <ol class="small">
+                {c.topics.map((t) => (
+                  <li>{t}</li>
+                ))}
+              </ol>
+            </>
           )}
           {c.outcomes.length > 0 && (
             <ul class="small">

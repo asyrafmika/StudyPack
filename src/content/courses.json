@@ -15,28 +15,150 @@
       "CO3 — Analyse issues in designing and developing parallel applications and cloud applications by using cloud services."
     ],
     "assessments": [
-      { "name": "Final Exam", "weight": "50%", "detail": "2 hours · CO1 + CO3 (apply & analyse)" },
-      { "name": "Assignment 1", "weight": "20%", "detail": "Group · given W3, due W9 · CO2 (build parallel programs)" },
-      { "name": "Assignment 2", "weight": "10%", "detail": "Group · given W7, due W14 · CO1" },
-      { "name": "Test 1", "weight": "10%", "detail": "1 hour · covers Weeks 1–5 · CO3" },
-      { "name": "Test 2", "weight": "10%", "detail": "1 hour · in Week 14 · covers Weeks 9–12 topics · CO1" }
+      {
+        "name": "Final Exam",
+        "weight": "50%",
+        "detail": "2 hours · CO1 + CO3 (apply & analyse)"
+      },
+      {
+        "name": "Assignment 1",
+        "weight": "20%",
+        "detail": "Group · given W3, due W9 · CO2 (build parallel programs)"
+      },
+      {
+        "name": "Assignment 2",
+        "weight": "10%",
+        "detail": "Group · given W7, due W14 · CO1"
+      },
+      {
+        "name": "Test 1",
+        "weight": "10%",
+        "detail": "1 hour · covers Weeks 1–5 · CO3"
+      },
+      {
+        "name": "Test 2",
+        "weight": "10%",
+        "detail": "1 hour · in Week 14 · covers Weeks 9–12 topics · CO1"
+      }
     ],
     "schedule": [
-      { "week": 1, "topic": "Course Overview · Introduction to Parallel & Cloud Computing (HPC)" },
-      { "week": 2, "topic": "Introduction (cont.) · Cloud Computing and Related Technology" },
-      { "week": 3, "topic": "Parallel Architecture — Von Neumann to GPU, cache coherence, platforms", "events": ["Assignment 1 given"] },
-      { "week": 4, "topic": "Parallel Program Basics — types of parallelism, overhead, performance measures" },
-      { "week": 5, "topic": "Communication in Distributed Systems — message passing, TCP/IP, RPC, RMI" },
-      { "week": 6, "topic": "Shared Memory Programming — threads, race conditions, Pthreads, mutex, semaphores" },
-      { "week": 7, "topic": "Pthreads & OpenMP — directives, reduction, performance", "events": ["Assignment 2 given"] },
-      { "week": 8, "topic": "Mid-semester break", "isBreak": true },
-      { "week": 9, "topic": "Virtualization — virtual machines, Docker", "events": ["Assignment 1 due"] },
-      { "week": 10, "topic": "Container Orchestration — Kubernetes" },
-      { "week": 11, "topic": "GPU Programming — CUDA, OpenCL, OpenACC" },
-      { "week": 12, "topic": "Cloud Programming — Hadoop, MapReduce, HDFS" },
-      { "week": 13, "topic": "Cloud Service Models — IaaS, PaaS, SaaS" },
-      { "week": 14, "topic": "Cloud Architecture & Management — OpenStack, AWS, fault tolerance", "events": ["Test 2", "Assignment 2 due"] },
-      { "week": 15, "topic": "Security in the Cloud" }
+      {
+        "week": 1,
+        "topic": "Course Overview · Introduction to Parallel & Cloud Computing (HPC)"
+      },
+      {
+        "week": 2,
+        "topic": "Introduction (cont.) · Cloud Computing and Related Technology"
+      },
+      {
+        "week": 3,
+        "topic": "Parallel Architecture — Von Neumann to GPU, cache coherence, platforms",
+        "events": [
+          "Assignment 1 given"
+        ]
+      },
+      {
+        "week": 4,
+        "topic": "Parallel Program Basics — types of parallelism, overhead, performance measures"
+      },
+      {
+        "week": 5,
+        "topic": "Communication in Distributed Systems — message passing, TCP/IP, RPC, RMI"
+      },
+      {
+        "week": 6,
+        "topic": "Shared Memory Programming — threads, race conditions, Pthreads, mutex, semaphores"
+      },
+      {
+        "week": 7,
+        "topic": "Pthreads & OpenMP — directives, reduction, performance",
+        "events": [
+          "Assignment 2 given"
+        ]
+      },
+      {
+        "week": 8,
+        "topic": "Mid-semester break",
+        "isBreak": true
+      },
+      {
+        "week": 9,
+        "topic": "Virtualization — virtual machines, Docker",
+        "events": [
+          "Assignment 1 due"
+        ]
+      },
+      {
+        "week": 10,
+        "topic": "Container Orchestration — Kubernetes"
+      },
+      {
+        "week": 11,
+        "topic": "GPU Programming — CUDA, OpenCL, OpenACC"
+      },
+      {
+        "week": 12,
+        "topic": "Cloud Programming — Hadoop, MapReduce, HDFS"
+      },
+      {
+        "week": 13,
+        "topic": "Cloud Service Models — IaaS, PaaS, SaaS"
+      },
+      {
+        "week": 14,
+        "topic": "Cloud Architecture & Management — OpenStack, AWS, fault tolerance",
+        "events": [
+          "Test 2",
+          "Assignment 2 due"
+        ]
+      },
+      {
+        "week": 15,
+        "topic": "Security in the Cloud"
+      }
+    ]
+  },
+  {
+    "id": "cse441",
+    "code": "CSE441",
+    "title": "Software Process & Quality Assurance",
+    "description": "How software is actually produced: modelling processes, life cycle models (waterfall to Scrum), managing and tailoring processes, and assuring quality.",
+    "lecturer": "Ts. Dr. Mohd Heikal Husin",
+    "semester": "Semester 1, 2026/2027",
+    "totalWeeks": 14,
+    "color": "#10b981",
+    "order": 2,
+    "schedule": [
+      {
+        "week": 1,
+        "topic": "Topic 1 — Foundations"
+      },
+      {
+        "week": 2,
+        "topic": "Topic 2 — Process definition & modelling (Part 1)"
+      },
+      {
+        "week": 3,
+        "topic": "Topic 2 — Detailed-level modelling notations (Part 2)"
+      },
+      {
+        "week": 4,
+        "topic": "Topic 3 — Software processes in the product life cycle"
+      },
+      {
+        "week": 5,
+        "topic": "Topic 4 — Governance & management of software processes"
+      }
+    ],
+    "topics": [
+      "Topic 1 — Foundations",
+      "Topic 2 — Software Process Definition and Modelling",
+      "Topic 3 — Software Processes in the Software Product Life Cycle",
+      "Topic 4 — Governance and Management of Software Processes",
+      "Topic 5 — Software Process Assessment and Improvement",
+      "Topic 6 — Software and Software Process Measurement",
+      "Topic 7 — Tool Support for Software Processes",
+      "Topic 8 — Selected Current Trends in Software Processes"
     ]
   }
 ]

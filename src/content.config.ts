@@ -19,6 +19,7 @@ const courses = defineCollection({
     color: z.string().default('#4f7cff'), // accent colour for the course
     order: z.number().default(0),
     outcomes: z.array(z.string()).default([]),
+    topics: z.array(z.string()).default([]), // course syllabus topics, if the course is organised by topic
     assessments: z
       .array(z.object({ name: z.string(), weight: z.string(), detail: z.string().optional() }))
       .default([]),
