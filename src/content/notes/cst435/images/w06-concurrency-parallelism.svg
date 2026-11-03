@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 330" width="720" height="330" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <rect width="720" height="330" fill="#ffffff"/>
+  <!-- Concurrency: one core, time-sliced -->
+  <text x="20" y="34" font-size="18" font-weight="700" fill="#1b1f24">Concurrency — 1 core, threads take turns</text>
+  <text x="20" y="80" font-size="14" fill="#5d6673">Thread 1</text>
+  <text x="20" y="116" font-size="14" fill="#5d6673">Thread 2</text>
+  <g>
+    <rect x="100" y="66" width="90" height="20" rx="4" fill="#3b82f6"/>
+    <rect x="280" y="66" width="90" height="20" rx="4" fill="#3b82f6"/>
+    <rect x="460" y="66" width="90" height="20" rx="4" fill="#3b82f6"/>
+    <rect x="190" y="102" width="90" height="20" rx="4" fill="#f59e0b"/>
+    <rect x="370" y="102" width="90" height="20" rx="4" fill="#f59e0b"/>
+    <rect x="550" y="102" width="90" height="20" rx="4" fill="#f59e0b"/>
+    <line x1="100" y1="76" x2="640" y2="76" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <line x1="100" y1="112" x2="640" y2="112" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 4"/>
+  </g>
+  <text x="100" y="146" font-size="13" fill="#5d6673">Both are "in progress", but only one actually runs at any instant (time slicing).</text>
+
+  <!-- Parallelism: two cores -->
+  <text x="20" y="200" font-size="18" font-weight="700" fill="#1b1f24">Parallelism — 2 cores, threads run at the same time</text>
+  <text x="20" y="246" font-size="14" fill="#5d6673">Thread 1</text>
+  <text x="20" y="282" font-size="14" fill="#5d6673">Thread 2</text>
+  <rect x="100" y="232" width="270" height="20" rx="4" fill="#3b82f6"/>
+  <rect x="100" y="268" width="270" height="20" rx="4" fill="#f59e0b"/>
+  <text x="380" y="247" font-size="13" fill="#5d6673">← core 0</text>
+  <text x="380" y="283" font-size="13" fill="#5d6673">← core 1</text>
+  <text x="100" y="314" font-size="13" fill="#5d6673">Same work finishes in about half the time. Needs multiple cores.</text>
+
+  <!-- time arrow -->
+  <line x1="660" y1="300" x2="700" y2="300" stroke="#1b1f24" stroke-width="1.5"/>
+  <polygon points="700,300 692,295 692,305" fill="#1b1f24"/>
+  <text x="664" y="320" font-size="12" fill="#1b1f24">time</text>
+</svg>

@@ -739,3 +739,8 @@ pre:has(> code.language-mermaid) {
   color: #fff;
   font-weight: 600;
 }
+
+/* Wide sequence diagrams: keep text readable and let them scroll sideways on phones */
+.diagram svg[aria-roledescription='sequence'] {
+  min-width: 620px;
+}
