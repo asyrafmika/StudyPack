@@ -1,0 +1,27 @@
+{
+  "must": [
+    "Agile = react fast to change, self-organising teams; arose from heavy 1980s–90s overheads.",
+    "Manifesto: **individuals > processes, working software > docs, collaboration > contracts, responding to change > plans**.",
+    "Scrum phases: **outline planning → sprint cycles → closure**. Sprints 2–4 weeks from the **product backlog**.",
+    "**Scrum master** = facilitator, runs daily scrum, tracks backlog, **protects the team**.",
+    "**CMMI** levels: **1 Initial, 2 Managed, 3 Defined, 4 Quantitatively Managed, 5 Optimizing**.",
+    "White box: **statement ⊂ branch ⊂ path** coverage. Black box: **boundary values, equivalence partitions, decision tables**."
+  ],
+  "formulas": [
+    "Paths with n independent if-else = 2ⁿ",
+    "Decision table rules = 2^(conditions)",
+    "Boundaries for range a–b: a−1, a, b, b+1"
+  ],
+  "traps": [
+    "100% statement coverage ≠ bug-free.",
+    "CMMI L2 = per project; L3 = organisation-wide standard."
+  ],
+  "likely": [
+    "Build a product backlog with user stories (As a / I want / so that + acceptance criteria).",
+    "Explain the Scrum sprint cycle and the Scrum master's role.",
+    "Derive boundary values / partitions / decision table for a rule."
+  ],
+  "tricks": [
+    "CMMI = **'In My Dream QA is Optimal'** (I, M, D, Q, O)."
+  ]
+}

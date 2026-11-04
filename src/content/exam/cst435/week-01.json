@@ -1,0 +1,28 @@
+{
+  "must": [
+    "**Moore's Law**: transistor count doubles every ~18–24 months. It's **clock speed** that stopped rising (~2005), not transistor count.",
+    "**Power wall**: P ∝ C·V²·f. Higher f needs higher V, and V is squared → heat explodes.",
+    "**Multi-core (CMP)** = several cores on one die/socket. **Hyper-Threading** = 2 threads sharing one core (not 2× speed).",
+    "Three parallel machines: **Cluster** (many PCs + network), **SMP** (many CPUs, one memory), **CMP** (many cores, one chip).",
+    "**Parallel** = faster execution, fine grain, tightly coupled, homogeneous. **Distributed** = resource sharing/throughput, coarse grain, loosely coupled, heterogeneous.",
+    "Motivations: performance, price/performance, technology limits, inherently parallel apps, sharing, availability, incremental growth, **scavenging** (~25% utilisation)."
+  ],
+  "formulas": [
+    "P ∝ C · V² · f",
+    "2 cores @ f/2, V/2: P = 2C·(V/2)²·(f/2) = **¼** of 1 core @ f, same work",
+    "Threads/chip = cores/chip × threads/core (Sun '07: 8 × 16 = 128)"
+  ],
+  "traps": [
+    "Saying Moore's Law 'ended' because CPUs stopped getting faster — it's about transistor count.",
+    "Treating Hyper-Threading as extra cores: 8 logical processors on a 4-core HT chip = 4 real cores.",
+    "Mixing up grain sizes: parallel = **fine**, distributed = **coarse**."
+  ],
+  "likely": [
+    "Why did manufacturers move to multi-core? (power/heat, design complexity, multithreaded apps)",
+    "Compare parallel vs distributed computing (goal, grain, architecture).",
+    "Machine A vs B cost question: time → cost → value of time saved → choose and justify."
+  ],
+  "tricks": [
+    "Multi-core reasons = **'Hot, Hard, Already threaded'**: heat, hard to design, apps already multithreaded."
+  ]
+}

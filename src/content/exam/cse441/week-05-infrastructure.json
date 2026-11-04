@@ -1,0 +1,23 @@
+{
+  "must": [
+    "Process management = **direction, control and coordination** of work (SEVOCAB).",
+    "Two levels: **organisation** and **project/team**.",
+    "Infrastructure: **roles, notation, process asset management & control**.",
+    "**RACI**: Responsible (≥1), **Accountable (exactly 1)**, Consulted (two-way), Informed (one-way).",
+    "Roles: **owner** (accountable, approves changes), **engineer** (defines), **tailor** (adapts, e.g. Scrum master), **performer** (does it daily), **assurance** (verifies).",
+    "Table 4.1: owner is **A** for everything except daily performance (**I**); performer is **A,R** for daily work.",
+    "CS AutoSystems: superficial process by a production-focused quality manager → developers re-wrote it as engineers + performers."
+  ],
+  "traps": [
+    "Two A's in one RACI row.",
+    "Confusing process owner (accountable) with process assurance (verifies conformance)."
+  ],
+  "likely": [
+    "Describe process owner vs process assurance.",
+    "Build a RACI row/chart.",
+    "Summarise the CS AutoSystems case and its lesson."
+  ],
+  "tricks": [
+    "RACI: **'Doer, Decider, Discussed with, Told'**."
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "must": [
+    "Communication models: **interprocess** (socket, MPI, multicast, overlay), **remote invocation** (request-reply, RPC, RMI), **indirect** (group, pub-sub, queues, shared memory).",
+    "**MPI** = library specification (not a language). 6 basics: **Init, Finalize, Comm_size, Comm_rank, Send, Recv**.",
+    "Blocking vs non-blocking; send modes: **standard, synchronous, buffered, ready** (Send/Ssend/Bsend/Rsend; I- versions non-blocking).",
+    "Collectives: **barrier, broadcast, scatter, gather, reduction**. Communicator + **rank**; default **MPI_COMM_WORLD**.",
+    "Request-reply failures: **timeouts, duplicate filtering, reply history**; styles **R, RR, RRA**.",
+    "**RPC**: client stub **marshals** args → network → server stub/dispatcher. Sync / async / deferred sync / one-way.",
+    "**RMI**: proxy, skeleton, dispatcher, remote reference module; methods on objects with remote object references.",
+    "**gRPC** = Google, protobuf + HTTP/2. Group comm ordering: **FIFO, causal, total**. Queues: **Put, Get, Poll (non-blocking), Notify**."
+  ],
+  "formulas": [
+    "RPC 10 steps: client→stub→OS → network → OS→server stub→server, then the same back"
+  ],
+  "traps": [
+    "Two blocking synchronous sends facing each other → **deadlock**.",
+    "Pub-sub delivers to **all** subscribers; a queue delivers each message to **one** consumer."
+  ],
+  "likely": [
+    "List the steps of an RPC.",
+    "Compare RPC and RMI (similarities/differences).",
+    "Explain blocking vs non-blocking MPI with examples."
+  ],
+  "tricks": [
+    "MPI's six = **'Start, Stop, How many, Who am I, Send, Receive'**."
+  ]
+}

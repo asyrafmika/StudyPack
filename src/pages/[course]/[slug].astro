@@ -29,6 +29,7 @@ const { Content, headings } = await render(note);
 const cards = extractCards(note.body);
 const levels = countByLevel(cards);
 const flashUrl = `${noteUrl(note)}flashcards/`;
+const hasExam = Boolean(await getEntry('exam', note.id));
 const toc = headings.filter((h) => h.depth === 2);
 ---
 
@@ -97,14 +98,27 @@ const toc = headings.filter((h) => h.depth === 2);
           )
         }
         {
-          cards.length > 0 && (
-            <a class="fc-cta-mini" href={flashUrl}>
-              <span class="fc-cta-ic" aria-hidden="true">🃏</span>
-              <span>
-                <b>Flashcards</b> · {cards.length} questions
-              </span>
-              <span class="fc-cta-go">Practise →</span>
-            </a>
+          (cards.length > 0 || hasExam) && (
+            <div class="study-tools">
+              {hasExam && (
+                <a class="fc-cta-mini xs-mini" href={`${noteUrl(note)}exam/`}>
+                  <span class="fc-cta-ic" aria-hidden="true">⚡</span>
+                  <span>
+                    <b>Exam sheet</b> · last-minute notes
+                  </span>
+                  <span class="fc-cta-go">Open →</span>
+                </a>
+              )}
+              {cards.length > 0 && (
+                <a class="fc-cta-mini" href={flashUrl}>
+                  <span class="fc-cta-ic" aria-hidden="true">🃏</span>
+                  <span>
+                    <b>Flashcards</b> · {cards.length} questions
+                  </span>
+                  <span class="fc-cta-go">Practise →</span>
+                </a>
+              )}
+            </div>
           )
         }
         {

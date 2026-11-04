@@ -1,0 +1,30 @@
+{
+  "must": [
+    "**Flynn (1966)**: SISD (classic), **SIMD** (GPU, vector), MISD (rare), **MIMD** (multi-core, clusters).",
+    "SIMD = one control unit, lock-step, data parallel; bad with branches. MIMD = independent cores, asynchronous.",
+    "Vector processors: vector registers, pipelined units, **interleaved memory**, strided access. Weak on irregular data.",
+    "Shared memory: **UMA/SMP** (equal access) vs **NUMA** (local faster than remote). Bus-based SMPs don't scale (~64 CPUs).",
+    "**Cache coherence**: private caches hold stale copies → **snooping + invalidation** (MSI/MESI). Invalidation < update in bus traffic.",
+    "Cluster (Pfister) = whole computers used as **one unified resource** (single system image). Beowulf = DIY Linux cluster.",
+    "Interconnects: bus, **crossbar** (fast, p² switches), ring, mesh, hypercube, fully connected, **omega** (cheap, can block).",
+    "**Bisection width** = minimum links cut to halve the network (ring = 2)."
+  ],
+  "formulas": [
+    "SIMD rounds = ⌈n / m⌉",
+    "Ring: diameter ⌊p/2⌋, bisection 2, links p",
+    "Hypercube: diameter log₂p, bisection p/2, links p·log₂p / 2",
+    "Fully connected: diameter 1, bisection p²/4, links p(p−1)/2"
+  ],
+  "traps": [
+    "Bisection width uses the **worst-case (minimum)** cut.",
+    "False sharing: different variables in the **same cache line** still bounce between cores."
+  ],
+  "likely": [
+    "Draw Flynn's taxonomy with examples.",
+    "Explain cache coherence with the x = 15213 → 21660 example and the invalidation fix.",
+    "Compute diameter / bisection / links for ring vs hypercube."
+  ],
+  "tricks": [
+    "Coherence fix = **'shout, then everyone drops it'** (broadcast invalidate, others mark invalid)."
+  ]
+}

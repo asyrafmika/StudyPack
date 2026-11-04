@@ -1,0 +1,27 @@
+{
+  "must": [
+    "Five families: **process patterns, requirements-analysis notations, high-level general, business process, formal**.",
+    "**Process patterns** (Coplien 1994): proven solutions, bottom-up; e.g. 'Team per task' (sensation, symptoms, forces, try this, counterforce).",
+    "From requirements analysis: structured analysis, **HIPO/IPO**, **UML activity diagrams**.",
+    "High-level (IPO variants): **ETVX** (IBM 1980s), **Turtle** (automotive), **SIPOC** (Six Sigma), **ISO 9001:2015** schematic.",
+    "Business: **EPC/eEPC** (Scheer, Saarland, 1992), **BPMN**, collaboration/choreography, **Petri nets**.",
+    "Formal (descriptive, for analysis/simulation): process algebras, system dynamics, **SPEM** (OMG)."
+  ],
+  "formulas": [
+    "SIPOC = Suppliers → Inputs → Process → Outputs → Customers",
+    "ETVX = Entry → Task → Verification → eXit",
+    "Turtle legs = Who? With what? How? KPI"
+  ],
+  "traps": [
+    "EPC rules: start **and** end with events; events and functions **alternate**; no trivial events.",
+    "Formal notations are **descriptive**, not prescriptive."
+  ],
+  "likely": [
+    "Create a SIPOC for a scenario.",
+    "Give ETVX entry/exit criteria for a process.",
+    "Compare BPMN collaboration vs choreography."
+  ],
+  "tricks": [
+    "Build a SIPOC **from the middle**: process → outputs/customers → inputs/suppliers."
+  ]
+}

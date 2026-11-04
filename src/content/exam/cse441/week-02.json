@@ -1,0 +1,24 @@
+{
+  "must": [
+    "Core elements: **products, activities, roles** (via a notation/meta-model).",
+    "Defined notations give structure, filtered views, multiple formats, tool exchange (BPMN), automation, audit criteria.",
+    "**Abstract syntax** (building blocks), **concrete syntax** (symbols), **semantics** (meaning).",
+    "Meta-model properties: abstraction, structuredness, ease of use, formality, enactment support, graphical vs text.",
+    "Three groups: **process interaction** (high level), **process-internal structure** (detailed), **combination** (both).",
+    "**Product-oriented** vs **activity-oriented** models (what leads, and where roles attach).",
+    "**ISO/IEC/IEEE 24774:2021**: title, purpose, outcome, activities, tasks, information items (no roles).",
+    "Interaction notations: **value chain / process landscape**; **MVP-L** views: functional, behavioural, organisational, data."
+  ],
+  "traps": [
+    "'Combination notation' = combines high-level and detailed views, **not** maths combinations.",
+    "ISO 24774 does **not** cover roles."
+  ],
+  "likely": [
+    "Explain the three groups of notations with examples.",
+    "Write an ISO 24774 description for a given process.",
+    "Name the four MVP-L views."
+  ],
+  "tricks": [
+    "Syntax trio = **'What blocks, how drawn, what meant'**."
+  ]
+}

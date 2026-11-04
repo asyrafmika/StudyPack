@@ -42,6 +42,14 @@ const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
         <div class="bar"><div class="bar-fill"></div></div>
         <span class="bar-label small muted"></span>
       </div>
+      <a class="revise-cta" href={url(`${course.id}/exam/`)}>
+        <span class="revise-ic" aria-hidden="true">⚡</span>
+        <span>
+          <b>Last-minute revision</b>
+          <span class="small muted">Every week's must-knows, formulas and traps on one printable page</span>
+        </span>
+        <span class="fc-cta-go">Open →</span>
+      </a>
     </section>
 
     {

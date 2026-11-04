@@ -1,0 +1,28 @@
+{
+  "must": [
+    "Process = unit of **allocation**; thread = unit of **execution**. Threads share code + data, each has its **own stack**.",
+    "Threads: cheap communication, light context switch, **not secure**. Processes: isolated, heavy switch, expensive IPC.",
+    "Benefits of threads: portability, performance, **latency hiding**, easy data sharing. Risks: complexity, **data races, deadlocks**.",
+    "**Concurrency** = in progress together (1 core OK); **parallelism** = executing at the same instant (multi-core).",
+    "Threading for **functionality** vs **performance**; **turnaround** (one task fast) vs **throughput** (most tasks).",
+    "**Race condition**: same memory, concurrent, **≥ 1 writer**. Fix with **mutual exclusion** over the **critical region**.",
+    "Sync objects: lock/mutex, semaphore, critical section, event, condition variable, atomic. **Barrier** = wait for all (idle overhead).",
+    "**Deadlock** = waiting forever (blocked); **livelock** = busy reacting, no progress."
+  ],
+  "formulas": [
+    "count++ = read → add → write (3 steps → lost updates)",
+    "Deadlock needs all 4: mutual exclusion, hold-and-wait, no pre-emption, circular wait"
+  ],
+  "traps": [
+    "Two readers is **not** a race — at least one must write.",
+    "Concurrency is not the same as parallelism."
+  ],
+  "likely": [
+    "Compare process vs thread (address space, interaction, context switch, security).",
+    "Explain a race condition with count++ and fix it.",
+    "Deadlock vs livelock with analogies; how to prevent deadlock (lock ordering)."
+  ],
+  "tricks": [
+    "Deadlock conditions = **'Mutual Hold, No Circle'** → mutual exclusion, hold & wait, no pre-emption, circular wait."
+  ]
+}

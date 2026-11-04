@@ -1,0 +1,52 @@
+---
+import type { ExamSheet } from '../lib/exam';
+interface Props {
+  sheet: ExamSheet;
+}
+const { sheet } = Astro.props;
+---
+
+<div class="xs">
+  {
+    sheet.must.length > 0 && (
+      <section class="xs-block xs-must">
+        <h3>⚡ Must know</h3>
+        <ul>{sheet.must.map((x) => <li set:html={x} />)}</ul>
+      </section>
+    )
+  }
+  {
+    sheet.formulas.length > 0 && (
+      <section class="xs-block xs-formula">
+        <h3>🧮 Formulas &amp; numbers</h3>
+        <ul>{sheet.formulas.map((x) => <li set:html={x} />)}</ul>
+      </section>
+    )
+  }
+  <div class="xs-two">
+    {
+      sheet.traps.length > 0 && (
+        <section class="xs-block xs-trap">
+          <h3>⚠️ Common traps</h3>
+          <ul>{sheet.traps.map((x) => <li set:html={x} />)}</ul>
+        </section>
+      )
+    }
+    {
+      sheet.likely.length > 0 && (
+        <section class="xs-block xs-likely">
+          <h3>📝 Likely questions</h3>
+          <ul>{sheet.likely.map((x) => <li set:html={x} />)}</ul>
+        </section>
+      )
+    }
+  </div>
+  {
+    sheet.tricks.length > 0 && (
+      <section class="xs-block xs-trick">
+        <h3>🧠 Memory tricks</h3>
+        <ul>{sheet.tricks.map((x) => <li set:html={x} />)}</ul>
+      </section>
+    )
+  }
+</div>

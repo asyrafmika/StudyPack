@@ -1,0 +1,23 @@
+{
+  "must": [
+    "**Waterfall**: strict order, no going back, used with **stage/quality gates**.",
+    "**V-Model**: left = specification/design, right = integration/testing, paired levels; safety-critical (IEC 61508-3).",
+    "**Component/matrix (RUP)**: processes × phases; processes run across the whole project.",
+    "Prototyping: **exploratory** (find requirements) vs **experimental** (validate solution); **evolutionary** (becomes product) vs **throw-away**; **rapid** = throw-away.",
+    "Iterative/incremental: **reduce risk through fast feedback**; iteration = refine, increment = add.",
+    "**Spiral (Boehm)**: first explicit iterative model, **risk analysis every loop**. **Release trains**: fixed dates, time-box.",
+    "Methodology-driven: structured (SSADM, SADT, Yourdon), **formal methods**, **Cleanroom**, **design thinking**."
+  ],
+  "traps": [
+    "Slide 13's 'Incremental' definition is actually the **waterfall** definition.",
+    "Exploratory vs evolutionary are **different dimensions** (purpose vs fate)."
+  ],
+  "likely": [
+    "Compare exploratory and evolutionary prototypes.",
+    "Recommend a life cycle model for a scenario and justify.",
+    "Explain the spiral model's emphasis on risk."
+  ],
+  "tricks": [
+    "Time-box (release train) = **fix the date, flex the scope**; waterfall = fix scope, date slips."
+  ]
+}

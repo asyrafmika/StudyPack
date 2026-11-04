@@ -1,0 +1,30 @@
+{
+  "must": [
+    "**Speedup** S = T(1)/T(p); **efficiency** E = S/p; **cost** C = p·T(p). Cost-optimal when C ≈ T(1).",
+    "Sub-linear (normal), linear (ideal), **super-linear** (rare — cache effects).",
+    "**Strong** scaling = fixed problem; **weak** scaling = problem grows with p.",
+    "Higher **computation-to-communication ratio** → better speedup and scalability.",
+    "Summation tree: speedup peaks around p = 128 then **falls** because communication (log p) grows while work (n/p) shrinks.",
+    "Distributed memory → **MPI**; shared memory → **Pthreads/OpenMP/CUDA**, risk of **race conditions**.",
+    "Design considerations: **partitioning (data/task/model), communication, synchronisation, load balancing**.",
+    "TOP500 = LINPACK (Ax = b) in FLOP/s; Green500 = FLOP/s **per watt**. HPC = MPI + OpenMP + CUDA."
+  ],
+  "formulas": [
+    "S = T(1)/T(p)   E = S/p   C = p·T(p)",
+    "Summation model: T(p) = 7·log₂p + n/p − 1  (T(2)=518, T(4)=269, T(8)=148)",
+    "E = T(1)/C"
+  ],
+  "traps": [
+    "Forgetting that cost grows even while speedup rises.",
+    "Quoting scalability without saying strong or weak.",
+    "Calling a race's result 'the last writer wins' — it's **unpredictable**."
+  ],
+  "likely": [
+    "Given T(1), T(p): compute S, E, C and comment on cost-optimality.",
+    "Explain why speedup drops after a certain p.",
+    "Classify examples as data / task / model parallelism."
+  ],
+  "tricks": [
+    "Design steps = **'PCSL'**: Partition, Communicate, Synchronise, Load-balance."
+  ]
+}

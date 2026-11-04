@@ -57,4 +57,19 @@ const notes = defineCollection({
   }),
 });
 
-export const collections = { courses, notes };
+/**
+ * exam — last-minute revision sheet per note page: src/content/exam/<course-id>/<note-file>.json
+ * The id matches the note id (e.g. "cst435/week-04"). Items are inline markdown.
+ */
+const exam = defineCollection({
+  loader: glob({ pattern: '*/*.json', base: './src/content/exam' }),
+  schema: z.object({
+    must: z.array(z.string()).default([]), // must-know points
+    formulas: z.array(z.string()).default([]), // formulas, numbers, sequences
+    traps: z.array(z.string()).default([]), // common mistakes
+    likely: z.array(z.string()).default([]), // likely exam questions
+    tricks: z.array(z.string()).default([]), // memory tricks
+  }),
+});
+
+export const collections = { courses, notes, exam };

@@ -1,0 +1,24 @@
+{
+  "must": [
+    "Definition levels: **expert** (checklist), **intermediate** (+ guidance), **beginner** (+ training).",
+    "Process development: **preparation → agreement → documentation → validation**.",
+    "Preparation properties: purpose, process scope, organisational scope, detail, flexibility, obligation, philosophy, application area, environment, method neutrality.",
+    "Selection: organisation then project; **Why → What → How**.",
+    "**Boehm & Turner**: size, criticality, dynamism, personnel, culture (agile vs plan-driven).",
+    "**Tailoring** = delete / modify / add; also in agile. Criteria: team, internal env, external env, objectives.",
+    "Deployment ('last mile'): **State → Enable → Verify → Reward**.",
+    "Process QA: achieve goals consistently **and** performed as defined (audits). Governance ⊃ IT governance ⊃ process governance; compliance = yes/no; **COBIT**."
+  ],
+  "traps": [
+    "Tailoring isn't only for plan-driven processes.",
+    "Deployment fails without the **reward/reaction** step — ignoring non-conformance signals it doesn't matter."
+  ],
+  "likely": [
+    "Apply Boehm & Turner to recommend agile or plan-driven.",
+    "Explain State–Enable–Verify–Reward with an example.",
+    "Write a Scrum product backlog for the TNG eWallet case."
+  ],
+  "tricks": [
+    "Boehm & Turner = **'Small, Calm, Changing, Clever, Cool → agile'** (size, criticality, dynamism, personnel, culture)."
+  ]
+}

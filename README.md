@@ -81,3 +81,10 @@ Questions are written in the note's MDX (inside `<QAList>`), but they are **not 
 Each page with questions gets a flashcard deck at `/<course>/<slug>/flashcards/`:
 filter by easy/medium/hard, flip to reveal, self-grade, and see the `why` explanation when wrong
 (missed cards come back at the end). Best scores are saved per device in localStorage.
+
+## Exam sheets (last-minute notes)
+
+Each note can have a revision sheet at `src/content/exam/<course>/<note-file>.json` with
+`must`, `formulas`, `traps`, `likely` and `tricks` (arrays of inline markdown).
+It appears at `/<course>/<slug>/exam/`, and all sheets for a course are combined at `/<course>/exam/`
+(filterable by test, printable to PDF).

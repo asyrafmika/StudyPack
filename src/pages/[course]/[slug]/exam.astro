@@ -1,0 +1,52 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import ExamSheetView from '../../../components/ExamSheet.astro';
+import { courseIdOf, noteLabel, noteSlug, noteUrl, url } from '../../../lib/url';
+import { examFor } from '../../../lib/exam';
+import { extractCards } from '../../../lib/cards';
+
+export const getStaticPaths = (async () => {
+  const [notes, sheets] = await Promise.all([getCollection('notes'), getCollection('exam')]);
+  const has = new Set(sheets.map((s) => s.id));
+  return notes
+    .filter((n) => has.has(n.id))
+    .map((note) => ({ params: { course: courseIdOf(note), slug: noteSlug(note) }, props: { note } }));
+}) satisfies GetStaticPaths;
+
+const { note } = Astro.props;
+const courseId = courseIdOf(note);
+const course = (await getEntry('courses', courseId))!;
+const sheet = (await examFor(note))!;
+const hasCards = extractCards(note.body).length > 0;
+---
+
+<Base title={`Exam sheet · ${course.data.code} ${noteLabel(note)}`} description={`Last-minute exam notes for ${note.data.title}`}>
+  <main class="xp" style={`--accent:${course.data.color}`}>
+    <nav class="crumbs small no-print">
+      <a href={url()}>Courses</a> / <a href={url(`${courseId}/`)}>{course.data.code}</a> /
+      <a href={noteUrl(note)}>{noteLabel(note)}</a> / Exam sheet
+    </nav>
+    <header class="xp-head">
+      <p class="course-code">Last-minute notes · {course.data.code} {noteLabel(note)}</p>
+      <h1 class="serif">{note.data.title}</h1>
+      {
+        note.data.examinedIn.length > 0 && (
+          <p class="badges">
+            {note.data.examinedIn.map((e) => (
+              <span class="badge badge-exam">🏷️ {e}</span>
+            ))}
+          </p>
+        )
+      }
+      <div class="xp-actions no-print">
+        <a class="btn-pill" href={noteUrl(note)}>← Full notes</a>
+        {hasCards && <a class="btn-pill" href={`${noteUrl(note)}flashcards/`}>🃏 Flashcards</a>}
+        <a class="btn-pill" href={url(`${courseId}/exam/`)}>All weeks</a>
+        <button class="btn-pill dark" type="button" onclick="window.print()">Print / PDF</button>
+      </div>
+    </header>
+    <ExamSheetView sheet={sheet} />
+  </main>
+</Base>

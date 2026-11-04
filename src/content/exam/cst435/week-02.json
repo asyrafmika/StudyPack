@@ -1,0 +1,28 @@
+{
+  "must": [
+    "Cloud = shared resources over the Internet, **on demand, pay per use** — like the **electricity grid**.",
+    "5 characteristics: **on-demand self-service, broad network access, resource pooling, rapid elasticity, measured service**.",
+    "**IaaS** (you manage app, data, OS — e.g. EC2), **PaaS** (only your app — App Engine, Azure), **SaaS** (nothing — Gmail, Salesforce).",
+    "Deployment: **public, private (on-premise / externally hosted), community, hybrid**.",
+    "Enabling technologies: grid, cluster, utility computing, **virtualization** (key), SOA.",
+    "Economics: **CapEx → OpEx**; billed by utility or subscription. Not always cheaper for steady 24/7 loads.",
+    "Challenges: data control, replication, latency, unsupported apps, **vendor lock-in**; providers: SLA compliance, licensing, proprietary APIs."
+  ],
+  "formulas": [
+    "Charges: instances, data transfer in/out, storage (GB-month), I/O & PUT/GET requests, IPs, load balancing"
+  ],
+  "traps": [
+    "Saying cloud is always cheaper — steady long-term workloads can cost more to rent.",
+    "Putting databases under the consumer in PaaS — in PaaS the provider manages DB/OS.",
+    "'Discuss security' with only one side — give **better** (expert teams) **and worse** (loss of control, audits)."
+  ],
+  "likely": [
+    "Recommend a deployment model for a scenario (hospital → hybrid; shared regulation → community).",
+    "Compare IaaS/PaaS/SaaS with examples.",
+    "Explain how Amazon's ~10% utilisation led to AWS (2006)."
+  ],
+  "tricks": [
+    "5 characteristics: **'On Broad Resources, Rapidly Measured'**.",
+    "Pizza: home-made = on-prem, rented kitchen = IaaS, take-and-bake = PaaS, dine-in = SaaS."
+  ]
+}

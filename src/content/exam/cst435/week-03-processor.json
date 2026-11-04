@@ -1,0 +1,26 @@
+{
+  "must": [
+    "Process = own memory; **threads share** the process's memory. Start = **fork**, wait = **join**.",
+    "Cache works by **locality**: spatial (nearby data) and temporal (same data soon). L1 smallest/fastest → L3 largest/slowest.",
+    "**Write-through** updates memory immediately; **write-back** marks line **dirty**, writes on eviction.",
+    "Virtual memory = RAM as a cache for disk: **pages** (4–16 KB), **page table**, **TLB** (16–512 entries), **page fault** = page on disk.",
+    "**ILP**: **pipelining** (stages overlap) and **multiple issue** (static = compiler, dynamic = superscalar). **Speculation** = guess, redo if wrong.",
+    "Hardware multithreading: **fine-grained** (switch every instruction), **coarse-grained** (switch on long stall), **SMT** (= Hyper-Threading)."
+  ],
+  "formulas": [
+    "Pipelined time = k + (n − 1)  vs  unpipelined n·k  (7 stages, 1000 adds: 1006 ns vs 7000 ns)",
+    "Offset bits = log₂(page size); 4 KB → 12 bits; VPN = 32 − 12 = 20 bits"
+  ],
+  "traps": [
+    "Thinking pipelining makes one operation faster — each add still takes 7 ns; **throughput** improves.",
+    "Confusing TLB (caches page-table entries) with the data cache."
+  ],
+  "likely": [
+    "Compute pipelined vs non-pipelined time and speedup.",
+    "Explain spatial/temporal locality with a loop.",
+    "Compare fine-grained, coarse-grained and SMT."
+  ],
+  "tricks": [
+    "'It's caches all the way down': TLB → page table, L1–L3 → RAM, RAM → disk."
+  ]
+}

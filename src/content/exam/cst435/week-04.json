@@ -1,0 +1,31 @@
+{
+  "must": [
+    "Auto-parallelisation is weak — often a **new algorithm** is needed (tree global sum: p−1 steps → log₂p).",
+    "**Task** parallelism splits the work; **data** parallelism splits the data (exam scripts example).",
+    "Coordination: **communication, load balancing, synchronisation**.",
+    "Grain: coarse → high computation/communication ratio; fine → easier load balance.",
+    "Speedup uses the **best sequential** time; time the parallel region with a barrier and take the **max**.",
+    "**Amdahl**: fixed problem; speedup ≤ 1/β. **Gustafson**: problem grows; speedup keeps growing.",
+    "Overheads: **communication, synchronisation, idling, contention, excess computation**."
+  ],
+  "formulas": [
+    "Amdahl: S = 1 / (β + (1 − β)/P),  S_max = 1/β",
+    "Gustafson: S = P + (1 − P)·α",
+    "T_parallel = T_serial/p + T_overhead",
+    "Message time ≈ latency + size / bandwidth",
+    "Picket fence: 30 + 300/n + 30 → max 6×"
+  ],
+  "traps": [
+    "Using the parallel code on 1 core as T₁.",
+    "Forgetting the Amdahl limit 1/β when asked for 'maximum' speedup.",
+    "Saying one law is wrong — they answer **different** questions (fixed vs growing size)."
+  ],
+  "likely": [
+    "Amdahl calculation (e.g. 67% serial on 10 cores = 1.42) and Gustafson for the same (3.97).",
+    "Tree global sum rounds for given my_sum values.",
+    "Name the overhead types in a profile and suggest fixes."
+  ],
+  "tricks": [
+    "Amdahl = **fixed trip, faster car only helps on the highway**; Gustafson = **faster car, drive further**."
+  ]
+}

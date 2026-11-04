@@ -1312,3 +1312,64 @@ a.week-row:hover {
   /* keep the grading buttons in reach under long answers */
   .grade { position: sticky; bottom: 12px; z-index: 5; padding: 8px; margin-left: -8px; margin-right: -8px; border-radius: 999px; background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(8px); }
 }
+
+/* =================== Exam sheets =================== */
+.study-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px; margin: 4px 0 12px; }
+.study-tools .fc-cta-mini { margin: 0; }
+.xs-mini .fc-cta-go { color: var(--warn); }
+.revise-cta {
+  display: flex; align-items: center; gap: 14px; margin-top: 18px; padding: 16px 18px;
+  border-radius: 18px; border: 1px solid color-mix(in srgb, var(--warn) 40%, var(--border));
+  background: color-mix(in srgb, var(--warn) 8%, var(--surface));
+  color: var(--text) !important; text-decoration: none; max-width: 640px;
+  transition: transform 0.15s ease;
+}
+.revise-cta:hover { transform: translateY(-2px); }
+.revise-cta > span:nth-child(2) { display: flex; flex-direction: column; }
+.revise-cta .fc-cta-go { color: var(--warn); }
+.revise-ic { display: grid; place-items: center; width: 42px; height: 42px; flex: none; border-radius: 12px; background: color-mix(in srgb, var(--warn) 18%, transparent); font-size: 1.2rem; }
+
+.xp { max-width: 880px; margin: 0 auto; padding: 24px 20px 80px; }
+.xp-head h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.06; margin: 6px 0 12px; }
+.xp-head h1 em { font-style: italic; color: var(--warn); }
+.xp-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0 24px; }
+.xp-actions .chips { margin: 0 auto 0 0; }
+.xp-toc { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+.xp-toc a { font-size: 0.8rem; font-weight: 600; padding: 4px 12px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--text) !important; text-decoration: none; }
+.xp-week { margin-top: 36px; }
+.xp-week-head { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.xp-week-head h2 { margin: 0; font-size: 1.6rem; line-height: 1.1; }
+.xp-week-head p { margin: 0; }
+.xp-open { margin-left: auto; font-weight: 650; font-size: 0.9rem; white-space: nowrap; }
+
+.xs { display: grid; gap: 12px; }
+.xs-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.xs-block { --c: var(--note); padding: 16px 20px; border-radius: 18px; background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--c); }
+.xs-block h3 { margin: 0 0 8px; font-size: 0.95rem; color: var(--c); }
+.xs-block ul { margin: 0; padding-left: 1.15em; }
+.xs-block li { margin: 0.35em 0; line-height: 1.55; }
+.xs-must { --c: var(--brand-strong); }
+[data-theme='dark'] .xs-must { --c: var(--brand); }
+.xs-formula { --c: var(--key); }
+.xs-formula li { font-family: var(--mono); font-size: 0.88rem; }
+.xs-formula li strong { font-family: var(--font); }
+.xs-trap { --c: var(--exam); }
+.xs-likely { --c: var(--why); }
+.xs-trick { --c: var(--warn); }
+
+/* Flashcard CTA: keep it dark in both themes so the level chips stay readable */
+.fc-cta { background: #15171a; color: #f4f2ee; }
+[data-theme='dark'] .fc-cta { border: 1px solid var(--border); background: #1d1f23; }
+.fc-cta-stack span { background: #f4f2ee; }
+.fc-cta-stack span:nth-child(3) { color: #15171a; }
+
+@media print {
+  .topbar, .no-print, dialog.search, .scrim { display: none !important; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .xp { max-width: none; padding: 0; }
+  .xs-block { break-inside: avoid; border-color: #ccc; box-shadow: none; }
+  .xp-week { break-inside: avoid-page; }
+  .xp-head h1 { font-size: 22pt; }
+  [hidden] { display: none !important; }
+}
+.fc-cta-go { white-space: nowrap; }

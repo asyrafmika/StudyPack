@@ -1,0 +1,75 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import ExamSheetView from '../../components/ExamSheet.astro';
+import { sortedCourses, notesFor, noteLabel, noteUrl, url } from '../../lib/url';
+import { examFor } from '../../lib/exam';
+
+export const getStaticPaths = (async () => {
+  const courses = await sortedCourses();
+  return courses.map((course) => ({ params: { course: course.id }, props: { course } }));
+}) satisfies GetStaticPaths;
+
+const { course } = Astro.props;
+const notes = await notesFor(course.id);
+const items = (await Promise.all(notes.map(async (n) => ({ note: n, sheet: await examFor(n) })))).filter((x) => x.sheet);
+const filters = [...new Set(items.flatMap((x) => x.note.data.examinedIn))];
+---
+
+<Base title={`Last-minute revision · ${course.data.code}`} description={`All exam sheets for ${course.data.title}`}>
+  <main class="xp" style={`--accent:${course.data.color}`}>
+    <nav class="crumbs small no-print"><a href={url()}>Courses</a> / <a href={url(`${course.id}/`)}>{course.data.code}</a> / Last-minute revision</nav>
+    <header class="xp-head">
+      <p class="course-code">{course.data.code} · Last-minute revision</p>
+      <h1 class="serif">Everything to remember, <em>on one page</em></h1>
+      <p class="muted">{items.length} sheets from {course.data.title}. Filter by test, then print or save as PDF.</p>
+      <div class="xp-actions no-print">
+        {
+          filters.length > 0 && (
+            <div class="chips" role="group" aria-label="Filter by assessment">
+              <button type="button" class="chip active" data-filter="">All weeks</button>
+              {filters.map((f) => (
+                <button type="button" class="chip" data-filter={f}>{f}</button>
+              ))}
+            </div>
+          )
+        }
+        <button class="btn-pill dark" type="button" onclick="window.print()">Print / PDF</button>
+      </div>
+      {
+        items.length === 0 && <p class="muted">No exam sheets yet for this course.</p>
+      }
+    </header>
+
+    <nav class="xp-toc no-print" aria-label="Jump to week">
+      {items.map(({ note }) => <a href={`#${note.id.split('/')[1]}`} data-exams={note.data.examinedIn.join('|')}>{noteLabel(note)}</a>)}
+    </nav>
+
+    {
+      items.map(({ note, sheet }) => (
+        <section class="xp-week" id={note.id.split('/')[1]} data-exams={note.data.examinedIn.join('|')}>
+          <div class="xp-week-head">
+            <span class="week-num">W{note.data.week}</span>
+            <div>
+              {note.data.part && <p class="small muted">{note.data.part}</p>}
+              <h2 class="serif">{note.data.title}</h2>
+            </div>
+            <a class="xp-open no-print" href={`${noteUrl(note)}exam/`}>Open →</a>
+          </div>
+          <ExamSheetView sheet={sheet!} />
+        </section>
+      ))
+    }
+  </main>
+  <script>
+    const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+    const blocks = document.querySelectorAll<HTMLElement>('[data-exams]');
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        const f = chip.dataset.filter ?? '';
+        chips.forEach((c) => c.classList.toggle('active', c === chip));
+        blocks.forEach((b) => (b.hidden = f !== '' && !(b.dataset.exams ?? '').split('|').includes(f)));
+      }),
+    );
+  </script>
+</Base>
