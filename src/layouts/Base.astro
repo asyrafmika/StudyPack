@@ -105,8 +105,18 @@ const index = await searchIndex();
         lbCap.textContent = a.closest('figure')?.querySelector('figcaption')?.textContent ?? '';
         lb.classList.remove('zoomed');
         lb.showModal();
+        if (lbImg.complete) fitImg();
       });
-      lbImg.addEventListener('click', () => lb.classList.toggle('zoomed'));
+      // Scale small slide images up to fit the screen (keeping aspect ratio), so "enlarge" really enlarges
+      const fitImg = () => {
+        if (!lbImg.naturalWidth || lb.classList.contains('zoomed')) { lbImg.style.width = ''; return; }
+        const stage = lbImg.parentElement!.getBoundingClientRect();
+        const k = Math.min(stage.width / lbImg.naturalWidth, stage.height / lbImg.naturalHeight, 3);
+        lbImg.style.width = Math.round(lbImg.naturalWidth * k) + 'px';
+      };
+      lbImg.addEventListener('load', fitImg);
+      addEventListener('resize', () => lb.open && fitImg());
+      lbImg.addEventListener('click', () => { lb.classList.toggle('zoomed'); fitImg(); });
       lb.addEventListener('click', (e) => {
         if (e.target === lb || (e.target as HTMLElement).closest('.lb-close')) lb.close();
       });
