@@ -26,5 +26,48 @@
   ],
   "tricks": [
     "Coherence fix = **'shout, then everyone drops it'** (broadcast invalidate, others mark invalid)."
+  ],
+  "story": {
+    "problem": "'Parallel computer' can mean a GPU, a multi-core laptop or a cluster, and each behaves differently.",
+    "fix": "Flynn's taxonomy, shared vs distributed memory, cache coherence and interconnects classify them.",
+    "next": "Knowing the hardware, how do we actually write parallel software, and what limits it?"
+  },
+  "terms": [
+    {
+      "term": "Flynn's taxonomy",
+      "def": "Classification by instruction streams × data streams: SISD, SIMD, MISD, MIMD."
+    },
+    {
+      "term": "SIMD",
+      "def": "One instruction applied to many data items in lock-step."
+    },
+    {
+      "term": "MIMD",
+      "def": "Independent cores running their own instruction streams."
+    },
+    {
+      "term": "UMA",
+      "def": "Uniform Memory Access: same access time to all memory."
+    },
+    {
+      "term": "NUMA",
+      "def": "Non-Uniform Memory Access: local memory faster than remote."
+    },
+    {
+      "term": "Cache coherence",
+      "def": "Keeping copies of the same data consistent across private caches."
+    },
+    {
+      "term": "Snooping",
+      "def": "Caches watching a shared bus to react to other cores' writes."
+    },
+    {
+      "term": "Bisection width",
+      "def": "Minimum links cut to split a network into two equal halves."
+    },
+    {
+      "term": "Hypercube",
+      "def": "Network of 2ᵈ nodes, each linked to d neighbours."
+    }
   ]
 }

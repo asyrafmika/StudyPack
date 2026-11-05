@@ -116,7 +116,8 @@
         "week": 15,
         "topic": "Security in the Cloud"
       }
-    ]
+    ],
+    "storyIntro": "Hardware stopped getting faster on its own. So this course follows one thread: spread the work out (across cores, machines and the cloud) and then deal with every problem that spreading creates."
   },
   {
     "id": "cse441",
@@ -159,6 +160,7 @@
       "Topic 6 — Software and Software Process Measurement",
       "Topic 7 — Tool Support for Software Processes",
       "Topic 8 — Selected Current Trends in Software Processes"
-    ]
+    ],
+    "storyIntro": "Software quality comes from the process that produces it. The course moves from writing a process down, to choosing its overall shape, to making an organisation actually follow it."
   }
 ]

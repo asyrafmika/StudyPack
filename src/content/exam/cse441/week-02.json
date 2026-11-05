@@ -20,5 +20,44 @@
   ],
   "tricks": [
     "Syntax trio = **'What blocks, how drawn, what meant'**."
+  ],
+  "story": {
+    "problem": "A process that lives only in people's heads can't be taught, checked or improved.",
+    "fix": "Write it down in a defined notation built on products, activities and roles, starting with how processes connect.",
+    "next": "A high-level view doesn't tell you how to perform one process step by step."
+  },
+  "terms": [
+    {
+      "term": "Meta-model",
+      "def": "The definition of what a process notation may contain."
+    },
+    {
+      "term": "Abstract syntax",
+      "def": "The building blocks a notation offers."
+    },
+    {
+      "term": "Concrete syntax",
+      "def": "The symbols used to draw those blocks."
+    },
+    {
+      "term": "Semantics",
+      "def": "What each building block means."
+    },
+    {
+      "term": "Work product",
+      "def": "An artefact a process creates (document, code, report)."
+    },
+    {
+      "term": "ISO/IEC/IEEE 24774",
+      "def": "Standard structure for describing processes."
+    },
+    {
+      "term": "Value chain",
+      "def": "Diagram of the primary processes that create customer value."
+    },
+    {
+      "term": "MVP-L",
+      "def": "Multi-View Process Modeling Language: functional, behavioural, organisational, data views."
+    }
   ]
 }

@@ -22,5 +22,48 @@
   ],
   "tricks": [
     "'It's caches all the way down': TLB → page table, L1–L3 → RAM, RAM → disk."
+  ],
+  "story": {
+    "problem": "Even one core is full of hidden hardware tricks that decide how fast code runs.",
+    "fix": "Caches, virtual memory, pipelining and hardware threads squeeze speed out of a single core.",
+    "next": "With many cores and many machines, how are parallel computers organised and wired together?"
+  },
+  "terms": [
+    {
+      "term": "Thread",
+      "def": "A path of execution inside a process; shares its memory."
+    },
+    {
+      "term": "Fork / join",
+      "def": "Starting a thread / waiting for it to finish."
+    },
+    {
+      "term": "Spatial locality",
+      "def": "Accessing addresses near the one just used."
+    },
+    {
+      "term": "Temporal locality",
+      "def": "Accessing the same address again soon."
+    },
+    {
+      "term": "Write-back",
+      "def": "Cache writes mark the line dirty; memory is updated on eviction."
+    },
+    {
+      "term": "TLB",
+      "def": "Translation-Lookaside Buffer: a fast cache of page-table entries."
+    },
+    {
+      "term": "Page fault",
+      "def": "Accessing a valid page that is currently on disk."
+    },
+    {
+      "term": "Pipelining",
+      "def": "Splitting work into stages so several operations overlap."
+    },
+    {
+      "term": "Superscalar",
+      "def": "Dynamic multiple issue: the CPU runs several instructions per cycle."
+    }
   ]
 }

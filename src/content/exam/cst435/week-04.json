@@ -27,5 +27,44 @@
   ],
   "tricks": [
     "Amdahl = **fixed trip, faster car only helps on the highway**; Gustafson = **faster car, drive further**."
+  ],
+  "story": {
+    "problem": "Turning serial code into fast parallel code is hard, and speedup has hard limits.",
+    "fix": "Task vs data parallelism, coordination, honest timing, Amdahl & Gustafson, and overhead analysis.",
+    "next": "On distributed memory there is no shared variable. How do processes talk?"
+  },
+  "terms": [
+    {
+      "term": "Task parallelism",
+      "def": "Different tasks run on different cores."
+    },
+    {
+      "term": "Data parallelism",
+      "def": "The same operation on different parts of the data."
+    },
+    {
+      "term": "Load balancing",
+      "def": "Giving every core about the same amount of work."
+    },
+    {
+      "term": "Amdahl's Law",
+      "def": "S = 1/(β + (1−β)/P); serial fraction β caps speedup at 1/β."
+    },
+    {
+      "term": "Gustafson's Law",
+      "def": "S = P + (1−P)α; speedup grows when the problem grows."
+    },
+    {
+      "term": "Overhead",
+      "def": "Time not spent on useful work: communication, idling, contention…"
+    },
+    {
+      "term": "Latency",
+      "def": "Fixed time for a message to start arriving."
+    },
+    {
+      "term": "Bandwidth",
+      "def": "Data transferred per unit of time."
+    }
   ]
 }

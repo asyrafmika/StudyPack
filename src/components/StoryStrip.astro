@@ -1,0 +1,45 @@
+---
+import type { Story } from '../lib/exam';
+interface Props {
+  story: Story;
+  prev?: { href: string; label: string; title: string };
+  next?: { href: string; label: string; title: string };
+}
+const { story, prev, next } = Astro.props;
+---
+
+<section class="story" aria-label="Where this fits">
+  {
+    prev && (
+      <a class="story-prev" href={prev.href}>
+        <span class="story-k">Previously · {prev.label}</span>
+        <span class="story-t">{prev.title}</span>
+      </a>
+    )
+  }
+  <div class="story-steps">
+    <div class="st st-problem">
+      <span class="st-k">The problem</span>
+      <p>{story.problem}</p>
+    </div>
+    <span class="st-arrow" aria-hidden="true">→</span>
+    <div class="st st-fix">
+      <span class="st-k">This week's fix</span>
+      <p>{story.fix}</p>
+    </div>
+    <span class="st-arrow" aria-hidden="true">→</span>
+    {
+      next ? (
+        <a class="st st-next" href={next.href}>
+          <span class="st-k">But then… · {next.label}</span>
+          <p>{story.next}</p>
+        </a>
+      ) : (
+        <div class="st st-next">
+          <span class="st-k">But then…</span>
+          <p>{story.next}</p>
+        </div>
+      )
+    }
+  </div>
+</section>

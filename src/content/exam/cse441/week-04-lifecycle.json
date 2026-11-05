@@ -19,5 +19,48 @@
   ],
   "tricks": [
     "Time-box (release train) = **fix the date, flex the scope**; waterfall = fix scope, date slips."
+  ],
+  "story": {
+    "problem": "Every project needs an overall shape: when to specify, build and test.",
+    "fix": "Life cycle models: waterfall, V-Model, RUP, prototyping, iterative, spiral and release trains.",
+    "next": "Plan-driven models struggle when requirements keep changing."
+  },
+  "terms": [
+    {
+      "term": "Waterfall",
+      "def": "Phases in strict order with little or no iteration."
+    },
+    {
+      "term": "Quality gate",
+      "def": "A formal check before the next phase may start."
+    },
+    {
+      "term": "V-Model",
+      "def": "Waterfall bent into a V pairing each spec level with a test level."
+    },
+    {
+      "term": "RUP",
+      "def": "Rational Unified Process: processes × phases matrix model."
+    },
+    {
+      "term": "Exploratory prototype",
+      "def": "Built early to discover requirements."
+    },
+    {
+      "term": "Evolutionary prototype",
+      "def": "Refined repeatedly until it becomes the product."
+    },
+    {
+      "term": "Increment",
+      "def": "A piece of added functionality."
+    },
+    {
+      "term": "Spiral model",
+      "def": "Boehm's iterative model with risk analysis each loop."
+    },
+    {
+      "term": "Time-box",
+      "def": "Fixed date; scope flexes to fit."
+    }
   ]
 }

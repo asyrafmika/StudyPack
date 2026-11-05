@@ -23,5 +23,48 @@
   ],
   "tricks": [
     "CMMI = **'In My Dream QA is Optimal'** (I, M, D, Q, O)."
+  ],
+  "story": {
+    "problem": "Heavy plans can't keep up with change, yet quality still has to be proven.",
+    "fix": "Agile and Scrum handle change, CMMI judges process maturity, and testing verifies the product.",
+    "next": "Having a process isn't enough. Someone must own it, adapt it and make people follow it."
+  },
+  "terms": [
+    {
+      "term": "Agile Manifesto",
+      "def": "2001 statement of four agile values."
+    },
+    {
+      "term": "Product backlog",
+      "def": "Ordered list of all work for the product."
+    },
+    {
+      "term": "Sprint",
+      "def": "Fixed 2–4 week development cycle producing an increment."
+    },
+    {
+      "term": "Scrum master",
+      "def": "Facilitator who runs scrums and shields the team."
+    },
+    {
+      "term": "User story",
+      "def": "As a … I want … so that …, plus acceptance criteria."
+    },
+    {
+      "term": "CMMI",
+      "def": "Capability Maturity Model Integration: five maturity levels."
+    },
+    {
+      "term": "Branch coverage",
+      "def": "Every decision taken both true and false."
+    },
+    {
+      "term": "Boundary value analysis",
+      "def": "Testing at and just beyond input limits."
+    },
+    {
+      "term": "Equivalence partitioning",
+      "def": "Testing one value from each class that behaves the same."
+    }
   ]
 }

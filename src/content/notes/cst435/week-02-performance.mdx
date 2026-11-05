@@ -23,6 +23,7 @@ import taskPar from './images/w02p-task-parallelism.png';
 import modelPar from './images/w02p-model-parallelism.png';
 import top500 from './images/w02p-top500.png';
 import hetero from './images/w02p-heterogeneous-hpc.png';
+import SpeedupCalc from '../../../components/SpeedupCalc.astro';
 
 <Callout type="why">
 Making code parallel is only half the job. The other half is **proving it got faster, and by how much**. Adding more processors doesn't automatically help: past some point, the time spent *talking* between processors costs more than the time saved *computing*.
@@ -170,6 +171,12 @@ Check p = 8: 7×3 + 128 − 1 = **148** ✓ (matches the slide)
 | **128** | **56** | **18.27** ← best | 14.3% | 7168 |
 | 256 | 59 | 17.34 | 6.8% | 15104 |
 | 512 | 64 | 15.98 | 3.1% | 32768 |
+
+### Check the numbers yourself
+
+Enter any row of the table (it starts with p = 8: T(1) = 1023, T(8) = 148).
+
+<SpeedupCalc t1={1023} tp={148} p={8} />
 
 ### Strong scalability (n fixed at 1024)
 

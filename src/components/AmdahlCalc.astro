@@ -1,0 +1,120 @@
+---
+/**
+ * Interactive Amdahl vs Gustafson calculator with a live log–log chart.
+ * Usage in MDX:  <AmdahlCalc serial={20} cores={16} />
+ */
+interface Props {
+  serial?: number; // initial serial fraction, %
+  cores?: number; // initial number of processors (power of two)
+}
+const { serial = 20, cores = 16 } = Astro.props;
+const exp = Math.max(0, Math.min(10, Math.round(Math.log2(cores))));
+---
+
+<div class="calc amdahl" data-serial={serial} data-exp={exp}>
+  <div class="calc-head">
+    <span class="calc-tag">Interactive</span>
+    <h3>Amdahl vs Gustafson: drag the sliders</h3>
+  </div>
+
+  <div class="calc-controls">
+    <label>
+      <span>Serial fraction <b data-out="serial">{serial}%</b></span>
+      <input type="range" min="0" max="90" step="1" value={serial} data-in="serial" aria-label="Serial fraction in percent" />
+    </label>
+    <label>
+      <span>Processors <b data-out="p">{2 ** exp}</b></span>
+      <input type="range" min="0" max="10" step="1" value={exp} data-in="exp" aria-label="Number of processors (powers of two)" />
+    </label>
+  </div>
+
+  <div class="calc-results">
+    <div class="cr cr-amdahl"><span>Amdahl speedup</span><b data-out="amdahl">–</b><small>fixed problem size</small></div>
+    <div class="cr cr-gust"><span>Gustafson speedup</span><b data-out="gust">–</b><small>problem grows with P</small></div>
+    <div class="cr"><span>Amdahl efficiency</span><b data-out="eff">–</b><small>S / P</small></div>
+    <div class="cr"><span>Amdahl ceiling</span><b data-out="max">–</b><small>1 / β, even with ∞ cores</small></div>
+  </div>
+
+  <svg class="calc-chart" viewBox="0 0 560 260" role="img" aria-label="Speedup versus processors on log scales">
+    <g class="grid" data-grid></g>
+    <polyline class="l-ideal" data-line="ideal"></polyline>
+    <polyline class="l-gust" data-line="gust"></polyline>
+    <polyline class="l-amdahl" data-line="amdahl"></polyline>
+    <line class="l-cap" data-cap></line>
+    <circle class="pt-amdahl" r="5" data-pt="amdahl"></circle>
+    <circle class="pt-gust" r="5" data-pt="gust"></circle>
+  </svg>
+  <p class="calc-legend">
+    <span class="lg lg-ideal">ideal (S = P)</span>
+    <span class="lg lg-gust">Gustafson</span>
+    <span class="lg lg-amdahl">Amdahl</span>
+    <span class="lg lg-cap">Amdahl ceiling</span>
+  </p>
+  <p class="calc-note" data-out="note"></p>
+</div>
+
+<script>
+  // Chart geometry: x = log2(P) in [0,10], y = log10(S) in [0, log10(1024)]
+  const W = 560, H = 260, L = 44, R = 14, T = 12, B = 30;
+  const X = (e: number) => L + (e / 10) * (W - L - R);
+  const Ymax = Math.log10(1024);
+  const Y = (s: number) => H - B - (Math.log10(Math.max(1, s)) / Ymax) * (H - T - B);
+  const amdahl = (b: number, p: number) => 1 / (b + (1 - b) / p);
+  const gust = (b: number, p: number) => p + (1 - p) * b;
+  const fmt = (x: number) => (x >= 100 ? x.toFixed(0) : x >= 10 ? x.toFixed(1) : x.toFixed(2));
+
+  for (const root of document.querySelectorAll<HTMLElement>('.calc.amdahl')) {
+    const q = <T extends Element>(s: string) => root.querySelector(s) as T;
+    const sIn = q<HTMLInputElement>('[data-in="serial"]');
+    const pIn = q<HTMLInputElement>('[data-in="exp"]');
+    const out = (k: string, v: string) => (q<HTMLElement>(`[data-out="${k}"]`).textContent = v);
+
+    // static grid
+    const grid = q<SVGGElement>('[data-grid]');
+    let g = '';
+    for (let e = 0; e <= 10; e += 2) g += `<line x1="${X(e)}" x2="${X(e)}" y1="${T}" y2="${H - B}"/><text x="${X(e)}" y="${H - 10}" text-anchor="middle">${2 ** e}</text>`;
+    for (const s of [1, 10, 100, 1000]) g += `<line x1="${L}" x2="${W - R}" y1="${Y(s)}" y2="${Y(s)}"/><text x="${L - 8}" y="${Y(s) + 4}" text-anchor="end">${s}</text>`;
+    g += `<text x="${L + 8}" y="${T + 12}" class="ax-l">speedup vs processors (log–log)</text>`;
+    grid.innerHTML = g;
+
+    const pts = (f: (p: number) => number) =>
+      Array.from({ length: 41 }, (_, i) => i / 4)
+        .map((e) => `${X(e).toFixed(1)},${Y(f(2 ** e)).toFixed(1)}`)
+        .join(' ');
+
+    const update = () => {
+      const b = Number(sIn.value) / 100;
+      const e = Number(pIn.value);
+      const p = 2 ** e;
+      const a = amdahl(b, p), gu = gust(b, p);
+      out('serial', `${sIn.value}%`);
+      out('p', String(p));
+      out('amdahl', `${fmt(a)}×`);
+      out('gust', `${fmt(gu)}×`);
+      out('eff', `${Math.round((a / p) * 100)}%`);
+      out('max', b === 0 ? '∞' : `${fmt(1 / b)}×`);
+      q('[data-line="ideal"]').setAttribute('points', pts((x) => x));
+      q('[data-line="amdahl"]').setAttribute('points', pts((x) => amdahl(b, x)));
+      q('[data-line="gust"]').setAttribute('points', pts((x) => gust(b, x)));
+      const cap = q('[data-cap]');
+      if (b > 0) {
+        cap.setAttribute('x1', String(L)); cap.setAttribute('x2', String(W - R));
+        cap.setAttribute('y1', String(Y(1 / b))); cap.setAttribute('y2', String(Y(1 / b)));
+        cap.removeAttribute('hidden');
+      } else cap.setAttribute('hidden', '');
+      const pa = q('[data-pt="amdahl"]'), pg = q('[data-pt="gust"]');
+      pa.setAttribute('cx', String(X(e))); pa.setAttribute('cy', String(Y(a)));
+      pg.setAttribute('cx', String(X(e))); pg.setAttribute('cy', String(Y(gu)));
+      out(
+        'note',
+        b === 0
+          ? 'With no serial part, both laws give perfect linear speedup.'
+          : `With ${sIn.value}% serial code, ${p} processors give only ${fmt(a)}× under Amdahl — ` +
+              `but if the problem grows with the machine, Gustafson predicts ${fmt(gu)}×.`,
+      );
+    };
+    sIn.addEventListener('input', update);
+    pIn.addEventListener('input', update);
+    update();
+  }
+</script>

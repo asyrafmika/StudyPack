@@ -42,6 +42,21 @@ const { sheet } = Astro.props;
     }
   </div>
   {
+    sheet.terms.length > 0 && (
+      <section class="xs-block xs-terms">
+        <h3>📚 Terms</h3>
+        <dl class="xs-dl">
+          {sheet.terms.map((t) => (
+            <div>
+              <dt>{t.term}</dt>
+              <dd set:html={t.def} />
+            </div>
+          ))}
+        </dl>
+      </section>
+    )
+  }
+  {
     sheet.tricks.length > 0 && (
       <section class="xs-block xs-trick">
         <h3>🧠 Memory tricks</h3>

@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
 import CourseArt from '../../components/CourseArt.astro';
+import { examFor } from '../../lib/exam';
 import { sortedCourses, notesFor, url, noteUrl, progressId } from '../../lib/url';
 
 export const getStaticPaths = (async () => {
@@ -19,6 +20,8 @@ const weeks = Array.from({ length: c.totalWeeks }, (_, i) => i + 1);
 const ids = notes.map(progressId);
 // Filter chips = every assessment that at least one note is tagged with
 const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
+// Story chain: one step per page that has a story (problem → fix → new problem)
+const saga = (await Promise.all(notes.map(async (n) => ({ n, story: (await examFor(n))?.story })))).filter((x) => x.story);
 ---
 
 <Base title={c.code} description={c.description}>
@@ -42,15 +45,59 @@ const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
         <div class="bar"><div class="bar-fill"></div></div>
         <span class="bar-label small muted"></span>
       </div>
-      <a class="revise-cta" href={url(`${course.id}/exam/`)}>
-        <span class="revise-ic" aria-hidden="true">⚡</span>
-        <span>
-          <b>Last-minute revision</b>
-          <span class="small muted">Every week's must-knows, formulas and traps on one printable page</span>
-        </span>
-        <span class="fc-cta-go">Open →</span>
-      </a>
+      <div class="course-tools">
+        <a class="revise-cta" href={url(`${course.id}/exam/`)}>
+          <span class="revise-ic" aria-hidden="true">⚡</span>
+          <span>
+            <b>Last-minute revision</b>
+            <span class="small muted">Must-knows, formulas and traps, printable</span>
+          </span>
+          <span class="fc-cta-go">Open →</span>
+        </a>
+        <a class="revise-cta gl-cta" href={url(`${course.id}/glossary/`)}>
+          <span class="revise-ic" aria-hidden="true">📚</span>
+          <span>
+            <b>Glossary</b>
+            <span class="small muted">Every key term, searchable</span>
+          </span>
+          <span class="fc-cta-go">Open →</span>
+        </a>
+      </div>
     </section>
+
+    {
+      saga.length > 0 && (
+        <section class="saga" aria-labelledby="saga-h">
+          <div class="saga-head">
+            <h2 class="serif" id="saga-h">
+              The course as <em>one story</em>
+            </h2>
+            {c.storyIntro && <p class="muted">{c.storyIntro}</p>}
+          </div>
+          <ol class="saga-track">
+            {saga.map(({ n, story }, i) => (
+              <li>
+                <a class="saga-card" href={noteUrl(n)}>
+                  <span class="saga-step">
+                    {String(i + 1).padStart(2, '0')} · W{n.data.week}
+                  </span>
+                  <strong>{n.data.title.split(/ — |:/)[0]}</strong>
+                  <span class="saga-row saga-p">
+                    <b>Problem</b> {story!.problem}
+                  </span>
+                  <span class="saga-row saga-f">
+                    <b>Fix</b> {story!.fix}
+                  </span>
+                  <span class="saga-row saga-n">
+                    <b>But then</b> {story!.next}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
 
     {
       (c.assessments.length > 0 || c.outcomes.length > 0 || c.topics.length > 0) && (

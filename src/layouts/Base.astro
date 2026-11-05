@@ -76,6 +76,11 @@ const index = await searchIndex();
       <ul class="search-results" id="search-results" role="listbox"></ul>
       <p class="search-foot"><span><kbd>↑</kbd><kbd>↓</kbd> to move</span><span><kbd>↵</kbd> to open</span></p>
     </dialog>
+    <dialog class="lightbox" id="lightbox" aria-label="Enlarged figure">
+      <button class="lb-close" type="button" aria-label="Close">✕</button>
+      <div class="lb-stage"><img id="lb-img" alt="" /></div>
+      <p class="lb-cap" id="lb-cap"></p>
+    </dialog>
     <script type="application/json" id="search-data" set:html={JSON.stringify(index)} />
 
     <script>
@@ -85,6 +90,26 @@ const index = await searchIndex();
       initTheme(() => renderMermaid(true));
       renderMermaid();
       initSearch();
+
+      // Tap-to-enlarge for figures: open in a lightbox instead of a new tab; tap the image to zoom
+      const lb = document.getElementById('lightbox') as HTMLDialogElement;
+      const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+      const lbCap = document.getElementById('lb-cap')!;
+      document.addEventListener('click', (e) => {
+        const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('.figure a[href]');
+        if (!a || e.metaKey || e.ctrlKey) return;
+        e.preventDefault();
+        const img = a.querySelector('img');
+        lbImg.src = a.href;
+        lbImg.alt = img?.alt ?? '';
+        lbCap.textContent = a.closest('figure')?.querySelector('figcaption')?.textContent ?? '';
+        lb.classList.remove('zoomed');
+        lb.showModal();
+      });
+      lbImg.addEventListener('click', () => lb.classList.toggle('zoomed'));
+      lb.addEventListener('click', (e) => {
+        if (e.target === lb || (e.target as HTMLElement).closest('.lb-close')) lb.close();
+      });
     </script>
   </body>
 </html>

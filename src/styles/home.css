@@ -157,7 +157,7 @@
   margin: 56px auto 0;
   padding: 0 20px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 12px;
 }
 .h-stats div {
@@ -182,6 +182,7 @@
 }
 @media (max-width: 640px) {
   .h-stats { grid-template-columns: repeat(2, 1fr); }
+  .h-stats div:last-child { grid-column: 1 / -1; }
 }
 
 /* ---------- Sections ---------- */

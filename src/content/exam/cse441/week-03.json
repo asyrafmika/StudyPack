@@ -23,5 +23,48 @@
   ],
   "tricks": [
     "Build a SIPOC **from the middle**: process → outputs/customers → inputs/suppliers."
+  ],
+  "story": {
+    "problem": "One process has to be described precisely, for very different audiences.",
+    "fix": "Detailed notations: patterns, HIPO/IPO, ETVX, Turtle, SIPOC, EPC, BPMN, Petri nets and SPEM.",
+    "next": "Processes join into a whole life cycle. Which overall shape should a project follow?"
+  },
+  "terms": [
+    {
+      "term": "Process pattern",
+      "def": "A proven, reusable solution to a recurring process problem."
+    },
+    {
+      "term": "HIPO",
+      "def": "Hierarchy plus Input-Process-Output documentation technique."
+    },
+    {
+      "term": "ETVX",
+      "def": "Entry, Task, Verification, eXit process description."
+    },
+    {
+      "term": "Turtle diagram",
+      "def": "IPO plus Who? With what? How? KPI — popular in automotive."
+    },
+    {
+      "term": "SIPOC",
+      "def": "Suppliers, Inputs, Process, Outputs, Customers (Six Sigma)."
+    },
+    {
+      "term": "EPC",
+      "def": "Event-driven Process Chain: alternating events and functions."
+    },
+    {
+      "term": "BPMN",
+      "def": "Business Process Model and Notation; executable by workflow tools."
+    },
+    {
+      "term": "Petri net",
+      "def": "Mathematical model of places, tokens and transitions."
+    },
+    {
+      "term": "SPEM",
+      "def": "OMG's Software & Systems Process Engineering Meta-Model."
+    }
   ]
 }

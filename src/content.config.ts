@@ -13,6 +13,7 @@ const courses = defineCollection({
     code: z.string(), // e.g. "CST435"
     title: z.string(),
     description: z.string().optional(),
+    storyIntro: z.string().optional(), // one-paragraph thread that connects the whole course
     lecturer: z.string().optional(),
     semester: z.string().optional(),
     totalWeeks: z.number().int().positive().default(14),
@@ -69,6 +70,9 @@ const exam = defineCollection({
     traps: z.array(z.string()).default([]), // common mistakes
     likely: z.array(z.string()).default([]), // likely exam questions
     tricks: z.array(z.string()).default([]), // memory tricks
+    /** Where this page sits in the course story: the problem it answers, its fix, and the new problem it leaves */
+    story: z.object({ problem: z.string(), fix: z.string(), next: z.string() }).optional(),
+    terms: z.array(z.object({ term: z.string(), def: z.string() })).default([]), // "Terms to know"
   }),
 });
 

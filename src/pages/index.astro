@@ -4,6 +4,7 @@ import '../styles/home.css';
 import CourseArt from '../components/CourseArt.astro';
 import { sortedCourses, notesFor, url, progressId, noteUrl, noteLabel } from '../lib/url';
 import { contentStats } from '../lib/search';
+import { examFor } from '../lib/exam';
 
 const courses = await Promise.all(
   (await sortedCourses()).map(async (c) => {
@@ -11,12 +12,13 @@ const courses = await Promise.all(
     const stats = contentStats(notes.map((n) => n.body));
     const weeks = new Set(notes.map((n) => n.data.week)).size;
     const latest = notes.at(-1);
-    return { ...c, notes, stats, weeks, latest, ids: notes.map(progressId) };
+    const terms = (await Promise.all(notes.map(async (n) => (await examFor(n))?.terms.length ?? 0))).reduce((a, b) => a + b, 0);
+    return { ...c, notes, stats, weeks, latest, terms, ids: notes.map(progressId) };
   }),
 );
 const totals = courses.reduce(
-  (t, c) => ({ pages: t.pages + c.notes.length, questions: t.questions + c.stats.questions, visuals: t.visuals + c.stats.visuals }),
-  { pages: 0, questions: 0, visuals: 0 },
+  (t, c) => ({ pages: t.pages + c.notes.length, questions: t.questions + c.stats.questions, visuals: t.visuals + c.stats.visuals, terms: t.terms + c.terms }),
+  { pages: 0, questions: 0, visuals: 0, terms: 0 },
 );
 const firstNote = courses[0]?.notes[0];
 ---
@@ -95,6 +97,7 @@ counter<span class="o">++</span>;   <span class="c">// one thread at a time</spa
       <div><b>{totals.pages}</b><span>note pages</span></div>
       <div><b>{totals.questions}</b><span>practice questions</span></div>
       <div><b>{totals.visuals}</b><span>diagrams & figures</span></div>
+      <div><b>{totals.terms}</b><span>glossary terms</span></div>
     </section>
 
     <!-- ───────────── Courses ───────────── -->
@@ -243,6 +246,16 @@ counter<span class="o">++</span>;   <span class="c">// one thread at a time</spa
     <!-- ───────────── Features ───────────── -->
     <section class="h-section">
       <div class="h-features">
+        <div class="ft">
+          <span class="ft-ic">🧵</span>
+          <h3>One connected story</h3>
+          <p>Every week answers the problem the last one left, so topics stick together instead of piling up.</p>
+        </div>
+        <div class="ft">
+          <span class="ft-ic">🧮</span>
+          <h3>Play with the formulas</h3>
+          <p>Interactive Amdahl, Gustafson and speedup calculators turn equations into something you can feel.</p>
+        </div>
         <div class="ft">
           <span class="ft-ic">✍️</span>
           <h3>Explained, not copied</h3>

@@ -20,5 +20,44 @@
   ],
   "tricks": [
     "Boehm & Turner = **'Small, Calm, Changing, Clever, Cool → agile'** (size, criticality, dynamism, personnel, culture)."
+  ],
+  "story": {
+    "problem": "A process must fit each project and actually be followed, not just written.",
+    "fix": "Define, select, tailor (Boehm & Turner), deploy (state–enable–verify–reward) and assure it with audits.",
+    "next": "Next: assessing and improving processes (Topic 5)."
+  },
+  "terms": [
+    {
+      "term": "Process scope",
+      "def": "How much of the life cycle a process model covers."
+    },
+    {
+      "term": "Degree of obligation",
+      "def": "Whether a process is suggested, expected or mandatory."
+    },
+    {
+      "term": "Tailoring",
+      "def": "Adapting a general process by deleting, modifying or adding parts."
+    },
+    {
+      "term": "Boehm & Turner factors",
+      "def": "Size, criticality, dynamism, personnel, culture."
+    },
+    {
+      "term": "Last-mile problem",
+      "def": "The difficulty of getting people to actually follow a new process."
+    },
+    {
+      "term": "State–Enable–Verify–Reward",
+      "def": "Four-step approach to deploying a process."
+    },
+    {
+      "term": "Compliance",
+      "def": "Conforming to a rule; result is compliant or non-compliant."
+    },
+    {
+      "term": "COBIT",
+      "def": "IT governance framework for compliance, risk and alignment."
+    }
   ]
 }

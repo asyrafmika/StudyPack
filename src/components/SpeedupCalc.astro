@@ -1,0 +1,60 @@
+---
+/**
+ * Speedup / efficiency / cost calculator. Usage in MDX:  <SpeedupCalc t1={1023} tp={148} p={8} />
+ */
+interface Props {
+  t1?: number;
+  tp?: number;
+  p?: number;
+}
+const { t1 = 1023, tp = 148, p = 8 } = Astro.props;
+---
+
+<div class="calc speedup">
+  <div class="calc-head">
+    <span class="calc-tag">Interactive</span>
+    <h3>Speedup, efficiency &amp; cost: plug in your numbers</h3>
+  </div>
+  <div class="calc-inputs">
+    <label><span>T(1): serial time</span><input type="number" min="0" step="any" value={t1} data-in="t1" /></label>
+    <label><span>T(p): parallel time</span><input type="number" min="0" step="any" value={tp} data-in="tp" /></label>
+    <label><span>p: processors</span><input type="number" min="1" step="1" value={p} data-in="p" /></label>
+  </div>
+  <div class="calc-results">
+    <div class="cr cr-amdahl"><span>Speedup S = T(1)/T(p)</span><b data-out="s">–</b></div>
+    <div class="cr"><span>Efficiency E = S/p</span><b data-out="e">–</b></div>
+    <div class="cr"><span>Cost C = p·T(p)</span><b data-out="c">–</b></div>
+  </div>
+  <div class="eff-bar" aria-hidden="true"><div data-out="bar"></div></div>
+  <p class="calc-note" data-out="verdict"></p>
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('.calc.speedup')) {
+    const v = (k: string) => Number((root.querySelector(`[data-in="${k}"]`) as HTMLInputElement).value);
+    const o = (k: string) => root.querySelector(`[data-out="${k}"]`) as HTMLElement;
+    const update = () => {
+      const t1 = v('t1'), tp = v('tp'), p = Math.max(1, Math.round(v('p')));
+      if (!(t1 > 0 && tp > 0)) {
+        o('verdict').textContent = 'Enter positive times.';
+        return;
+      }
+      const s = t1 / tp, e = s / p, c = p * tp;
+      o('s').textContent = `${s.toFixed(2)}×`;
+      o('e').textContent = `${(e * 100).toFixed(1)}%`;
+      o('c').textContent = c.toLocaleString(undefined, { maximumFractionDigits: 2 });
+      o('bar').style.width = `${Math.min(100, e * 100)}%`;
+      o('bar').dataset.level = e > 1 ? 'super' : e >= 0.8 ? 'good' : e >= 0.5 ? 'ok' : 'poor';
+      o('verdict').textContent =
+        e > 1
+          ? 'Super-linear: faster than p× (usually a cache effect).'
+          : e >= 0.9
+            ? `Near-linear and close to cost-optimal (cost ${c.toFixed(0)} vs T(1) ${t1}).`
+            : e >= 0.5
+              ? `Sub-linear: ${((1 - e) * 100).toFixed(0)}% of processor time is overhead. Cost ${c.toFixed(0)} exceeds T(1) = ${t1}.`
+              : 'Poor efficiency: most processor time is wasted — fewer processors may be wiser.';
+    };
+    root.querySelectorAll('input').forEach((i) => i.addEventListener('input', update));
+    update();
+  }
+</script>

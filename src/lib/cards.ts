@@ -1,6 +1,6 @@
 import { Marked } from 'marked';
 
-export type Level = 'easy' | 'medium' | 'hard';
+export type Level = 'easy' | 'medium' | 'hard' | 'term';
 export interface Card {
   id: number;
   level: Level;

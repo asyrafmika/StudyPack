@@ -19,5 +19,44 @@
   ],
   "tricks": [
     "RACI: **'Doer, Decider, Discussed with, Told'**."
+  ],
+  "story": {
+    "problem": "Nobody clearly owns, writes or maintains the process.",
+    "fix": "Process infrastructure: clear roles (RACI), a chosen notation and managed process assets.",
+    "next": "With roles in place, how is a process designed, chosen, tailored and rolled out?"
+  },
+  "terms": [
+    {
+      "term": "Process management",
+      "def": "Direction, control and coordination of work."
+    },
+    {
+      "term": "RACI",
+      "def": "Responsible, Accountable, Consulted, Informed."
+    },
+    {
+      "term": "Process owner",
+      "def": "Accountable for a process; approves changes."
+    },
+    {
+      "term": "Process engineer",
+      "def": "Defines, models and maintains process descriptions."
+    },
+    {
+      "term": "Process tailor",
+      "def": "Adapts the standard process for a project."
+    },
+    {
+      "term": "Process performer",
+      "def": "Carries out the process day to day."
+    },
+    {
+      "term": "Process assurance",
+      "def": "Verifies the process is performed as defined."
+    },
+    {
+      "term": "Process assets",
+      "def": "Policies, descriptions, templates, measurements and tools for processes."
+    }
   ]
 }

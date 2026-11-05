@@ -5,6 +5,10 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { courseIdOf, noteLabel, noteSlug, notesFor, noteUrl, progressId, url } from '../../lib/url';
 import { extractCards, countByLevel } from '../../lib/cards';
+import { examFor, readingMinutes } from '../../lib/exam';
+import Own from '../../components/Own.astro';
+import StoryStrip from '../../components/StoryStrip.astro';
+import Terms from '../../components/Terms.astro';
 
 export const getStaticPaths = (async () => {
   const notes = await getCollection('notes');
@@ -29,7 +33,10 @@ const { Content, headings } = await render(note);
 const cards = extractCards(note.body);
 const levels = countByLevel(cards);
 const flashUrl = `${noteUrl(note)}flashcards/`;
-const hasExam = Boolean(await getEntry('exam', note.id));
+const aids = await examFor(note);
+const hasExam = Boolean(aids && (aids.must.length || aids.formulas.length));
+const minutes = readingMinutes(note.body);
+const nav = (n: typeof note | undefined) => (n ? { href: noteUrl(n), label: noteLabel(n), title: n.data.title } : undefined);
 const toc = headings.filter((h) => h.depth === 2);
 ---
 
@@ -88,15 +95,13 @@ const toc = headings.filter((h) => h.depth === 2);
         }
         <h1 class="serif">{note.data.title}</h1>
         {note.data.summary && <p class="muted lead">{note.data.summary}</p>}
-        {
-          note.data.examinedIn.length > 0 && (
-            <p class="badges">
-              {note.data.examinedIn.map((e) => (
-                <span class="badge badge-exam">🏷️ {e}</span>
-              ))}
-            </p>
-          )
-        }
+        <p class="badges">
+          <span class="badge">⏱ {minutes} min read</span>
+          {cards.length > 0 && <span class="badge">🃏 {cards.length} cards</span>}
+          {note.data.examinedIn.map((e) => (
+            <span class="badge badge-exam">🏷️ {e}</span>
+          ))}
+        </p>
         {
           (cards.length > 0 || hasExam) && (
             <div class="study-tools">
@@ -137,9 +142,13 @@ const toc = headings.filter((h) => h.depth === 2);
         }
       </header>
 
+      {aids?.story && <StoryStrip story={aids.story} prev={nav(prev)} next={nav(next)} />}
+
       <article class="prose">
-        <Content />
+        <Content components={{ Own }} />
       </article>
+
+      {aids && aids.terms.length > 0 && <Terms terms={aids.terms} glossaryHref={url(`${courseId}/glossary/`)} />}
 
       {
         cards.length > 0 && (
@@ -188,7 +197,26 @@ const toc = headings.filter((h) => h.depth === 2);
         }
       </nav>
     </main>
+
+    {
+      toc.length > 2 && (
+        <aside class="toc-rail" aria-label="On this page">
+          <p class="toc-rail-h">On this page</p>
+          <ul>
+            {toc.map((h) => (
+              <li>
+                <a href={`#${h.slug}`} data-toc={h.slug}>
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
   </div>
+  <div class="read-progress" aria-hidden="true"><div id="read-bar"></div></div>
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
 
   <script>
     import { isDone, setDone, paintProgress } from '../../lib/progress';
@@ -215,6 +243,39 @@ const toc = headings.filter((h) => h.depth === 2);
       localStorage.setItem(`sp:last:${r.course}`, JSON.stringify(r));
     } catch {
       /* storage unavailable */
+    }
+
+    // Reading progress + back-to-top
+    const bar = document.getElementById('read-bar')!;
+    const toTop = document.getElementById('to-top')!;
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      bar.style.width = `${max > 0 ? (h.scrollTop / max) * 100 : 0}%`;
+      toTop.hidden = h.scrollTop < 900;
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Highlight the current section in the right-hand contents rail:
+    // the active section is the last heading that has scrolled past the header.
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc]')];
+    const heads = links.map((a) => document.getElementById(a.dataset.toc!)).filter(Boolean) as HTMLElement[];
+    let ticking = false;
+    const markActive = () => {
+      ticking = false;
+      let current = 0;
+      heads.forEach((h, i) => {
+        if (h.getBoundingClientRect().top < 140) current = i;
+      });
+      links.forEach((a, i) => a.classList.toggle('active', i === current));
+    };
+    if (links.length) {
+      addEventListener('scroll', () => {
+        if (!ticking) (ticking = true), requestAnimationFrame(markActive);
+      }, { passive: true });
+      markActive();
     }
 
     // Sidebar toggle

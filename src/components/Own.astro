@@ -1,0 +1,9 @@
+---
+/** Inline badge marking content that is NOT from the lecture slides (added explanation/example). */
+interface Props {
+  note?: string;
+}
+const { note } = Astro.props;
+---
+
+<span class="own" title="Added by StudyPack — not from the lecture slides">✍️ Not in slides{note && <span class="own-note">· {note}</span>}</span>

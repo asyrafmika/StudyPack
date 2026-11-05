@@ -1,0 +1,25 @@
+---
+import type { Term } from '../lib/exam';
+interface Props {
+  terms: Term[];
+  glossaryHref?: string;
+}
+const { terms, glossaryHref } = Astro.props;
+---
+
+<section class="terms" aria-labelledby="terms-h">
+  <div class="terms-head">
+    <h2 id="terms-h">📚 Terms to know</h2>
+    {glossaryHref && <a class="small" href={glossaryHref}>Full glossary →</a>}
+  </div>
+  <dl class="terms-grid">
+    {
+      terms.map((t) => (
+        <div class="term">
+          <dt>{t.term}</dt>
+          <dd set:html={t.def} />
+        </div>
+      ))
+    }
+  </dl>
+</section>

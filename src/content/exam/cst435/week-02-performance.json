@@ -26,5 +26,44 @@
   ],
   "tricks": [
     "Design steps = **'PCSL'**: Partition, Communicate, Synchronise, Load-balance."
+  ],
+  "story": {
+    "problem": "Adding processors doesn't automatically make a program faster.",
+    "fix": "Measure it: speedup, efficiency, cost and scalability, then pick a memory model and a way to split the work.",
+    "next": "Buying and running all these machines is expensive. Can we rent them instead?"
+  },
+  "terms": [
+    {
+      "term": "Speedup",
+      "def": "S = T(1)/T(p): how many times faster on p processors."
+    },
+    {
+      "term": "Efficiency",
+      "def": "E = S/p: fraction of processor time spent on useful work."
+    },
+    {
+      "term": "Cost",
+      "def": "C = p·T(p): total processor-time used."
+    },
+    {
+      "term": "Strong scaling",
+      "def": "More processors, same problem size."
+    },
+    {
+      "term": "Weak scaling",
+      "def": "Problem size grows with the number of processors."
+    },
+    {
+      "term": "Super-linear speedup",
+      "def": "S > p, usually from data fitting in cache."
+    },
+    {
+      "term": "MPI",
+      "def": "Message Passing Interface: standard for distributed-memory programs."
+    },
+    {
+      "term": "LINPACK",
+      "def": "Benchmark solving Ax = b, used to rank the TOP500."
+    }
   ]
 }

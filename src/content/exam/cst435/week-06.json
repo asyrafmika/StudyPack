@@ -24,5 +24,48 @@
   ],
   "tricks": [
     "Deadlock conditions = **'Mutual Hold, No Circle'** → mutual exclusion, hold & wait, no pre-emption, circular wait."
+  ],
+  "story": {
+    "problem": "Threads that share memory can silently corrupt each other's data.",
+    "fix": "Mutual exclusion, synchronisation objects and barriers, while avoiding deadlock and livelock.",
+    "next": "Next: writing it for real with Pthreads and OpenMP (Week 7)."
+  },
+  "terms": [
+    {
+      "term": "Process",
+      "def": "Unit of allocation: own memory and resources."
+    },
+    {
+      "term": "Concurrency",
+      "def": "Several threads in progress at the same time."
+    },
+    {
+      "term": "Parallelism",
+      "def": "Several threads executing at the same instant."
+    },
+    {
+      "term": "Race condition",
+      "def": "Result depends on timing of concurrent access with ≥ 1 writer."
+    },
+    {
+      "term": "Critical region",
+      "def": "Code that accesses shared variables."
+    },
+    {
+      "term": "Mutex",
+      "def": "A lock that lets only one thread into a critical region."
+    },
+    {
+      "term": "Barrier",
+      "def": "Point where threads wait until all have arrived."
+    },
+    {
+      "term": "Deadlock",
+      "def": "Threads waiting forever for each other."
+    },
+    {
+      "term": "Livelock",
+      "def": "Threads keep reacting to each other but make no progress."
+    }
   ]
 }

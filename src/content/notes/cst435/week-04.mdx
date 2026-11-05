@@ -12,6 +12,7 @@ import Figure from '../../../components/Figure.astro';
 import treeSum from './images/w04-tree-sum.png';
 import sharedVsDist from './images/w04-shared-vs-distributed.png';
 import profile from './images/w04-overhead-profile.png';
+import AmdahlCalc from '../../../components/AmdahlCalc.astro';
 
 <Callout type="why">
 Hardware won't make your program faster any more. **The burden is now on software** (Week 1). This week answers the practical questions every parallel programmer faces:
@@ -328,7 +329,7 @@ Speedup keeps rising, but **efficiency falls** as p grows. That's typical.
    - **Latency:** time for one message to get from one node to another (the fixed start-up delay).
    - **Bandwidth:** amount of data transferred per unit of time.
 
-A useful rule of thumb *(extra)*: **time to send a message ≈ latency + message size / bandwidth**. Sending many small messages is dominated by latency, so it's better to batch them into fewer, bigger messages.
+A useful rule of thumb <Own />: **time to send a message ≈ latency + message size / bandwidth**. Sending many small messages is dominated by latency, so it's better to batch them into fewer, bigger messages.
 
 ## 6. Amdahl's Law
 
@@ -403,6 +404,12 @@ As the problem size increases, the **inherently serial fraction shrinks** (start
 **Amdahl:** you have a fixed 100 km trip. A faster car only helps on the motorway part; the 10 km of city traffic always takes the same time.
 **Gustafson:** with a faster car, you'll just **travel further** in your one-hour drive.
 </Callout>
+
+### Try it yourself
+
+Drag the serial fraction to 67% and the processors to 8 or 16, then compare with the slide examples. Notice how Amdahl flattens out at its ceiling while Gustafson keeps climbing.
+
+<AmdahlCalc serial={67} cores={8} />
 
 ## 8. Overhead
 

@@ -24,5 +24,48 @@
   "tricks": [
     "5 characteristics: **'On Broad Resources, Rapidly Measured'**.",
     "Pizza: home-made = on-prem, rented kitchen = IaaS, take-and-bake = PaaS, dine-in = SaaS."
+  ],
+  "story": {
+    "problem": "Owning servers means big upfront cost and capacity that sits idle most of the time.",
+    "fix": "Cloud computing: rent shared, elastic resources on demand as IaaS, PaaS or SaaS.",
+    "next": "To use any machine well, local or rented, we need to know what's inside it."
+  },
+  "terms": [
+    {
+      "term": "Cloud computing",
+      "def": "On-demand, pay-per-use computing resources delivered over the Internet."
+    },
+    {
+      "term": "IaaS",
+      "def": "Infrastructure as a Service: rent VMs, storage and networks (e.g. EC2)."
+    },
+    {
+      "term": "PaaS",
+      "def": "Platform as a Service: deploy your code, provider runs the rest (e.g. App Engine)."
+    },
+    {
+      "term": "SaaS",
+      "def": "Software as a Service: use finished software in a browser (e.g. Gmail)."
+    },
+    {
+      "term": "Multi-tenancy",
+      "def": "Many customers sharing the same physical resources."
+    },
+    {
+      "term": "Rapid elasticity",
+      "def": "Scaling resources up and down quickly on demand."
+    },
+    {
+      "term": "CapEx / OpEx",
+      "def": "Upfront capital purchase vs ongoing operating cost."
+    },
+    {
+      "term": "Vendor lock-in",
+      "def": "Being so tied to one provider that switching is hard and costly."
+    },
+    {
+      "term": "SLA",
+      "def": "Service Level Agreement: contract defining promised service quality."
+    }
   ]
 }

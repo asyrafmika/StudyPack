@@ -23,5 +23,52 @@
   ],
   "tricks": [
     "MPI's six = **'Start, Stop, How many, Who am I, Send, Receive'**."
+  ],
+  "story": {
+    "problem": "Processes on separate machines share no memory at all.",
+    "fix": "Message passing (MPI), remote calls (RPC, RMI, gRPC) and indirect messaging (pub-sub, queues).",
+    "next": "Inside one machine, threads can simply share memory, but that brings its own dangers."
+  },
+  "terms": [
+    {
+      "term": "Message passing",
+      "def": "Processes cooperating only by sending messages."
+    },
+    {
+      "term": "Rank",
+      "def": "A process's number within an MPI communicator."
+    },
+    {
+      "term": "MPI_COMM_WORLD",
+      "def": "The default communicator containing all MPI processes."
+    },
+    {
+      "term": "Blocking call",
+      "def": "Returns only when the operation is complete."
+    },
+    {
+      "term": "Collective",
+      "def": "Operation involving all processes: broadcast, scatter, gather, reduce."
+    },
+    {
+      "term": "Marshalling",
+      "def": "Flattening data into bytes so it can be sent."
+    },
+    {
+      "term": "Stub",
+      "def": "Local stand-in that makes a remote call look like a local one."
+    },
+    {
+      "term": "gRPC",
+      "def": "Google's RPC framework using protocol buffers over HTTP/2."
+    },
+    {
+      "term": "Publish-subscribe",
+      "def": "Publishers send events; every matching subscriber receives them."
+    },
+    {
+      "term": "Overlay network",
+      "def": "A virtual network built on top of an existing one."
+    }
   ]
 }

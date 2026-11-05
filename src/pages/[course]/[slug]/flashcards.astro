@@ -3,7 +3,8 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import { courseIdOf, noteLabel, noteSlug, notesFor, noteUrl, url } from '../../../lib/url';
-import { extractCards, countByLevel } from '../../../lib/cards';
+import { extractCards, countByLevel, type Card } from '../../../lib/cards';
+import { examFor } from '../../../lib/exam';
 
 export const getStaticPaths = (async () => {
   const notes = await getCollection('notes');
@@ -17,6 +18,15 @@ const courseId = courseIdOf(note);
 const course = (await getEntry('courses', courseId))!;
 const cards = extractCards(note.body);
 const levels = countByLevel(cards);
+// Glossary terms become an extra "Terms" deck (term on the front, definition on the back)
+const terms: Card[] = ((await examFor(note))?.terms ?? []).map((t, i) => ({
+  id: 1000 + i,
+  level: 'term',
+  q: t.term,
+  a: `<p>${t.def}</p>`,
+  why: `Say the definition of <strong>${t.term}</strong> in your own words before flipping next time.`,
+}));
+const allCards = [...cards, ...terms];
 
 // Next page in this course that also has flashcards, for the "keep going" link
 const siblings = await notesFor(courseId);
@@ -45,6 +55,7 @@ const deckId = note.id;
       {levels.easy > 0 && <button role="radio" aria-checked="false" data-level="easy" class="lv-easy">Easy <i>{levels.easy}</i></button>}
       {levels.medium > 0 && <button role="radio" aria-checked="false" data-level="medium" class="lv-medium">Medium <i>{levels.medium}</i></button>}
       {levels.hard > 0 && <button role="radio" aria-checked="false" data-level="hard" class="lv-hard">Hard <i>{levels.hard}</i></button>}
+      {terms.length > 0 && <button role="radio" aria-checked="false" data-level="term" class="lv-term">Terms <i>{terms.length}</i></button>}
       <label class="shuffle"><input type="checkbox" id="shuffle" /> Shuffle</label>
     </div>
 
@@ -106,7 +117,7 @@ const deckId = note.id;
     </section>
   </main>
 
-  <script type="application/json" id="cards-data" set:html={JSON.stringify(cards)} />
+  <script type="application/json" id="cards-data" set:html={JSON.stringify(allCards)} />
   <div id="deck-meta" data-deck={deckId} hidden></div>
 
   <script>
@@ -114,7 +125,7 @@ const deckId = note.id;
     const all: Card[] = JSON.parse(document.getElementById('cards-data')!.textContent || '[]');
     const deckId = document.getElementById('deck-meta')!.dataset.deck!;
     const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
-    const LABEL = { easy: 'Easy', medium: 'Medium', hard: 'Hard' } as const;
+    const LABEL = { easy: 'Easy', medium: 'Medium', hard: 'Hard', term: 'Term' } as const;
 
     let level: 'all' | Card['level'] = 'all';
     let queue: { card: Card; retry: boolean }[] = [];
@@ -160,7 +171,7 @@ const deckId = note.id;
     }
 
     function filtered() {
-      return level === 'all' ? all : all.filter((c) => c.level === level);
+      return level === 'all' ? all.filter((c) => c.level !== 'term') : all.filter((c) => c.level === level);
     }
 
     function show() {
@@ -286,6 +297,6 @@ const deckId = note.id;
     });
 
     showBest();
-    start(all);
+    start(filtered());
   </script>
 </Base>

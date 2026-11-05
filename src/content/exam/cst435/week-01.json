@@ -24,5 +24,44 @@
   ],
   "tricks": [
     "Multi-core reasons = **'Hot, Hard, Already threaded'**: heat, hard to design, apps already multithreaded."
+  ],
+  "story": {
+    "problem": "Single-core CPUs hit the power wall: a faster clock means too much heat.",
+    "fix": "Put many cores on one chip and many machines on a network: parallel and distributed computing.",
+    "next": "More hardware alone isn't enough. How do we know going parallel actually pays off?"
+  },
+  "terms": [
+    {
+      "term": "Moore's Law",
+      "def": "Transistors per chip double roughly every 18–24 months."
+    },
+    {
+      "term": "Power wall",
+      "def": "The limit on clock speed caused by power ∝ C·V²·f turning into heat."
+    },
+    {
+      "term": "CMP",
+      "def": "Chip Multi-Processor: several cores on one die, in one socket."
+    },
+    {
+      "term": "Hyper-Threading",
+      "def": "Intel's SMT: two hardware threads sharing one core's execution units."
+    },
+    {
+      "term": "SMP",
+      "def": "Symmetric Multi-Processor: several CPUs sharing one memory."
+    },
+    {
+      "term": "Cluster",
+      "def": "Many whole computers joined by a fast network and used together."
+    },
+    {
+      "term": "Grain size",
+      "def": "How much work a task does between communications (fine vs coarse)."
+    },
+    {
+      "term": "Scavenging",
+      "def": "Using idle computers' wasted cycles for useful work."
+    }
   ]
 }
