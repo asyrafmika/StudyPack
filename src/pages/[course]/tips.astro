@@ -1,0 +1,183 @@
+---
+/**
+ * Lecturer's exam tips: interactive scenario MCQs with worked answers.
+ * Only generated for courses that have src/content/tips/<course-id>.json.
+ * Answers are revealed per question on click (or all at once); picks are kept in localStorage.
+ */
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import { Marked } from 'marked';
+import Base from '../../layouts/Base.astro';
+import { sortedCourses, notesFor, noteUrl, url } from '../../lib/url';
+
+export const getStaticPaths = (async () => {
+  const [courses, tips] = await Promise.all([sortedCourses(), getCollection('tips')]);
+  return tips.flatMap((tip) => {
+    const course = courses.find((c) => c.id === tip.id);
+    return course ? [{ params: { course: course.id }, props: { course, tip } }] : [];
+  });
+}) satisfies GetStaticPaths;
+
+const { course, tip } = Astro.props;
+const md = new Marked({ gfm: true });
+const inline = (x: string) => md.parseInline(x) as string;
+const notes = await notesFor(course.id);
+// Link a question to the first page of its week, when that week has notes
+const weekHref = (w?: number) => {
+  const n = w ? notes.find((x) => x.data.week === w) : undefined;
+  return n ? noteUrl(n) : undefined;
+};
+const qs = tip.data.questions;
+const topics = [...new Set(qs.map((q) => q.topic))];
+const letters = 'ABCDEFGH';
+---
+
+<Base title={`Exam tips · ${course.data.code}`} description={`${tip.data.title} for ${course.data.title}, with answers`}>
+  <main class="xp tips" style={`--accent:${course.data.color}`}>
+    <nav class="crumbs small"><a href={url()}>Courses</a> / <a href={url(`${course.id}/`)}>{course.data.code}</a> / Exam tips</nav>
+    <header class="xp-head">
+      <p class="course-code">{course.data.code} · {tip.data.title}</p>
+      <h1 class="serif">Tips from class, <em>answered</em></h1>
+      {tip.data.intro && <p class="muted" set:html={inline(tip.data.intro)} />}
+      {tip.data.source && <p class="small muted tips-src">📸 {tip.data.source}</p>}
+    </header>
+
+    <div class="tips-bar">
+      <div class="chips" role="group" aria-label="Filter by topic">
+        <button type="button" class="chip active" data-topic="">All {qs.length}</button>
+        {topics.map((t) => <button type="button" class="chip" data-topic={t}>{t}</button>)}
+      </div>
+      <div class="tips-actions">
+        <span class="tips-score small" id="tips-score" aria-live="polite"></span>
+        <button type="button" class="btn-ghost small" id="tips-reveal">Show all answers</button>
+        <button type="button" class="btn-ghost small" id="tips-reset">Reset</button>
+      </div>
+    </div>
+
+    <ol class="tips-list">
+      {
+        qs.map((q, i) => {
+          const href = weekHref(q.week);
+          return (
+            <li class="tq" data-i={i} data-answer={q.answer} data-topic={q.topic}>
+              <div class="tq-meta">
+                <span class="tq-n">Q{i + 1}</span>
+                <span class="tq-topic">{q.topic}</span>
+                {q.repeated && <span class="tq-rep" title="This question was shown more than once in class">🔁 Shown twice</span>}
+                {href && <a class="tq-week" href={href}>W{q.week} notes →</a>}
+              </div>
+              {q.scenario && <p class="tq-scn" set:html={inline(q.scenario)} />}
+              <p class="tq-q" set:html={inline(q.q)} />
+              <div class="tq-opts" role="group" aria-label={`Options for question ${i + 1}`}>
+                {q.options.map((o, k) => (
+                  <button type="button" class="tq-opt" data-k={k}>
+                    <span class="tq-l">{letters[k]}</span>
+                    <span set:html={inline(o)} />
+                  </button>
+                ))}
+              </div>
+              <div class="tq-ans" hidden>
+                <p class="tq-verdict" />
+                <p>
+                  <b>Answer: {letters[q.answer]}.</b> <span set:html={inline(q.why)} />
+                </p>
+                {q.wrong && <p class="tq-wrong" set:html={`<b>Why not the others?</b> ${inline(q.wrong)}`} />}
+              </div>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </main>
+
+  <script>
+    const KEY = `sp:tips:${location.pathname}`;
+    const items = [...document.querySelectorAll<HTMLLIElement>('.tq')];
+    const score = document.getElementById('tips-score')!;
+    const revealBtn = document.getElementById('tips-reveal') as HTMLButtonElement;
+    let picks: Record<string, number> = {};
+    try {
+      picks = JSON.parse(localStorage.getItem(KEY) ?? '{}');
+    } catch {
+      picks = {};
+    }
+    const save = () => {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(picks));
+      } catch {
+        /* storage unavailable: progress just isn't remembered */
+      }
+    };
+
+    /** Show the answer for one question. `pick` is the user's choice, or undefined when just revealing. */
+    const show = (li: HTMLLIElement, pick?: number) => {
+      const ans = Number(li.dataset.answer);
+      li.querySelectorAll<HTMLButtonElement>('.tq-opt').forEach((b) => {
+        const k = Number(b.dataset.k);
+        b.disabled = true;
+        b.classList.toggle('is-right', k === ans);
+        b.classList.toggle('is-wrong', pick !== undefined && k === pick && k !== ans);
+        b.classList.toggle('is-pick', k === pick);
+      });
+      const verdict = li.querySelector<HTMLElement>('.tq-verdict')!;
+      li.classList.remove('got-right', 'got-wrong');
+      if (pick === undefined) verdict.textContent = '';
+      else if (pick === ans) (verdict.textContent = '✅ Correct!'), li.classList.add('got-right');
+      else (verdict.textContent = '❌ Not quite, here is why.'), li.classList.add('got-wrong');
+      verdict.hidden = pick === undefined;
+      li.querySelector<HTMLElement>('.tq-ans')!.hidden = false;
+    };
+    const hide = (li: HTMLLIElement) => {
+      li.classList.remove('got-right', 'got-wrong');
+      li.querySelectorAll<HTMLButtonElement>('.tq-opt').forEach((b) => {
+        b.disabled = false;
+        b.classList.remove('is-right', 'is-wrong', 'is-pick');
+      });
+      li.querySelector<HTMLElement>('.tq-ans')!.hidden = true;
+    };
+    const updateScore = () => {
+      const done = Object.keys(picks).length;
+      const right = items.filter((li) => picks[li.dataset.i!] === Number(li.dataset.answer)).length;
+      score.textContent = done ? `${right} / ${done} correct · ${items.length - done} left` : `${items.length} questions · tap an option to answer`;
+    };
+
+    items.forEach((li) => {
+      const i = li.dataset.i!;
+      if (i in picks) show(li, picks[i]);
+      li.querySelector('.tq-opts')!.addEventListener('click', (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>('.tq-opt');
+        if (!b || b.disabled) return;
+        picks[i] = Number(b.dataset.k);
+        save();
+        show(li, picks[i]);
+        updateScore();
+      });
+    });
+
+    let revealed = false;
+    revealBtn.addEventListener('click', () => {
+      revealed = !revealed;
+      items.forEach((li) => (revealed ? show(li, picks[li.dataset.i!]) : !(li.dataset.i! in picks) && hide(li)));
+      revealBtn.textContent = revealed ? 'Hide unanswered' : 'Show all answers';
+    });
+    document.getElementById('tips-reset')!.addEventListener('click', () => {
+      picks = {};
+      save();
+      revealed = false;
+      revealBtn.textContent = 'Show all answers';
+      items.forEach(hide);
+      updateScore();
+    });
+
+    // Topic filter
+    const chips = document.querySelectorAll<HTMLButtonElement>('.tips .chip');
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.classList.toggle('active', c === chip));
+        const t = chip.dataset.topic ?? '';
+        items.forEach((li) => (li.hidden = !!t && li.dataset.topic !== t));
+      }),
+    );
+    updateScore();
+  </script>
+</Base>

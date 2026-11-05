@@ -1,0 +1,58 @@
+{
+  "must": [
+    "Career model: Degree → Job → Promotion → Career **became** Degree → **Skills → Portfolio → Opportunities → Continuous learning**.",
+    "Professional development = improving **knowledge, skills, communication, judgement, adaptability** to become more useful.",
+    "Employers ask: **What can you do? What problem can you solve? Can you learn quickly?**",
+    "GenAI = fast, scalable, pattern-based drafts; humans = **context, judgement, responsibility, trust, relationships**. **Human + AI.**",
+    "**Skill + Real problem + Digital tool + Customer = Possible value**; a prototype ≠ a successful business.",
+    "Avoid **Prompt → Copy → Submit**; do **Prompt → Understand → Verify → Adapt → Create**. Stay **the human in charge**."
+  ],
+  "formulas": [
+    "Opportunity = **Skill + Problem + Tool + Customer**",
+    "Take-home loop: **Learn → Build → Show → Solve → Improve**"
+  ],
+  "traps": [
+    "An entrepreneurial mindset does **not** mean you must start a company; employees can have it too.",
+    "'I can use AI' is not the skill; **knowing what to ask, check, improve and apply** is."
+  ],
+  "likely": [
+    "Explain the changed career model.",
+    "Apply the opportunity formula to a case.",
+    "Risks of GenAI and how to use it responsibly.",
+    "List the new graduate skill stack."
+  ],
+  "tricks": [
+    "Skill stack **D-D-C-C-P-A-E**: Domain, Digital, Communication, Critical thinking, Problem solving, AI literacy, Entrepreneurial mindset."
+  ],
+  "story": {
+    "problem": "GenAI can now write, design and analyse, so what makes a graduate valuable?",
+    "fix": "Keep developing professionally, use AI to amplify (not replace) your skills, think entrepreneurially, and prove it with a portfolio.",
+    "next": "Put it into practice: spot a real problem and create digital value."
+  },
+  "terms": [
+    {
+      "term": "Professional development",
+      "def": "Continuously improving knowledge, skills, communication, judgement and adaptability."
+    },
+    {
+      "term": "Entrepreneurial mindset",
+      "def": "See a problem → find an opportunity → create value → test → improve."
+    },
+    {
+      "term": "Digital entrepreneurship",
+      "def": "Creating value using digital technology (apps, e-commerce, content, services)."
+    },
+    {
+      "term": "Opportunity formula",
+      "def": "Skill + real problem + digital tool + customer = possible value."
+    },
+    {
+      "term": "AI literacy",
+      "def": "Knowing what to ask AI, how to check it, and how to improve and apply its output."
+    },
+    {
+      "term": "Digital portfolio",
+      "def": "Evidence of your work (dashboards, apps, campaigns) instead of a list of skills."
+    }
+  ]
+}

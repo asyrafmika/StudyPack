@@ -162,5 +162,35 @@
       "Topic 8 — Selected Current Trends in Software Processes"
     ],
     "storyIntro": "Software quality comes from the process that produces it. The course moves from writing a process down, to choosing its overall shape, to making an organisation actually follow it."
+  },
+  {
+    "id": "cat402",
+    "code": "CAT402",
+    "title": "Professional & Technopreneurship Development",
+    "description": "How to run a business online: making money from a website, operating an e-business from strategy down to daily operations, marketing it on the web, and staying valuable as a graduate in the GenAI era.",
+    "lecturer": "Dr. Suzi Iryanti Fadilah",
+    "semester": "Semester 1, 2026/2027",
+    "totalWeeks": 14,
+    "color": "#f97316",
+    "order": 3,
+    "schedule": [
+      {
+        "week": 4,
+        "topic": "Selling on the Web: revenue models, catalogs, omni-channel, website design"
+      },
+      {
+        "week": 6,
+        "topic": "Operating your e-business: strategic, tactical, operational, RevOps"
+      },
+      {
+        "week": 9,
+        "topic": "Marketing on the Web: segmentation, CRM, ads, email, branding, SEO/SEM"
+      },
+      {
+        "week": 10,
+        "topic": "The Augmented Marketer: professional development in the GenAI era"
+      }
+    ],
+    "storyIntro": "A technopreneur needs four things in order: a way to make money online, a way to run the business without it running you, a way to reach customers, and the skills to stay valuable as technology keeps changing."
   }
 ]

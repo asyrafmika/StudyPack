@@ -1,0 +1,77 @@
+{
+  "must": [
+    "**Strategic** (2–5+ yrs, executives, *who and why*) → **Tactical** (3 months–2 yrs, departments, *what*) → **Operational** (day-to-day, teams, *how and where*).",
+    "Strategy = long-term goals and how to reach them; tactics = actions supporting the strategy; operations = routine processes.",
+    "Owner must **delegate** and hire specialists, or the company **stagnates**. Examples: Zalora (partnerships + AI), eBay (core strength), Amazon (diversify).",
+    "**Pareto 80/20:** 20% of effort/causes → 80% of results. Focus on the vital 20%. Planning: 20% strategy / 80% other.",
+    "Eisenhower: **Do / Decide (schedule) / Delegate / Delete**. Time split **20% strategic / 60% routine / 20% force majeure**.",
+    "**RevOps** aligns sales, marketing and customer service with unified data and tools, **breaking down silos**."
+  ],
+  "formulas": [
+    "Pareto: **20% → 80%**",
+    "Time: **20 / 60 / 20** (strategic / routine / force majeure)",
+    "Strategic **2–5+ yrs** · Tactical **3 mo–2 yrs** · Operational **daily**"
+  ],
+  "traps": [
+    "Pareto means **prioritise**, never *remove all*, *ignore*, *stop all* or *treat equally*.",
+    "Many 'force majeure' events are really **routine** (the logistics company: 50–60% that wasn't).",
+    "Productivity ≠ effectiveness: tasks without a goal are not results."
+  ],
+  "likely": [
+    "Pareto scenario MCQs (5 of the 13 tips).",
+    "Compare the three planning levels with examples.",
+    "Explain RevOps and how it helps an e-business.",
+    "Describe tactical framework components with tools."
+  ],
+  "tricks": [
+    "**S-T-O = Should, Then, Operate**; time shrinks years → months → days.",
+    "Pareto answer = **fix the bad 20% / grow the good 20%**."
+  ],
+  "story": {
+    "problem": "The store sells, but the owner does every job and the business stalls.",
+    "fix": "Organise work into strategic, tactical and operational levels, delegate, spend time by Pareto, and align teams with RevOps.",
+    "next": "The business runs, but customers still have to find it and keep coming back."
+  },
+  "terms": [
+    {
+      "term": "Strategic planning",
+      "def": "Long-term (2–5+ yrs) vision, mission and direction, set by executives."
+    },
+    {
+      "term": "Tactical planning",
+      "def": "Short-term (3 months–2 yrs) departmental actions that support the strategy."
+    },
+    {
+      "term": "Operational planning",
+      "def": "Day-to-day detailed processes carried out by teams."
+    },
+    {
+      "term": "Stagnation",
+      "def": "A state of no movement, growth or development in a company or economy."
+    },
+    {
+      "term": "Pareto principle",
+      "def": "The 80/20 rule: 20% of causes or effort produce 80% of results."
+    },
+    {
+      "term": "Eisenhower matrix",
+      "def": "Urgent × important grid: Do, Decide (schedule), Delegate, Delete."
+    },
+    {
+      "term": "Force majeure",
+      "def": "Unpredictable events that disrupt a business."
+    },
+    {
+      "term": "RevOps",
+      "def": "Revenue Operations: aligning sales, marketing and service with shared data and tools."
+    },
+    {
+      "term": "Data silo",
+      "def": "Data kept separately by one team, so others can't use it."
+    },
+    {
+      "term": "Order Management System (OMS)",
+      "def": "Software that automates inventory, order processing and delivery updates."
+    }
+  ]
+}

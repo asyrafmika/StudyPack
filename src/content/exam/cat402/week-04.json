@@ -1,0 +1,78 @@
+{
+  "must": [
+    "Five revenue models: **web catalog, digital content, advertising-supported, ad–subscription mixed, fee-based**. They work for both B2C and B2B.",
+    "**Product catalog management**: high-quality, consistent product data across **all channels**. Four benefits: organised catalog, consistent information, better customer experience, business growth.",
+    "**Multi-channel** = many channels, **not integrated**. **Omni-channel** = all channels **connected**, with one seamless experience and unified data.",
+    "Digital content: **freemium** (Spotify), **subscription** (Netflix: loyal users, predictable revenue), sponsorships, CPC, **affiliate** (30–70% commission).",
+    "**AdWords** = the advertiser pays; **AdSense** = the publisher earns per click. Ads alone pay only with a **very large audience**.",
+    "Design for success: **first impression, UX (navigation, CTAs, mobile), consistent brand, colour palette, stand out**. Design for your **target audience**."
+  ],
+  "formulas": [
+    "Channels vs revenue: +1 channel **+38%**, +2 **+120%**, +3 **+190%**",
+    "Affiliate commission ≈ **30–70%**",
+    "UX: every £1 invested → **£2–£100** back",
+    "Design stats: **75%** judge credibility by design; **94%** of B2B buyers search online first"
+  ],
+  "traps": [
+    "Being on Shopee + Instagram with separate stock and data is **multi**, not omni.",
+    "AdSense ≠ AdWords: the **publisher** earns vs the **advertiser** pays.",
+    "An own website does **not** automatically get traffic; it needs up-front marketing (SEO, ads)."
+  ],
+  "likely": [
+    "Explain the five revenue models with examples.",
+    "Compare multi-channel and omni-channel.",
+    "Trade-off: marketplace vs independent website.",
+    "Risks of selling on only one platform."
+  ],
+  "tricks": [
+    "**CCAAF**: Catalog, Content, Ads, Ads+Subs, Fees.",
+    "Omni = **One** experience; Multi = **Many** separate."
+  ],
+  "story": {
+    "problem": "A website alone earns nothing, and selling online means competing with everyone.",
+    "fix": "Pick a revenue model, sell across connected channels, manage the catalog and design for the target audience.",
+    "next": "Once it sells, how do you actually run the business day to day without the owner doing everything?"
+  },
+  "terms": [
+    {
+      "term": "Revenue model",
+      "def": "How a business earns money from its online activities."
+    },
+    {
+      "term": "Web catalog model",
+      "def": "Selling products listed in an online version of a printed catalog."
+    },
+    {
+      "term": "Product catalog management",
+      "def": "Keeping product data organised, standardised and consistent across every sales channel."
+    },
+    {
+      "term": "Multi-channel",
+      "def": "Selling on many channels that are not integrated with each other."
+    },
+    {
+      "term": "Omni-channel",
+      "def": "All channels connected, with unified data and one seamless customer experience."
+    },
+    {
+      "term": "Freemium",
+      "def": "A free ad-supported tier plus a paid premium tier (e.g. Spotify)."
+    },
+    {
+      "term": "Subscription model",
+      "def": "Recurring payments for ongoing access (e.g. Netflix); loyal users, predictable revenue."
+    },
+    {
+      "term": "Affiliate marketing",
+      "def": "Promoting another company's product via a link and earning a commission (30–70%) on sales."
+    },
+    {
+      "term": "Google AdSense",
+      "def": "Lets publishers show Google ads on their site and earn per click."
+    },
+    {
+      "term": "Call-to-action (CTA)",
+      "def": "A button or link telling the visitor what to do next, e.g. 'Add to cart'."
+    }
+  ]
+}

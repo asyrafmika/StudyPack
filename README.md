@@ -88,3 +88,7 @@ Each note can have a revision sheet at `src/content/exam/<course>/<note-file>.js
 `must`, `formulas`, `traps`, `likely` and `tricks` (arrays of inline markdown).
 It appears at `/<course>/<slug>/exam/`, and all sheets for a course are combined at `/<course>/exam/`
 (filterable by test, printable to PDF).
+
+## Exam tips (lecturer's MCQs, answered)
+
+Put a course's tip questions in `src/content/tips/<course-id>.json`. A `/<course-id>/tips/` page and a "Exam tips" card on the course page appear automatically. Each question has `topic`, optional `scenario` and `week`, `q`, `options`, `answer` (0-based index), `why`, optional `wrong` (why the tempting options fail) and `repeated` (shown more than once in class). Text fields accept inline markdown.

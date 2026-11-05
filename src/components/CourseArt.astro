@@ -72,7 +72,27 @@ const { id, color, fit = 'slice' } = Astro.props;
   }
 
   {
-    id !== 'cst435' && id !== 'cse441' && (
+    id === 'cat402' && (
+      <g class="art-float">
+        {/* an online shop growing: storefront card, rising sales line, cart */}
+        <rect x="70" y="60" width="150" height="110" rx="14" fill="var(--surface)" stroke={color} stroke-width="2" />
+        <path d="M70 92 H220" stroke={color} stroke-width="2" opacity="0.5" />
+        <path d="M70 60 h150 l0 20 q-19 14 -37 0 q-19 14 -38 0 q-19 14 -37 0 q-19 14 -38 0 z" fill={color} opacity="0.35" />
+        <rect x="90" y="108" width="44" height="44" rx="8" fill={color} opacity="0.25" />
+        <rect x="146" y="108" width="56" height="10" rx="5" fill={color} opacity="0.4" />
+        <rect x="146" y="126" width="40" height="10" rx="5" fill={color} opacity="0.25" />
+        <path d="M250 160 L300 132 L340 142 L400 80" stroke={color} stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M384 78 L402 78 L402 96" stroke={color} stroke-width="3" fill="none" stroke-linecap="round" />
+        {[[250, 160], [300, 132], [340, 142]].map(([x, y], i) => (
+          <circle cx={x} cy={y} r="6" fill={color} class="art-pulse" style={`animation-delay:${i * 0.3}s`} />
+        ))}
+        <text x="300" y="185" font-size="12" font-weight="700" fill={color} opacity="0.85">attract → convert → delight</text>
+      </g>
+    )
+  }
+
+  {
+    id !== 'cst435' && id !== 'cse441' && id !== 'cat402' && (
       <g class="art-float">
         <circle cx="360" cy="100" r="54" fill={color} opacity="0.18" />
         <circle cx="300" cy="140" r="30" fill={color} opacity="0.3" />

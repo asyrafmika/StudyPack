@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
 import CourseArt from '../../components/CourseArt.astro';
 import { examFor } from '../../lib/exam';
+import { getCollection } from 'astro:content';
 import { sortedCourses, notesFor, url, noteUrl, progressId } from '../../lib/url';
 
 export const getStaticPaths = (async () => {
@@ -21,6 +22,8 @@ const ids = notes.map(progressId);
 // Filter chips = every assessment that at least one note is tagged with
 const examFilters = [...new Set(notes.flatMap((n) => n.data.examinedIn))];
 // Story chain: one step per page that has a story (problem → fix → new problem)
+// Lecturer's exam tips, if this course has them
+const tips = (await getCollection('tips')).find((t) => t.id === course.id);
 const saga = (await Promise.all(notes.map(async (n) => ({ n, story: (await examFor(n))?.story })))).filter((x) => x.story);
 ---
 
@@ -62,6 +65,18 @@ const saga = (await Promise.all(notes.map(async (n) => ({ n, story: (await examF
           </span>
           <span class="fc-cta-go">Open →</span>
         </a>
+        {
+          tips && (
+            <a class="revise-cta tips-cta" href={url(`${course.id}/tips/`)}>
+              <span class="revise-ic" aria-hidden="true">🎯</span>
+              <span>
+                <b>Exam tips · answered</b>
+                <span class="small muted">{tips.data.questions.length} questions from class, with explanations</span>
+              </span>
+              <span class="fc-cta-go">Practise →</span>
+            </a>
+          )
+        }
       </div>
     </section>
 

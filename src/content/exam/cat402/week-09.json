@@ -1,0 +1,82 @@
+{
+  "must": [
+    "Goals are **SMART**: Specific, Measurable, Attainable, Relevant, Time-bound. Mix: **4Ps** (Product, Price, Promotion, Place) → **7Ps** (+People, Process, Physical evidence).",
+    "**Product-based** (quality, but may alienate customers) vs **customer-based** (what customers want; loyalty, but costly research).",
+    "Segmentation bases: **Geographic, Demographic, Psychographic, Behavioural**, then **STP** (segment → target → position). Segmented email: **+760%** revenue.",
+    "CRM objectives: satisfaction, bigger customer base, more sales, productivity. Lifecycle: **awareness → knowledge → consideration → selection → purchase → retention → advocacy**.",
+    "Tactic selection: **goals, environment, audience, competitors, site technology, resources, risk tolerance**. **Email** has the highest ROI (73%).",
+    "**Branding** (purpose, personality, guidelines, experience) vs **marketing** (inform, inspire, profit, sell). **SEO** slow/long-term vs **PPC** fast/costly. Blend **Paid + Owned + Earned**."
+  ],
+  "formulas": [
+    "Channel ROI: Email **73%**, SEO 67%, Content 62%, PPC 59%, Affiliate 47%",
+    "Segmented campaigns: **+760%** email revenue",
+    "Paid search converts **35%** better than organic",
+    "Email process: **Define → Test → Send → Measure → Report**"
+  ],
+  "traps": [
+    "Branding ≠ marketing: brand = identity; marketing = spreading it.",
+    "Selling only on a marketplace = **no owned channel**, so no customer data of your own.",
+    "Pareto with customers = **nurture the top 20%**, not treat everyone equally."
+  ],
+  "likely": [
+    "Explain SMART with an example.",
+    "List the bases of segmentation and the benefits.",
+    "Describe the customer lifecycle.",
+    "Compare SEO and PPC; explain paid, owned and earned."
+  ],
+  "tricks": [
+    "**G-D-P-B = Good Data Predicts Buying**.",
+    "Attract → Convert → Close → Delight."
+  ],
+  "story": {
+    "problem": "A running store is useless if nobody finds it, trusts it or comes back.",
+    "fix": "Set SMART goals, segment customers, build relationships with CRM, and reach them with email, SEO/PPC, viral content and a strong brand.",
+    "next": "Tools and AI keep changing marketing itself; how does the marketer stay valuable?"
+  },
+  "terms": [
+    {
+      "term": "SMART objectives",
+      "def": "Specific, Measurable, Attainable, Relevant, Time-bound goals."
+    },
+    {
+      "term": "Marketing mix (4Ps)",
+      "def": "Product, Price, Promotion, Place; the 7Ps add People, Process, Physical evidence."
+    },
+    {
+      "term": "Market segmentation",
+      "def": "Dividing customers into groups with shared traits to target them better."
+    },
+    {
+      "term": "STP",
+      "def": "Segmentation, Targeting, Positioning."
+    },
+    {
+      "term": "Psychographic segmentation",
+      "def": "Grouping by lifestyle, interests, opinions and values."
+    },
+    {
+      "term": "Relationship marketing",
+      "def": "Building lifelong customer relationships through two-way conversation."
+    },
+    {
+      "term": "Customer lifecycle",
+      "def": "Awareness → knowledge → consideration → selection → purchase → retention → advocacy."
+    },
+    {
+      "term": "Viral marketing",
+      "def": "Users spread the brand's message to others, creating buzz cheaply."
+    },
+    {
+      "term": "SEO",
+      "def": "Search engine optimisation: earning high organic (unpaid) rankings."
+    },
+    {
+      "term": "PPC",
+      "def": "Pay-per-click: advertisers bid on keywords and pay per click."
+    },
+    {
+      "term": "Paid, owned, earned media",
+      "def": "Paid = ads; owned = your site or email list; earned = free reviews, shares, mentions."
+    }
+  ]
+}

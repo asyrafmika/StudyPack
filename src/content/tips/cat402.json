@@ -1,0 +1,200 @@
+{
+  "title": "Lecturer's exam tips",
+  "intro": "These are the scenario MCQs the lecturer put up as **tips** in class. Every one is a short Malaysian e-business scenario with four options. The pattern behind almost all the answers: **options with extreme words** (*all, ignore, always, guaranteed, automatically, equally*) **are wrong**. The right answer is the balanced, strategic one that targets the cause.",
+  "source": "Transcribed from class photos of the tips slides (6 Nov 2026). The answers and explanations are mine, worked out from the course slides, not the lecturer's official answer key.",
+  "questions": [
+    {
+      "topic": "Pareto principle",
+      "week": 6,
+      "repeated": true,
+      "scenario": "A retailer finds that 20% of products cause 80% of returns.",
+      "q": "Using the Pareto Principle, the company should:",
+      "options": [
+        "Remove all top problematic products from the catalog",
+        "Increase discounts on top problematic products and other products",
+        "Investigate and improve the top problematic products",
+        "Ignore the returns because they are a minority, focus on top perform products"
+      ],
+      "answer": 2,
+      "why": "Pareto says a **small number of causes create most of the effect**, so put your effort on that vital 20%. **Investigating and improving** those products fixes the root cause (sizing, quality, wrong description) and removes most of the returns.",
+      "wrong": "**a** is too extreme: these products may still sell well, and removing them loses revenue. **b** treats the symptom, not the cause. **d** is backwards: those 20% cause **80%** of returns, so they are the opposite of a minority problem."
+    },
+    {
+      "topic": "Pareto principle",
+      "week": 6,
+      "scenario": "A SaaS platform finds that 20% of reported issues cause 80% of customer complaints.",
+      "q": "What should the company do according to the Pareto Principle?",
+      "options": [
+        "Respond to all complaints with the same priority all the time. Every complaint is important.",
+        "Prioritize the main issue and ignore minor issues to reduce effort and time in solving complaint tickets",
+        "Reduce customer support staff to cut costs and time in solving complaint tickets",
+        "Resolve the 20% of issues causing most complaints"
+      ],
+      "answer": 3,
+      "why": "Fixing the **few issues that generate most complaints** gives the biggest drop in complaints for the least effort. That is exactly the 80/20 idea.",
+      "wrong": "**a** spreads effort evenly, which is the opposite of Pareto. **b** is the trap: *prioritise* is right, but *ignore* minor issues is not, because they still get handled, just later. **c** cuts capacity and makes things worse."
+    },
+    {
+      "topic": "Pareto principle",
+      "week": 6,
+      "scenario": "An online retailer finds that 20% of its products account for 80% of total sales.",
+      "q": "Which action aligns with the Pareto Principle to optimize inventory?",
+      "options": [
+        "Randomly promote low-selling products on social media such as TikTok with creative content",
+        "Remove the top 20% of products to reduce inventory cost",
+        "Focus on ensuring top-selling products are always in stock",
+        "Stock all products equally all the time to avoid shortages"
+      ],
+      "answer": 2,
+      "why": "The top 20% earn 80% of the money, so a **stock-out on them is the most expensive mistake**. Prioritise their availability (reorder levels, safety stock).",
+      "wrong": "**a** is random, not data-driven. **b** removes your best earners. **d** stocks evenly, which wastes cash on slow movers: the opposite of 80/20."
+    },
+    {
+      "topic": "Pareto principle",
+      "week": 6,
+      "scenario": "A digital marketing team discovers that 20% of campaigns generate 80% of leads.",
+      "q": "Which strategy is consistent with the Pareto Principle?",
+      "options": [
+        "Focus 20% on brand awareness, ignoring conversions",
+        "Run all campaigns equally regardless of results to maximize leads",
+        "Analyze and replicate the top 20% of campaigns",
+        "Stop all campaigns except the top 20% performers"
+      ],
+      "answer": 2,
+      "why": "Find **what makes the winning campaigns work** (audience, channel, message) and **do more of it**. This is data-driven and keeps improving results.",
+      "wrong": "**d** is the tempting one but too extreme: some low performers may be new, seasonal or building awareness. Pareto is about **prioritising**, not deleting everything else. **b** ignores the data; **a** misreads the principle."
+    },
+    {
+      "topic": "Pareto principle",
+      "week": 6,
+      "scenario": "An e-commerce company notices that 80% of its revenue comes from 20% of its customers.",
+      "q": "According to the Pareto Principle, which strategy should the company prioritize?",
+      "options": [
+        "Focus on nurturing relationships with the top 20% of customers",
+        "Expand to entirely new markets to attract 80% more customers",
+        "Offer discounts randomly to all customers",
+        "Focus marketing efforts evenly across all customers"
+      ],
+      "answer": 0,
+      "why": "Your **VIP customers** bring most of the revenue, so **retain them** with relationship marketing and CRM: loyalty perks, personalised offers. Keeping a customer is far cheaper than finding a new one (Week 9).",
+      "wrong": "**b** chases new customers instead of protecting the ones paying you. **c** and **d** treat every customer the same, ignoring the 80/20 split."
+    },
+    {
+      "topic": "Platform dependency",
+      "week": 4,
+      "scenario": "A local Malaysian artisan sells exclusively on TikTok Shop. After recent platform fee increases and tighter competition, their profit margins have shrunk significantly, yet most of their revenue still comes from this single channel. *(The Star)*",
+      "q": "What is a primary strategic risk of depending heavily on one e-commerce platform like TikTok Shop?",
+      "options": [
+        "Guaranteed seller and customer loyalty regardless of competition in the online market",
+        "Vulnerability to policy or fee changes that can suddenly reduce profitability",
+        "High visibility and low-cost maintenance infrastructure",
+        "Improved brand reputation, trustworthiness and awareness inside and outside Malaysia"
+      ],
+      "answer": 1,
+      "why": "The scenario itself shows it: **the platform changed its fees and the seller's margin shrank**. With one channel you don't control the rules (fees, algorithm, policies), so one change hits all of your revenue. The fix is **multi-channel selling** (Week 4).",
+      "wrong": "**c** and **d** are *benefits* of marketplaces, not risks. **a** uses *guaranteed*, which is almost never true."
+    },
+    {
+      "topic": "Platform dependency",
+      "week": 4,
+      "scenario": "A small Malaysian beauty brand only lists products on TikTok Shop. While traffic is high, competition and algorithm changes frequently shift product visibility. *(Malay Mail)*",
+      "q": "What competitive disadvantage might arise from relying solely on TikTok Shop for sales?",
+      "options": [
+        "Higher probability of being featured in TikTok live-sell sessions",
+        "More control over pricing than independent stores",
+        "Inability to gather detailed customer behavior data for strategic marketing",
+        "Brand dilution and cash flow volatility"
+      ],
+      "answer": 2,
+      "why": "On a marketplace, **the platform owns the customer data**. The brand can't build its own customer database, segment it or run its own CRM and email campaigns (Week 9), so it can't market strategically and stays dependent on the algorithm.",
+      "wrong": "**a** is a benefit, not a disadvantage. **b** is backwards: independent stores give *more* control. **d** sounds plausible but is vague and not specific to selling only on TikTok. **c** is the precise **competitive** disadvantage."
+    },
+    {
+      "topic": "Marketplace vs own website",
+      "week": 4,
+      "scenario": "A Malaysian seller debates setting up their own online site, aware that marketplaces drive high traffic but also charge fees, whereas their own site may require investment in marketing to attract buyers. *(Malay Mail)*",
+      "q": "Which statement BEST captures the trade-off between selling on marketplaces versus an independent e-commerce site?",
+      "options": [
+        "Independent sites automatically guarantee top traffic based on organic and paid SEO",
+        "Marketplaces provide traffic but charge fees, while independent sites may require more upfront marketing but yield greater profits per sale",
+        "Owned sites are always cheaper, safer and better for both seller and customer compared to marketplaces",
+        "Marketplaces require no transaction fees and no infrastructure setup compared to owned websites"
+      ],
+      "answer": 1,
+      "why": "A **trade-off** answer has to name a gain *and* a cost on both sides. **Marketplace:** ready traffic, but fees. **Own site:** you pay for marketing up front, but keep more profit per sale. Only **b** does that.",
+      "wrong": "**a** says *automatically guarantee*, **c** says *always*, and **d** is simply false: marketplaces *do* charge fees. One-sided statements can't be the answer to a trade-off question."
+    },
+    {
+      "topic": "Marketplace vs own website",
+      "week": 4,
+      "scenario": "A Malaysian fashion retailer decides to build its own online store because the marketplace platform's layout and algorithm limit how products can be displayed and promoted. *(Malay Mail)*",
+      "q": "What is a primary advantage of having an independent online store compared to selling only on a marketplace?",
+      "options": [
+        "Guaranteed top positioning on all search engines",
+        "Full control over branding, user experience, and promotions",
+        "Hidden customer fees and conflict from third parties",
+        "Lower initial marketing costs and high traffic"
+      ],
+      "answer": 1,
+      "why": "The scenario's problem is **limits on display and promotion**, and an own site removes them: your own design, brand consistency, colour palette and UX (the Week 4 'Design for success' points) and your own promotions.",
+      "wrong": "**a** is impossible to *guarantee*. **c** is a disadvantage. **d** describes a **marketplace**, not your own store, which has low traffic at first and higher marketing costs."
+    },
+    {
+      "topic": "Multi-channel selling",
+      "week": 4,
+      "scenario": "A Malaysian retailer notes its online sales grew significantly this year due to the overall surge in e-commerce adoption, especially as nearly two-thirds of Malaysians now shop online and platforms like TikTok Shop are rapidly gaining market share. *(Malay Mail)*",
+      "q": "Which strategic action should the retailer prioritize to leverage this trend?",
+      "options": [
+        "Expand its presence on both Shopee and TikTok Shop and tailor offers for young online shoppers",
+        "Maintain focus only on both online and physical store promotions",
+        "Reduce its online advertising budget and focus on elderly shoppers as well",
+        "Start selling on its own website because the market is saturated and costs are rising on both Shopee and TikTok"
+      ],
+      "answer": 0,
+      "why": "To **leverage** the trend, go where the growth is: **multi-channel** across the platforms gaining share, plus **segmentation** (tailor offers to the young online shoppers driving it). More channels mean more revenue: in the Week 4 chart, +3 channels gave about +190%.",
+      "wrong": "**b** stands still, and **c** pulls back from online just as it is growing. **d** contradicts the scenario: it says these platforms are *gaining* share, not saturated."
+    },
+    {
+      "topic": "Attention economy & content",
+      "week": 9,
+      "q": "In the context of the attention economy, which of the following strategies is most effective for an entrepreneur to create a strong online persona and capture the attention of potential customers?",
+      "options": [
+        "Post content that highlights your personal story and the mission behind your brand",
+        "Develop a personalized content strategy that resonates with the specific needs and interests of the target audience",
+        "Use content curation to share industry trends and updates, positioning yourself as a thought leader",
+        "Partner with influencers to regularly promote your products to reach a larger audience quickly"
+      ],
+      "answer": 1,
+      "why": "Attention is scarce, so people only stop for content that is **relevant to them**. **b** is the strategy; the other three are *tactics* that work only if they fit the audience. It matches the **customer-based strategy** and **segmentation** in Week 9, and *design for your target audience* in Week 4.",
+      "wrong": "**a**, **c** and **d** are all reasonable, but each is one tactic. A brand story, thought leadership or an influencer that doesn't match the audience's needs won't hold attention. The word **resonates** in **b** is the clue."
+    },
+    {
+      "topic": "Law: PDPA & privacy",
+      "scenario": "A Malaysian YouTuber films people in public and posts the video without their consent; someone's face is clearly visible and identifiable.",
+      "q": "Under Malaysian law (including PDPA considerations), what may apply?",
+      "options": [
+        "A guaranteed licence requirement by FINAS",
+        "No legal issues, as all public filming is allowed",
+        "A copyright claim against the filmed individuals",
+        "Possible civil action for privacy breach and defamation if individuals are identifiable and harmed"
+      ],
+      "answer": 3,
+      "why": "An **identifiable face is personal data**, and a monetised channel is a commercial use, so the **PDPA 2010** comes into play. If the video harms the person's reputation they could also sue for **defamation**. Note the careful wording: *possible* action, *if* the person is identifiable and harmed.",
+      "wrong": "**b**: being in public doesn't remove every legal issue. **c** is backwards: the copyright belongs to the **filmer**, not the people filmed. **a** says *guaranteed*, which is an extreme word, and FINAS licences cover film production and distribution, not this privacy issue."
+    },
+    {
+      "topic": "Law: Copyright Act 1987",
+      "scenario": "A Malaysian YouTuber uploads clips from another creator's video without asking permission, and then monetizes the video.",
+      "q": "Under the Malaysian Copyright Act 1987, what legal issue is most likely to arise from this action?",
+      "options": [
+        "Copyright infringement, because the creator's exclusive rights were used without consent",
+        "Moral rights requiring attribution of the creator",
+        "Any use of copyrighted content is allowed if it's only on YouTube",
+        "Fair dealing automatically covers all uses without consent"
+      ],
+      "answer": 0,
+      "why": "The original creator has **exclusive rights** to reproduce and share their work. Re-uploading it **without permission**, and **making money** from it, is plain **infringement**.",
+      "wrong": "**b** is a real concept, but crediting the creator doesn't fix using their work without permission, so it isn't the *most likely* issue. **c** is false. **d** uses *automatically*: fair dealing covers only limited purposes such as research, criticism, review or news reporting, and rarely covers monetised re-uploads."
+    }
+  ]
+}

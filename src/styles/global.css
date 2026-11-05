@@ -1518,3 +1518,54 @@ dialog.lightbox.zoomed .lb-stage img { max-width: none; max-height: none; width:
 }
 .story { grid-template-columns: minmax(0,1fr); }
 .story-prev, .story-steps, .story-t { min-width: 0; }
+
+/* =================== Exam tips (scenario MCQs with answers) =================== */
+.tips-src { margin-top: -4px; }
+.tips-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 18px 0 22px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 16px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); }
+.tips-bar .chips { margin: 0; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; padding-bottom: 2px; }
+.tips-bar .chip { flex: none; }
+.tips-actions { margin-left: auto; }
+.tips-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.tips-score { color: var(--muted); font-weight: 600; margin-right: 4px; }
+.tips-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.tq { padding: 18px 20px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); transition: border-color .2s; }
+.tq.got-right { border-color: color-mix(in srgb, var(--tip) 55%, var(--border)); }
+.tq.got-wrong { border-color: color-mix(in srgb, var(--exam) 45%, var(--border)); }
+.tq-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; font-size: .74rem; font-weight: 700; }
+.tq-n { padding: 2px 9px; border-radius: 99px; background: var(--text); color: var(--bg); }
+.tq-topic { padding: 2px 9px; border-radius: 99px; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.tq-rep { padding: 2px 9px; border-radius: 99px; color: var(--exam); background: color-mix(in srgb, var(--exam) 12%, transparent); }
+.tq-week { margin-left: auto; color: var(--muted) !important; text-decoration: none; font-weight: 600; }
+.tq-week:hover { color: var(--accent) !important; }
+.tq-scn { margin: 0 0 8px; padding: 10px 12px; border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; background: var(--bg-2); font-size: .93rem; }
+.tq-q { margin: 0 0 12px; font-weight: 700; }
+.tq-opts { display: grid; gap: 8px; }
+.tq-opt { display: flex; align-items: flex-start; gap: 10px; width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); color: var(--text); font: inherit; font-size: .93rem; text-align: left; cursor: pointer; transition: border-color .15s, background .15s, transform .15s; }
+.tq-opt:not(:disabled):hover { border-color: var(--accent); transform: translateX(2px); }
+.tq-opt:disabled { cursor: default; }
+.tq-l { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 8px; background: var(--surface-2); font-size: .75rem; font-weight: 800; }
+.tq-opt.is-right { border-color: var(--tip); background: color-mix(in srgb, var(--tip) 10%, var(--bg)); }
+.tq-opt.is-right .tq-l { background: var(--tip); color: #fff; }
+.tq-opt.is-wrong { border-color: var(--exam); background: color-mix(in srgb, var(--exam) 9%, var(--bg)); }
+.tq-opt.is-wrong .tq-l { background: var(--exam); color: #fff; }
+.tq-opt:disabled:not(.is-right):not(.is-wrong) { opacity: .6; }
+.tq-ans { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--why) 8%, transparent); font-size: .92rem; }
+.tq-ans p { margin: 0 0 6px; }
+.tq-ans p:last-child { margin: 0; }
+.tq-verdict { font-weight: 800; }
+.tq-wrong { color: var(--muted); }
+.tips-cta { border-color: color-mix(in srgb, var(--exam) 40%, var(--border))!important; background: color-mix(in srgb, var(--exam) 7%, var(--surface))!important; }
+.tips-cta .revise-ic { background: color-mix(in srgb, var(--exam) 16%, transparent); }
+.tips-cta .fc-cta-go { color: var(--exam); }
+@media (max-width: 640px) {
+  .tips-actions { margin-left: 0; }
+  .tq { padding: 14px; }
+  .tq-week { margin-left: 0; }
+}
+@media print {
+  .tips-bar { display: none; }
+  .tq-ans { display: block !important; }
+  .tq { break-inside: avoid; }
+}
+/* Long badge notes must wrap on narrow screens */
+.own { white-space: normal; flex-wrap: wrap; max-width: 100%; }

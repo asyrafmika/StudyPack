@@ -76,4 +76,31 @@ const exam = defineCollection({
   }),
 });
 
-export const collections = { courses, notes, exam };
+/**
+ * tips — lecturer's exam tips for a course: src/content/tips/<course-id>.json
+ * Each question is MCQ with the index of the correct option and an explanation.
+ * Text fields are inline markdown.
+ */
+const tips = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/tips' }),
+  schema: z.object({
+    title: z.string(),
+    intro: z.string().optional(),
+    source: z.string().optional(),
+    questions: z.array(
+      z.object({
+        scenario: z.string().optional(),
+        q: z.string(),
+        options: z.array(z.string()).min(2),
+        answer: z.number().int().nonnegative(), // index into options
+        why: z.string(), // why the answer is right
+        wrong: z.string().optional(), // why the tempting wrong options are wrong
+        topic: z.string(), // e.g. "Pareto principle"
+        week: z.number().int().optional(), // links the question to that week's notes
+        repeated: z.boolean().default(false), // shown more than once in class
+      }),
+    ),
+  }),
+});
+
+export const collections = { courses, notes, exam, tips };
